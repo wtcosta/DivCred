@@ -1,0 +1,47 @@
+<div class="panel-body">
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Nome</th>
+				<th>E-mail</th>
+				<th>Login</th>
+				<th>Ações</th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php
+			if ($view_users) :
+				foreach ($view_users as $user) :
+					?>
+					<tr>
+						<td><?php echo $user->name ?></td>
+						<td><?php echo $user->email ?></td>
+						<td><?php echo $user->username ?></td>
+						<td>
+							<?php
+							if ($user->status === 0) {
+								?>
+								<a href="<?php echo BASE.'usuarios/desbloquear/'.$user->id ?>" class="btn btn-xs btn-success">
+									<i class="fa fa-pencil"></i> Desbloquear
+								</a>
+								<?php
+							}else{
+								?>
+								<a href="<?php echo BASE.'usuarios/bloquear/'.$user->id ?>" class="btn btn-xs btn-warning">
+									<i class="fa fa-pencil"></i> Bloquear
+								</a>
+								<?php
+							}
+							?>
+							<a href="<?php echo BASE.'usuarios/excluir/'.$user->id ?>" class="btn btn-xs btn-danger">
+								<i class="fa fa-pencil"></i> Excluir
+							</a>
+						</td>
+					</tr>
+					<?php
+				endforeach;
+			endif;
+			?>
+		</tbody>
+	</table>
+</div>

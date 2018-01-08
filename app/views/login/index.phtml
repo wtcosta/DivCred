@@ -1,0 +1,21 @@
+<div class="panel-body">
+  <form class="form-horizontal" action="<?php echo BASE; ?>login/logar" method="POST">
+    <div class="form-group">
+      <label for="username" class="col-sm-3 control-label">Usuário:</label>
+      <div class="col-sm-8">
+        <input type="text" class="form-control" id="username" name="username" value="<?php echo $this->request->post('username') ?>" placeholder="Seu usuário">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="password" class="col-sm-3 control-label">Senha:</label>
+      <div class="col-sm-8">
+        <input type="password" class="form-control" id="password" name="password" placeholder="Sua senha">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-8">
+        <button type="submit" class="btn btn-success">Entrar</button>
+      </div>
+    </div>
+  </form>
+</div>

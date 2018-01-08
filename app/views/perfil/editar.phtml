@@ -1,0 +1,71 @@
+<div class="panel-body">
+  <?php
+  $values = [
+    'name' => $view_user->name,
+    'email' => $view_user->email,
+    'username' => $view_user->username
+  ];
+  Form::open('editarusuario', $values, [
+    'action' => BASE . 'perfil/editar/',
+    'enctype' => 'multipart/form-data',
+    'prevent' => [
+      'focus'
+    ]
+  ]);
+
+  if (!is_null($view_user->image)) {
+    //echo '<image src="'.BASE.'public/uploads/users/'.$view_user->id.'/'.$view_user->image.'" width="200" />';
+    ?>
+    <div class="form-group elem-imgPerfil">
+      <div class="col-xs-12 col-md-12" style="text-align: center">
+        <img src="<?php echo BASE.'public/uploads/users/'.$view_user->id.'/'.$view_user->image ?>" alt="placeholder+image" class="img-thumbnail" style="max-height: 150px;">
+      </div>
+    </div>
+    <?php
+  }
+
+  Form::File(
+    'Imagem do usuário:',
+    'image'
+  );
+
+  Form::Textbox(
+    'Nome:',
+    'name',
+    array(
+      'required' => 1
+    )
+  );
+
+  Form::Email(
+    'E-mail:',
+    'email',
+    array(
+      'required' => 1
+    )
+  );
+
+  Form::Textbox(
+    'Login:',
+    'username',
+    array(
+      'required' => 1
+    )
+  );
+
+  Form::Password(
+    'Senha',
+    'password',
+    array(
+      'placeholder' => 'Preencha somente se quiser atualizar a senha'
+    )
+  );
+
+  Form::Button('Atualizar perfil', 'submit', [
+    'style' => 'width: 100%',
+    'class' => 'btn-success'
+  ]);
+
+  Form::close(false);
+  ?>
+</div>
