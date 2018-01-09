@@ -8,30 +8,26 @@ class Company extends \HXPHP\System\Model
 	static $belongs_to = array(
 		array('role')
 	);
-	/*
+
 	static $validates_presence_of = array(
 		array(
-			'name',
-			'message' => 'O nome é um campo obrigatório.'
+			'empresa',
+			'message' => 'O nome da empresa é obrigatório.'
 		),
 		array(
 			'email',
 			'message' => 'O e-mail é um campo obrigatório.'
 		),
 		array(
-			'username',
-			'message' => 'O usuário é um campo obrigatório.'
-		),
-		array(
-			'password',
-			'message' => 'A senha é um campo obrigatório.'
+			'cnpj',
+			'message' => 'O CNPJ é um campo obrigatório.'
 		)
 	);
 
 	static $validates_uniqueness_of = array(
 		array(
-			'username',
-			'message' => 'Já existe um usuário cadastrado!'
+			'cnpj',
+			'message' => 'Já existe um CNPJ cadastrado!'
 		),
 		array(
 			'email',
@@ -39,7 +35,7 @@ class Company extends \HXPHP\System\Model
 		)
 	);
 
-	public static function cadastrar($post)
+	public static function cadastrar($post, $user_id)
 	{
 		//Cria uma classe vazia pra armazenar o retorno das validações
 		$callbackObj = new \stdClass;
@@ -47,22 +43,11 @@ class Company extends \HXPHP\System\Model
 		$callbackObj->status = false;
 		$callbackObj->errors = array();
 
-		//Recupera o role_id de user
-		$role = Role::find_by_role('User');
-		if (is_null($role)) {
-			array_push($callbackObj->errors, 'A role user não existe. Contato o administrator');
-			return $callbackObj;
-		}
-		$user_data = array(
-			'role_id' => $role->id,
-			'status' => 1
+		$userCad = array(
+			'user_cad' => $user_id
 		);
 
-		//Cria a senha criptografada usando o HXPHP
-		$password = \HXPHP\System\Tools::hashHX($post['password']);
-
-		//Insere a senha criptografada e role no array do post
-		$post = array_merge($post, $user_data, $password);
+		$post = array_merge($post, $userCad);
 
 		//Salva os dados no banco de dados
 		$cadastrar = self::create($post);
@@ -82,52 +67,59 @@ class Company extends \HXPHP\System\Model
 		return $callbackObj;
 	}
 
-	public function login($post)
+	public static function atualizar($post, $emp_id)
 	{
 		//Cria uma classe vazia pra armazenar o retorno das validações
 		$callbackObj = new \stdClass;
-		$callbackObj->user = null;
+		$callbackObj->emp = null;
 		$callbackObj->status = false;
-		$callbackObj->code = array();
-		$callbackObj->tentativas_restantes = null;
+		$callbackObj->errors = array();
 
-		$user = self::find_by_username($post['username']);
+		$emp = self::find($emp_id);
 
-		if (!is_null($user)) {
-			$password = \HXPHP\System\Tools::hashHX($post['password'], $user->salt);
-
-			if ($user->status === 1) {
-				if (LoginAttempt::ExistemTentativas($user->id)) {
-					if ($password['password'] === $user->password) {
-						$callbackObj->user = $user;
-						$callbackObj->status = true;
-
-						LoginAttempt::LimparTentativas($user->id);
-					}else{
-						if (LoginAttempt::TentativasRestantes($user->id) <= 3) {
-							$callbackObj->code = 'tentativas-esgotando';
-							$callbackObj->tentativas_restantes = LoginAttempt::TentativasRestantes($user->id);
-						}else{
-							$callbackObj->code = 'dados-incorretos';
-						}
-						LoginAttempt::RegistrarTentativas($user->id);
-					}
-				}else{
-					$callbackObj->code = 'usuario-bloqueado';
-
-					$user->status = 0;
-					$user->save();
-				}
-			}else{
-				$callbackObj->code = 'usuario-bloqueado';
+		if ($emp->email != $post['email']) {
+			$exists_mail = self::find_by_email($post['email']);
+			if (!is_null($exists_mail) && intval($emp_id) !== intval($exists_mail->id)) {
+				array_push($callbackObj->errors, 'Já existe uma empresa com este e-mail cadastrado. Por favor, escolha outro e tente novamente');
+				return $callbackObj;
 			}
-		}else{
-			$callbackObj->code = 'usuario-inexistente';
+		}
+
+		if ($emp->cnpj !== $post['cnpj']) {
+			$exists_cnpj = self::find_by_cnpj($post['cnpj']);
+			if (!is_null($exists_cnpj) && intval($emp_id) !== intval($exists_cnpj->id)) {
+				array_push($callbackObj->errors, 'Já existe uma empresa com este CNPJ cadastrado. Por favor, escolha outro e tente novamente');
+				return $callbackObj;
+			}
+		}
+
+		$emp->cnpj = $post['cnpj'];
+		$emp->empresa = $post['empresa'];
+		$emp->contato = $post['contato'];
+		$emp->email = $post['email'];
+		$emp->endereco = $post['endereco'];
+		$emp->telefone = $post['telefone'];
+		$emp->celular = $post['celular'];
+		$emp->multa = $post['multa'];
+		$emp->juros = $post['juros'];
+
+		$atualizar = $emp->save(false);
+
+		if ($atualizar) {
+			$callbackObj->emp = $emp;
+			$callbackObj->status = true;
+			return $callbackObj;
+		}
+
+		$errors = $cadastrar->errors->get_raw_errors();
+
+		foreach ($errors as $field => $message) {
+			array_push($callbackObj->errors, $message[0]);
 		}
 
 		return $callbackObj;
 	}
-
+/*
 	public static function atualizarSenha($user, $newPassword)
 	{
 		$user = self::find_by_id($user->id);

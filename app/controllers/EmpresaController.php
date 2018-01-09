@@ -35,6 +35,102 @@ class EmpresaController extends \HXPHP\System\Controller
 			'empresa' => Company::all()
 		]);
 	}
+
+	public function cadastrarAction()
+	{
+		//Redireciona para uma view
+		$this->view->setFile('cadastrar');
+
+		//Filtra/valida dados do form
+		$this->request->setCustomFilters(array(
+			'email' => FILTER_VALIDATE_EMAIL
+		));
+
+		$post = $this->request->post();
+
+		//Verifica se o POST não está vazio e chama o model
+		if (!empty($post) && $post['email'] !== null) {
+
+			$user_id = $this->auth->getUserId();
+			$cadEmpresa = Company::cadastrar($post, $user_id);
+
+			if ($cadEmpresa->status === false) {
+				$this->load('Helpers\Alert', array(
+					'danger',
+					'Não foi possível efetuar seu cadastro.<br />Verifique os erros abaixo:',
+					$cadEmpresa->errors
+				));
+			}else{
+				$this->load('Helpers\Alert', array(
+					'success',
+					'Empresa cadastrada com sucesso!'
+				));
+				$this->view->setFile('index')
+				->setVars([
+					'empresa' => Company::all()
+				]);
+			}
+		}
+	}
+
+	public function editarAction($empresa)
+	{
+		$this->view->setFile('cadastrar');
+
+		$user_id = $this->auth->getUserId();
+
+		$this->request->setCustomFilters(array(
+			'email' => FILTER_VALIDATE_EMAIL
+		));
+
+		$post = $this->request->post();
+
+		$this->view->setTitle('DivCred - Editar Empresa')
+		->setVar('emp', Company::find($empresa));
+
+		$post = $this->request->post();
+
+		if (!empty($post)) {
+			$atualizaEmp = Company::atualizar($post, $empresa);
+
+			if ($atualizaEmp->status === false) {
+				$this->load('Helpers\Alert', array(
+					'danger',
+					'Ops! Não foi possível atualizar o cadastro. <br> Verifique os erros abaixo:',
+					$atualizaEmp->errors
+				));
+			}else{
+				$this->load('Helpers\Alert', array(
+					'success',
+					'Empresa editada com sucesso!'
+				));
+				$this->view->setFile('index')
+				->setVars([
+					'empresa' => Company::all()
+				]);
+			}
+		}
+	}
+
+	public function excluirAction($emp_id)
+	{
+		if (is_numeric($emp_id)) {
+			$empresa = Company::find_by_id($emp_id);
+
+			if (!is_null($empresa)) {
+				$empresa->delete();
+
+				$this->load('Helpers\Alert', array(
+					'success',
+					'Empresa excluida com sucesso!'
+				));
+				$this->view->setFile('index')
+				->setVars([
+					'empresa' => Company::all()
+				]);
+			}
+		}
+	}
 /*
 	public function bloquearAction($user_id)
 	{

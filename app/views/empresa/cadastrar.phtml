@@ -1,0 +1,106 @@
+<div class="panel-body">
+  <?php
+  if (isset($view_emp)) {
+    $action = BASE . 'empresa/editar/'.$view_emp->id;
+    $values = [
+      'cnpj' => $view_emp->cnpj,
+      'empresa' => $view_emp->empresa,
+      'contato' => $view_emp->contato,
+      'email' => $view_emp->email,
+      'endereco' => $view_emp->endereco,
+      'telefone' => $view_emp->telefone,
+      'celular' => $view_emp->celular,
+      'multa' => $view_emp->multa,
+      'juros' => $view_emp->juros
+    ];
+  }else{
+    $action = BASE . 'empresa/cadastrar/';
+    $values = [
+      'cnpj' => $this->request->post('cnpj'),
+      'empresa' => $this->request->post('empresa'),
+      'contato' => $this->request->post('contato'),
+      'email' => $this->request->post('email'),
+      'endereco' => $this->request->post('endereco'),
+      'telefone' => $this->request->post('telefone'),
+      'celular' => $this->request->post('celular'),
+      'multa' => $this->request->post('multa'),
+      'juros' => $this->request->post('juros')
+    ];
+  }
+  Form::open('cadastrarempresa', $values, [
+    'action' => $action,
+    'enctype' => 'multipart/form-data',
+    'prevent' => [
+      'focus'
+    ]
+  ]);
+  Form::Textbox(
+    'Cnpj:',
+    'cnpj',
+    array(
+      'required' => 1
+    )
+  );
+  Form::Textbox(
+    'Empresa:',
+    'empresa',
+    array(
+      'required' => 1
+    )
+  );
+  Form::Textbox(
+    'Contato:',
+    'contato',
+    array(
+      'required' => 1
+    )
+  );
+  Form::Email(
+    'E-mail:',
+    'email',
+    array(
+      'required' => 1
+    )
+  );
+  Form::Textarea(
+    'Endereço:',
+    'endereco',
+    array(
+      'required' => 1
+    )
+  );
+  Form::Textbox(
+    'Telefone:',
+    'telefone',
+    array(
+      'required' => 1
+    )
+  );
+  Form::Textbox(
+    'Celular:',
+    'celular',
+    array(
+      'required' => 1
+    )
+  );
+  Form::Number(
+    'Multa:',
+    'multa',
+    array(
+      'required' => 1
+    )
+  );
+  Form::Number(
+    'Juros:',
+    'juros',
+    array(
+      'required' => 1
+    )
+  );
+  Form::Button('Atualizar perfil', 'submit', [
+    'style' => 'width: 100%',
+    'class' => 'btn-success'
+  ]);
+  Form::close(false);
+  ?>
+</div>
