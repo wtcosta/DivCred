@@ -21,16 +21,14 @@ $configs->env->development->database->setConnectionData(array(
   'dbname' => 'wt_divcred'
 ));
 
-$configs->env->development->auth->setURLs('/divcred/home/', '/divcred/login');
+$configs->env->development->auth->setURLs('/divcred/empresa/', '/divcred/login');
 
 $configs->env->development->menu->setMenus(array(
-  'Home/dashboard' => '%baseURI%/home',
   'Editar Perfil/cog' => '%baseURI%/perfil/editar',
   'Sair/sign-out' => '%baseURI%/login/sair'
 ), 'user');
 
 $configs->env->development->menu->setMenus(array(
-  'Home/dashboard' => '%baseURI%/home',
   'Usuário/dashboard' => [
     'Usuário/dashboard' => '%baseURI%/usuarios',
     'Editar Perfil/cog' => '%baseURI%/perfil/editar',
@@ -40,10 +38,6 @@ $configs->env->development->menu->setMenus(array(
   'Dívidas/money' => '%baseURI%/divida',
   'Sair/sign-out' => '%baseURI%/login/sair'
 ), 'administrator');
-
-$configs->env->development->menu->setMenus(array(
-  'Home/dashboard' => '%baseURI%/home'
-));
 
 /*
   //Globais
