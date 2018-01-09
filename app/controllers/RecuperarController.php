@@ -75,8 +75,6 @@ class RecuperarController extends \HXPHP\System\Controller
 					)
 				);
 
-				var_dump($message);
-
 				if ($envioDoEmail === false) {
 					$error = $this->messages->getByCode('email-nao-enviado');
 				}

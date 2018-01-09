@@ -12,7 +12,20 @@ class CadastroController extends \HXPHP\System\Controller
 			$configs->auth->after_logout,
 			true
 		);
-		$this->auth->redirectCheck(true);
+		$this->auth->redirectCheck(false);
+
+		$user_id = $this->auth->getUserId();
+		$user = User::find($user_id);
+		$role = Role::find($user->role_id);
+
+		$this->load(
+			'Helpers\Menu',
+			$this->request,
+			$this->configs,
+			$role->role
+		);
+
+		$this->view->setTitle('DIVCRED - Cadastro de novo usuário');
 	}
 
 	public function cadastrarAction()

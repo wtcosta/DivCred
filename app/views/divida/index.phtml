@@ -1,0 +1,29 @@
+<div class="panel-body">
+	<table class="table">
+		<thead>
+			<tr>
+				<th>CPF</th>
+				<th>Empresa</th>
+				<th>Nome</th>
+				<th>Valor</th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php
+			if ($view_divida){
+				foreach ($view_divida as $divida){
+					$empresa = Company::find_by_id($divida->empresa);
+					?>
+					<tr>
+						<td><?php echo $divida->cpf ?></td>
+						<td><?php echo $empresa->empresa; ?></td>
+						<td><?php echo $divida->nome ?></td>
+						<td>R$ <?php echo number_format($divida->valor, 2, ",", ".") ?></td>
+					</tr>
+					<?php
+				}
+			}
+			?>
+		</tbody>
+	</table>
+</div>

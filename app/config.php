@@ -3,7 +3,14 @@
 $configs = new HXPHP\System\Configs\Config;
 ActiveRecord\Connection::$datetime_format = 'Y-m-d H:i:s';
 
+$configs->title = 'DivCred - Assessoria Financeira & Cobrança';
+
 $configs->env->add('development');
+
+$configs->env->development->mail->setFrom([
+  'from' => $configs->title,
+  'from_mail' => 'contato@divcred.com.br'
+  ]);
 
 $configs->env->development->baseURI = '/divcred/';
 
@@ -24,8 +31,13 @@ $configs->env->development->menu->setMenus(array(
 
 $configs->env->development->menu->setMenus(array(
   'Home/dashboard' => '%baseURI%/home',
-  'Usuário/dashboard' => '%baseURI%/usuarios',
-  'Editar Perfil/cog' => '%baseURI%/perfil/editar',
+  'Usuário/dashboard' => [
+    'Usuário/dashboard' => '%baseURI%/usuarios',
+    'Editar Perfil/cog' => '%baseURI%/perfil/editar',
+    'Cadastrar/user-plus' => '%baseURI%/cadastro'
+  ],
+  'Empresa/university' => '%baseURI%/empresa',
+  'Dívidas/money' => '%baseURI%/divida',
   'Sair/sign-out' => '%baseURI%/login/sair'
 ), 'administrator');
 
@@ -93,4 +105,4 @@ $configs->env->development->menu->setMenus(array(
   ]);
  */
 
-return $configs;
+  return $configs;

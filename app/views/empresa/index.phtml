@@ -1,0 +1,35 @@
+<div class="panel-body">
+	<table class="table">
+		<thead>
+			<tr>
+				<th>CNPJ</th>
+				<th>Empresa</th>
+				<th>Contato</th>
+				<th>Telefones</th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php
+			if ($view_empresa){
+				foreach ($view_empresa as $emp){
+					?>
+					<tr>
+						<td><?php echo $emp->cnpj ?></td>
+						<td><?php echo $emp->empresa ?></td>
+						<td><?php echo $emp->contato ?></td>
+						<td><?php
+						if ($emp->telefone) {
+							echo $emp->telefone;
+						}
+						if ($emp->celular) {
+							echo "<br />".$emp->celular;
+						}
+						?></td>
+					</tr>
+					<?php
+				}
+			}
+			?>
+		</tbody>
+	</table>
+</div>
