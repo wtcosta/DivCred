@@ -149,7 +149,7 @@ class DividaController extends \HXPHP\System\Controller
 		);
 	}
 
-	public function cadLogAction($divida_id='')
+	public function cadLogAction($divida_id='', $divida_empresa)
 	{
 		$post = $this->request->post();
 
@@ -169,10 +169,7 @@ class DividaController extends \HXPHP\System\Controller
 					'success',
 					'Atendimento cadastrado com sucesso!'
 				));
-				$this->view->setFile('index')
-				->setVars([
-					'dividas' => Debt::all()
-				]);
+				$this->filtrarAction($divida_empresa);
 			}
 		}
 	}

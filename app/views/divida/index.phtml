@@ -64,7 +64,7 @@
 										</div>
 										<div class="modal-body">
 											<?php
-											$action = BASE . 'divida/cadLog/'.$divida->id;
+											$action = BASE . 'divida/cadLog/'.$divida->id.'/'.$divida->empresa;
 											$values = [
 												'vlNegociado' => $this->request->post('vlNegociado'),
 												'obs' => $this->request->post('obs'),

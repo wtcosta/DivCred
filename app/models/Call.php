@@ -15,6 +15,7 @@ class Call extends \HXPHP\System\Model
 	{
 		//Cria uma classe vazia pra armazenar o retorno das validações
 		$callbackObj = new \stdClass;
+		$callbackObj->divida = false;
 		$callbackObj->status = false;
 		$callbackObj->errors = array();
 
@@ -30,6 +31,7 @@ class Call extends \HXPHP\System\Model
 
 		if ($cadastrar->is_valid()) {
 			$callbackObj->status = true;
+			$callbackObj->divida = $post;
 			return $callbackObj;
 		}
 
