@@ -29,10 +29,11 @@ $configs->env->development->menu->setMenus(array(
 ), 'user');
 
 $configs->env->development->menu->setMenus(array(
-  'Usuário/dashboard' => [
+  'Administrativo/dashboard' => [
     'Usuário/dashboard' => '%baseURI%/usuarios',
     'Editar Perfil/cog' => '%baseURI%/perfil/editar',
-    'Cadastrar/user-plus' => '%baseURI%/cadastro'
+    'Cadastrar/user-plus' => '%baseURI%/cadastro',
+    'Status/check-circle-o' => '%baseURI%/status'
   ],
   'Empresa/university' => '%baseURI%/empresa',
   'Dívidas/money' => '%baseURI%/divida',
