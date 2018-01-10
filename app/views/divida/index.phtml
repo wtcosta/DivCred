@@ -1,6 +1,20 @@
 <div class="panel-body">
-	<div class="col-md-offset-10">
-		<a href="<?php echo BASE.'divida/cadastrar' ?>" class="btn btn-success">Cadastrar</a>
+	<div class="row">
+		<div class="col-md-9">
+			<?php
+			if (isset($view_empresa) && !is_null($view_empresa)) {
+				?>
+				<h4 style="margin-top: 7px;margin-bottom: 20px;">
+					Dívidas da empresa: <?php echo $view_empresa->empresa ?>
+					(<?php echo $view_empresa->contato ?> - <?php echo $view_empresa->telefone ?>)
+				</h4>
+				<?php
+			}
+			?>
+		</div>
+		<div class="col-md-3" style="text-align: center;">
+			<a href="<?php echo BASE.'divida/cadastrar' ?>" class="btn btn-success">Cadastrar</a>
+		</div>
 	</div>
 	<table class="table">
 		<thead>
@@ -9,12 +23,13 @@
 				<th>Empresa</th>
 				<th>Nome</th>
 				<th>Valor</th>
+				<th>Ações</th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php
-			if ($view_divida){
-				foreach ($view_divida as $divida){
+			if ($view_dividas){
+				foreach ($view_dividas as $divida){
 					$empresa = Company::find_by_id($divida->empresa);
 					?>
 					<tr>
@@ -22,6 +37,116 @@
 						<td><?php echo $empresa->empresa; ?></td>
 						<td><?php echo $divida->nome ?></td>
 						<td>R$ <?php echo number_format($divida->valor, 2, ",", ".") ?></td>
+						<td>
+							<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalAtd<?php echo $divida->id ?>">
+								Atd
+							</button>
+							<a href="<?php echo BASE.'divida/editar/'.$divida->id ?>" class="btn btn-warning btn-sm">Editar</a>
+							<a href="<?php echo BASE.'divida/excluir/'.$divida->id ?>" class="btn btn-danger btn-sm">Excluir</a>
+
+							<!-- Modal -->
+							<?php
+							$atds = Call::busca($divida->id);
+							?>
+							<div class="modal fade bd-example-modal-lg" id="modalAtd<?php echo $divida->id ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+								<div class="modal-dialog modal-lg" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h3 class="modal-title" id="exampleModalLongTitle">
+												<?php echo $divida->nome; ?> - <?php echo $divida->cpf; ?> - <?php echo date('d/m/Y', strtotime($divida->vencimento)); ?>
+											</h3>
+											<p class="modal-subtitulo">
+												<?php echo 'Celular: '.$divida->celular; ?> - <?php echo 'Telefone: '.$divida->telefone; ?> - <?php echo 'Recado: '.$divida->recado; ?>
+											</p>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body">
+											<?php
+											$action = BASE . 'divida/cadLog/'.$divida->id;
+											$values = [
+												'vlNegociado' => $this->request->post('vlNegociado'),
+												'obs' => $this->request->post('obs'),
+												'status' => $this->request->post('status')
+											];
+											Form::open('cadLog'.$divida->id, $values, [
+												'action' => $action,
+												'view' => "Vertical",
+												'enctype' => 'multipart/form-data',
+												'prevent' => [
+													'focus'
+												]
+											]);
+											?>
+											<div class="col-md-6">
+												<?php
+												Form::Number(
+													'Valor da Negociação:',
+													'vlNeg',
+													array(
+														'value' => $divida->valor,
+														'required' => 1
+													)
+												);
+												Form::Textbox(
+													'Status:',
+													'status',
+													array(
+														'required' => 1
+													)
+												);
+												Form::Button('Cadastrar Atd', 'submit', [
+													'style' => 'width: 100%',
+													'class' => 'btn-success'
+												]);
+												?>
+											</div>
+											<div class="col-md-6">
+												<?php
+												Form::Textarea(
+													'Atendimento:',
+													'obs',
+													array(
+														'required' => 1,
+														'rows' => 6
+													)
+												);
+												?>
+											</div>
+											<?php
+											Form::close(false);
+											?>
+											<table class="table">
+												<thead>
+													<th>Valor</th>
+													<th>Atendimento</th>
+													<th>Status</th>
+													<th>Data</th>
+												</thead>
+												<tbody>
+													<?php
+													foreach ($atds as $atd) {
+														?>
+														<tr>
+															<td>R$ <?php echo number_format($atd->vlneg, 2, ",", "."); ?></td>
+															<td><?php echo $atd->obs; ?></td>
+															<td><?php echo $atd->status; ?></td>
+															<td><?php echo date("Y-m-d H:m", strtotime($atd->data_cad)); ?></td>
+														</tr>
+														<?php
+													}
+													?>
+												</tbody>
+											</table>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</td>
 					</tr>
 					<?php
 				}

@@ -29,52 +29,151 @@ class DividaController extends \HXPHP\System\Controller
 			$role->role
 		);
 
-		$this->view->setTitle('HXPHP - Empresas')
+		$this->view->setTitle('DivCred - Dívidas')
 		->setFile('index')
 		->setVars([
-			'divida' => Debt::all()
+			'dividas' => Debt::all()
 		]);
 	}
-/*
-	public function bloquearAction($user_id)
+	public function cadastrarAction($post=null)
 	{
-		if (is_numeric($user_id)) {
-			$user = User::find_by_id($user_id);
+		$empresas = Company::all();
+		$option = array();
+		foreach ($empresas as $value) {
+			$option[$value->id] = $value->empresa;
+		}
 
-			if (!is_null($user)) {
-				$user->status = 0;
-				$user->save();
+		$this->view->setTitle('DivCred - Cadastrar Dívidas')
+		->setVars(['option' => $option])
+		->setFile('cadastrar');
 
-				$this->view->setVar('users', User::all());
+		$post = $this->request->post();
+
+		if (!empty($post)) {
+
+			$user_id = $this->auth->getUserId();
+			$cadDivida = Debt::cadastrar($post, $user_id);
+
+			if ($cadDivida->status === false) {
+				$this->load('Helpers\Alert', array(
+					'danger',
+					'Não foi possível efetuar seu cadastro.<br />Verifique os erros abaixo:',
+					$cadDivida->errors
+				));
+			}else{
+				$this->load('Helpers\Alert', array(
+					'success',
+					'Dívida cadastrada com sucesso!'
+				));
+				$this->view->setFile('index')
+				->setVars([
+					'dividas' => Debt::all()
+				]);
 			}
 		}
 	}
 
-	public function desbloquearAction($user_id)
+	public function editarAction($divida)
 	{
-		if (is_numeric($user_id)) {
-			$user = User::find_by_id($user_id);
+		$this->view->setFile('cadastrar');
 
-			if (!is_null($user)) {
-				$user->status = 1;
-				$user->save();
+		$user_id = $this->auth->getUserId();
 
-				$this->view->setVar('users', User::all());
+		$post = $this->request->post();
+
+		$empresas = Company::all();
+		$option = array();
+		foreach ($empresas as $value) {
+			$option[$value->id] = $value->empresa;
+		}
+
+		$this->view->setTitle('DivCred - Editar Dívida')
+		->setVars([
+			'divida' => Debt::find($divida),
+			'option' => $option
+		]);
+
+		$post = $this->request->post();
+
+		if (!empty($post)) {
+			$atualizaDivida = Debt::atualizar($post, $divida);
+
+			if ($atualizaDivida->status === false) {
+				$this->load('Helpers\Alert', array(
+					'danger',
+					'Ops! Não foi possível atualizar o cadastro. <br> Verifique os erros abaixo:',
+					$atualizaDivida->errors
+				));
+			}else{
+				$this->load('Helpers\Alert', array(
+					'success',
+					'Dívida editada com sucesso!'
+				));
+				$this->view->setFile('index')
+				->setVars([
+					'dividas' => Debt::all()
+				]);
 			}
 		}
 	}
 
-	public function excluirAction($user_id)
+	public function excluirAction($divida_id)
 	{
-		if (is_numeric($user_id)) {
-			$user = User::find_by_id($user_id);
+		if (is_numeric($divida_id)) {
+			$divida = Debt::find_by_id($divida_id);
 
-			if (!is_null($user)) {
-				$user->delete();
+			if (!is_null($divida)) {
+				$divida->delete();
 
-				$this->view->setVar('users', User::all());
+				$this->load('Helpers\Alert', array(
+					'success',
+					'Dívida excluida com sucesso!'
+				));
+				$this->view->setFile('index')
+				->setVars([
+					'dividas' => Debt::all()
+				]);
 			}
 		}
 	}
-	*/
+
+	public function filtrarAction($empresa_id)
+	{
+		$empresa = Company::find_by_id($empresa_id);
+		$this->view->setFile('index')
+		->setVars(
+			[
+				'dividas' => Debt::find('all',array('conditions' => array('empresa = ?', $empresa_id))),
+				'empresa' => $empresa
+			]
+		);
+	}
+
+	public function cadLogAction($divida_id='')
+	{
+		$post = $this->request->post();
+
+		if (!empty($post)) {
+
+			$user_id = $this->auth->getUserId();
+			$cadLog = Call::cadastrar($post, $user_id, $divida_id);
+
+			if ($cadLog->status === false) {
+				$this->load('Helpers\Alert', array(
+					'danger',
+					'Não foi possível efetuar seu cadastro.<br />Verifique os erros abaixo:',
+					$cadLog->errors
+				));
+			}else{
+				$this->load('Helpers\Alert', array(
+					'success',
+					'Atendimento cadastrado com sucesso!'
+				));
+				$this->view->setFile('index')
+				->setVars([
+					'dividas' => Debt::all()
+				]);
+			}
+		}
+	}
 }

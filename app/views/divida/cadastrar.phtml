@@ -1,0 +1,108 @@
+<div class="panel-body">
+  <?php
+  if (isset($view_divida)) {
+    $action = BASE . 'divida/editar/'.$view_divida->id;
+    $values = [
+      'cpf' => $view_divida->cpf,
+      'empresa' => $view_divida->empresa,
+      'nome' => $view_divida->nome,
+      'endereco' => $view_divida->endereco,
+      'celular' => $view_divida->celular,
+      'telefone' => $view_divida->telefone,
+      'recado' => $view_divida->recado,
+      'valor' => $view_divida->valor,
+      'vencimento' => date('Y-m-d', strtotime($view_divida->vencimento)),
+      'status' => $view_divida->status,
+      'obs' => $view_divida->obs
+    ];
+  }else{
+    $action = BASE . 'divida/cadastrar/';
+    $values = [
+      'cpf' => $this->request->post('cpf'),
+      'empresa' => $this->request->post('empresa'),
+      'nome' => $this->request->post('nome'),
+      'endereco' => $this->request->post('endereco'),
+      'celular' => $this->request->post('celular'),
+      'telefone' => $this->request->post('telefone'),
+      'recado' => $this->request->post('recado'),
+      'valor' => $this->request->post('valor'),
+      'vencimento' => $this->request->post('vencimento'),
+      'status' => $this->request->post('status'),
+      'obs' => $this->request->post('obs')
+    ];
+  }
+  Form::open('cadastrardivida', $values, [
+    'action' => $action,
+    'enctype' => 'multipart/form-data',
+    'prevent' => [
+      'focus'
+    ]
+  ]);
+  Form::Textbox(
+    'Cpf:',
+    'cpf',
+    array(
+      'required' => 1
+    )
+  );
+  Form::Select(
+    "Empresa",
+    "empresa",
+    $view_option,
+    $attributes = null
+  );
+  Form::Textbox(
+    'Nome:',
+    'nome',
+    array(
+      'required' => 1
+    )
+  );
+  Form::Textarea(
+    'Endereço:',
+    'endereco'
+  );
+  Form::Textbox(
+    'Celular:',
+    'celular'
+  );
+  Form::Textbox(
+    'Telefone:',
+    'telefone'
+  );
+  Form::Textbox(
+    'Recado:',
+    'recado'
+  );
+  Form::Number(
+    'Valor:',
+    'valor',
+    array(
+      'required' => 1
+    )
+  );
+  Form::Date(
+    'Vencimento:',
+    'vencimento',
+    array(
+      'required' => 1
+    )
+  );
+  Form::Textbox(
+    'Status:',
+    'status',
+    array(
+      'required' => 1
+    )
+  );
+  Form::Textarea(
+    'Observações:',
+    'obs'
+  );
+  Form::Button('Cadastrar Dívida', 'submit', [
+    'style' => 'width: 100%',
+    'class' => 'btn-success'
+  ]);
+  Form::close(false);
+  ?>
+</div>
