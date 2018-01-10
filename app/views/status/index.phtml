@@ -1,0 +1,76 @@
+<div class="panel-body">
+	<div class="col-md-7">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Tipo</th>
+					<th>Nome</th>
+					<th>Ações</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+				if ($view_status){
+					foreach ($view_status as $status){
+						?>
+						<tr>
+							<td><?php echo ($status->tipo == 1) ? 'Dívida' : 'Atd' ?></td>
+							<td><?php echo $status->nome ?></td>
+							<td>
+								<a href="<?php echo BASE.'status/excluir/'.$status->id ?>" class="btn btn-danger btn-sm">Excluir</a>
+							</td>
+						</tr>
+						<?php
+					}
+				}
+				?>
+			</tbody>
+		</table>
+	</div>
+	<div class="col-md-5">
+		<h4>Adicionar novo status</h4>
+		<?php
+		if (isset($view_emp)) {
+			$action = BASE . 'status/editar/'.$view_emp->id;
+			$values = [
+				'cnpj' => $view_emp->cnpj,
+				'empresa' => $view_emp->empresa
+			];
+		}else{
+			$action = BASE . 'status/cadastrar/';
+			$values = [
+				'cnpj' => $this->request->post('cnpj'),
+				'empresa' => $this->request->post('empresa')
+			];
+		}
+		Form::open('cadastrarstatus', $values, [
+			'action' => $action,
+			'enctype' => 'multipart/form-data',
+			'prevent' => [
+				'focus'
+			]
+		]);
+		$options = Array (1 => "Dívida", 2 => "Atend");
+        Form::Select(
+        	"Tipo",
+        	"tipo",
+        	$options,
+        	array(
+				'required' => 1
+			)
+        );
+		Form::Textbox(
+			'Nome:',
+			'nome',
+			array(
+				'required' => 1
+			)
+		);
+		Form::Button('Salvar', 'submit', [
+			'style' => 'width: 100%',
+			'class' => 'btn-success'
+		]);
+		Form::close(false);
+		?>
+	</div>
+</div>
