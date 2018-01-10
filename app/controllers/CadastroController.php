@@ -12,7 +12,11 @@ class CadastroController extends \HXPHP\System\Controller
 			$configs->auth->after_logout,
 			true
 		);
-		$this->auth->redirectCheck(false);
+
+		$this->auth->redirectCheck();
+		$this->auth->roleCheck(array(
+			'administrator'
+		));
 
 		$user_id = $this->auth->getUserId();
 		$user = User::find($user_id);

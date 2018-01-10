@@ -9,7 +9,7 @@
 				<th>Empresa</th>
 				<th>Contato</th>
 				<th>Telefones</th>
-				<th>Ações</th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -31,8 +31,14 @@
 						?></td>
 						<td>
 							<a href="<?php echo BASE.'divida/filtrar/'.$emp->id ?>" class="btn btn-info btn-sm">Dívidas</a>
-							<a href="<?php echo BASE.'empresa/editar/'.$emp->id ?>" class="btn btn-warning btn-sm">Editar</a>
-							<a href="<?php echo BASE.'empresa/excluir/'.$emp->id ?>" class="btn btn-danger btn-sm">Excluir</a>
+							<?php
+							if ($this->auth->getUserRole() == 'administrator') {
+								?>
+								<a href="<?php echo BASE.'empresa/editar/'.$emp->id ?>" class="btn btn-warning btn-sm">Editar</a>
+								<a href="<?php echo BASE.'empresa/excluir/'.$emp->id ?>" class="btn btn-danger btn-sm">Excluir</a>
+								<?php
+							}
+							?>
 						</td>
 					</tr>
 					<?php

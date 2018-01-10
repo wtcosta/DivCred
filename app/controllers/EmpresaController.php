@@ -12,12 +12,6 @@ class EmpresaController extends \HXPHP\System\Controller
 			true
 		);
 
-		$this->auth->redirectCheck();
-		$this->auth->roleCheck(array(
-			'administrator',
-			'user'
-		));
-
 		$user_id = $this->auth->getUserId();
 		$user = User::find($user_id);
 		$role = Role::find($user->role_id);
@@ -38,6 +32,12 @@ class EmpresaController extends \HXPHP\System\Controller
 
 	public function cadastrarAction()
 	{
+		$this->auth->redirectCheck();
+		$this->auth->roleCheck(array(
+			'administrator',
+			'cobrança'
+		));
+
 		//Redireciona para uma view
 		$this->view->setFile('cadastrar');
 
@@ -75,6 +75,11 @@ class EmpresaController extends \HXPHP\System\Controller
 
 	public function editarAction($empresa)
 	{
+		$this->auth->redirectCheck();
+		$this->auth->roleCheck(array(
+			'administrator'
+		));
+
 		$this->view->setFile('cadastrar');
 
 		$user_id = $this->auth->getUserId();
@@ -114,6 +119,11 @@ class EmpresaController extends \HXPHP\System\Controller
 
 	public function excluirAction($emp_id)
 	{
+		$this->auth->redirectCheck();
+		$this->auth->roleCheck(array(
+			'administrator'
+		));
+
 		if (is_numeric($emp_id)) {
 			$empresa = Company::find_by_id($emp_id);
 
@@ -131,46 +141,4 @@ class EmpresaController extends \HXPHP\System\Controller
 			}
 		}
 	}
-/*
-	public function bloquearAction($user_id)
-	{
-		if (is_numeric($user_id)) {
-			$user = User::find_by_id($user_id);
-
-			if (!is_null($user)) {
-				$user->status = 0;
-				$user->save();
-
-				$this->view->setVar('users', User::all());
-			}
-		}
-	}
-
-	public function desbloquearAction($user_id)
-	{
-		if (is_numeric($user_id)) {
-			$user = User::find_by_id($user_id);
-
-			if (!is_null($user)) {
-				$user->status = 1;
-				$user->save();
-
-				$this->view->setVar('users', User::all());
-			}
-		}
-	}
-
-	public function excluirAction($user_id)
-	{
-		if (is_numeric($user_id)) {
-			$user = User::find_by_id($user_id);
-
-			if (!is_null($user)) {
-				$user->delete();
-
-				$this->view->setVar('users', User::all());
-			}
-		}
-	}
-	*/
 }

@@ -43,8 +43,14 @@
 							<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalAtd<?php echo $divida->id ?>">
 								Atd
 							</button>
-							<a href="<?php echo BASE.'divida/editar/'.$divida->id ?>" class="btn btn-warning btn-sm">Editar</a>
-							<a href="<?php echo BASE.'divida/excluir/'.$divida->id ?>" class="btn btn-danger btn-sm">Excluir</a>
+							<?php
+							if ($this->auth->getUserRole() == 'administrator') {
+								?>
+								<a href="<?php echo BASE.'divida/editar/'.$divida->id ?>" class="btn btn-warning btn-sm">Editar</a>
+								<a href="<?php echo BASE.'divida/excluir/'.$divida->id ?>" class="btn btn-danger btn-sm">Excluir</a>
+								<?php
+							}
+							?>
 
 							<!-- Modal -->
 							<?php

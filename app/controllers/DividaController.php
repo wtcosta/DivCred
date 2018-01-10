@@ -12,12 +12,6 @@ class DividaController extends \HXPHP\System\Controller
 			true
 		);
 
-		$this->auth->redirectCheck();
-		$this->auth->roleCheck(array(
-			'administrator',
-			'user'
-		));
-
 		$user_id = $this->auth->getUserId();
 		$user = User::find($user_id);
 		$role = Role::find($user->role_id);
@@ -37,6 +31,12 @@ class DividaController extends \HXPHP\System\Controller
 	}
 	public function cadastrarAction($post=null)
 	{
+		$this->auth->redirectCheck();
+		$this->auth->roleCheck(array(
+			'administrator',
+			'cobrança'
+		));
+
 		$empresas = Company::all();
 		$option = array();
 		foreach ($empresas as $value) {
@@ -75,6 +75,11 @@ class DividaController extends \HXPHP\System\Controller
 
 	public function editarAction($divida)
 	{
+		$this->auth->redirectCheck();
+		$this->auth->roleCheck(array(
+			'administrator'
+		));
+
 		$this->view->setFile('cadastrar');
 
 		$user_id = $this->auth->getUserId();
@@ -119,6 +124,11 @@ class DividaController extends \HXPHP\System\Controller
 
 	public function excluirAction($divida_id)
 	{
+		$this->auth->redirectCheck();
+		$this->auth->roleCheck(array(
+			'administrator'
+		));
+
 		if (is_numeric($divida_id)) {
 			$divida = Debt::find_by_id($divida_id);
 
@@ -151,6 +161,12 @@ class DividaController extends \HXPHP\System\Controller
 
 	public function cadLogAction($divida_id='', $divida_empresa)
 	{
+		$this->auth->redirectCheck();
+		$this->auth->roleCheck(array(
+			'administrator',
+			'cobrança'
+		));
+
 		$post = $this->request->post();
 
 		if (!empty($post)) {

@@ -25,8 +25,10 @@ $configs->env->development->auth->setURLs('/divcred/empresa/', '/divcred/login')
 
 $configs->env->development->menu->setMenus(array(
   'Editar Perfil/cog' => '%baseURI%/perfil/editar',
+  'Empresa/university' => '%baseURI%/empresa',
+  'Dívidas/money' => '%baseURI%/divida',
   'Sair/sign-out' => '%baseURI%/login/sair'
-), 'user');
+), 'cobrança');
 
 $configs->env->development->menu->setMenus(array(
   'Administrativo/dashboard' => [
