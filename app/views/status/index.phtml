@@ -17,6 +17,7 @@
 							<td><?php echo ($status->tipo == 1) ? 'Dívida' : 'Atd' ?></td>
 							<td><?php echo $status->nome ?></td>
 							<td>
+								<a href="<?php echo BASE.'status/editar/'.$status->id ?>" class="btn btn-warning btn-sm">Editar</a>
 								<a href="<?php echo BASE.'status/excluir/'.$status->id ?>" class="btn btn-danger btn-sm">Excluir</a>
 							</td>
 						</tr>
@@ -30,17 +31,17 @@
 	<div class="col-md-6">
 		<h4>Adicionar novo status</h4>
 		<?php
-		if (isset($view_emp)) {
-			$action = BASE . 'status/editar/'.$view_emp->id;
+		if (isset($view_statusForm)) {
+			$action = BASE . 'status/atualizar/'.$view_statusForm->id;
 			$values = [
-				'cnpj' => $view_emp->cnpj,
-				'empresa' => $view_emp->empresa
+				'tipo' => $view_statusForm->tipo,
+				'nome' => $view_statusForm->nome
 			];
 		}else{
 			$action = BASE . 'status/cadastrar/';
 			$values = [
-				'cnpj' => $this->request->post('cnpj'),
-				'empresa' => $this->request->post('empresa')
+				'tipo' => $this->request->post('tipo'),
+				'nome' => $this->request->post('nome')
 			];
 		}
 		Form::open('cadastrarstatus', $values, [

@@ -40,7 +40,6 @@ class StatusController extends \HXPHP\System\Controller
 
 		if (!empty($post)) {
 
-			$user_id = $this->auth->getUserId();
 			$cadStatus = State::cadastrar($post);
 
 			if ($cadStatus->status === false) {
@@ -56,7 +55,7 @@ class StatusController extends \HXPHP\System\Controller
 				));
 				$this->view->setFile('index')
 				->setVars([
-					'status' => State::all()
+					'status' => State::find('all', array('order' => 'tipo ASC'))
 				]);
 			}
 		}
@@ -76,8 +75,45 @@ class StatusController extends \HXPHP\System\Controller
 
 			$this->view->setFile('index')
 			->setVars([
-				'status' => State::all()
+				'status' => State::find('all', array('order' => 'tipo ASC'))
 			]);
+		}
+	}
+
+	public function editarAction($status_id)
+	{
+		$this->view->setTitle('DivCred - Status')
+		->setFile('index')
+		->setVars([
+			'status' => State::find('all', array('order' => 'tipo ASC')),
+			'statusForm' => State::find_by_id($status_id)
+		]);
+	}
+
+	public function atualizarAction($id_post=null)
+	{
+		$post = $this->request->post();
+
+		if (!empty($post)) {
+
+			$cadStatus = State::atualizar($post, $id_post);
+
+			if ($cadStatus->status === false) {
+				$this->load('Helpers\Alert', array(
+					'danger',
+					'Não foi possível atualizar.<br />Verifique os erros abaixo:',
+					$cadStatus->errors
+				));
+			}else{
+				$this->load('Helpers\Alert', array(
+					'success',
+					'Status atualizado com sucesso!'
+				));
+				$this->view->setFile('index')
+				->setVars([
+					'status' => State::find('all', array('order' => 'tipo ASC'))
+				]);
+			}
 		}
 	}
 }
