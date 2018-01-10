@@ -31,7 +31,7 @@ class StatusController extends \HXPHP\System\Controller
 		$this->view->setTitle('DivCred - Status')
 		->setFile('index')
 		->setVars([
-			'status' => State::all()
+			'status' => State::find('all', array('order' => 'tipo ASC'))
 		]);
 	}
 	public function cadastrarAction($post=null)

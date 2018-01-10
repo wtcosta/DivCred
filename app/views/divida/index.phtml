@@ -23,6 +23,7 @@
 				<th>Empresa</th>
 				<th>Nome</th>
 				<th>Valor</th>
+				<th>Status</th>
 				<th>Ações</th>
 			</tr>
 		</thead>
@@ -37,6 +38,7 @@
 						<td><?php echo $empresa->empresa; ?></td>
 						<td><?php echo $divida->nome ?></td>
 						<td>R$ <?php echo number_format($divida->valor, 2, ",", ".") ?></td>
+						<td><?php echo State::find_by_id($divida->status)->nome; ?></td>
 						<td>
 							<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalAtd<?php echo $divida->id ?>">
 								Atd
@@ -89,9 +91,19 @@
 														'required' => 1
 													)
 												);
-												Form::Textbox(
-													'Status:',
-													'status',
+												$status = State::busca(2);
+												$options = array();
+												if (count($status) < 1) {
+													$options[0] = 'Nenhum status informado, contate o admin';
+												}else{
+													foreach ($status as $stat) {
+														$options[$stat->id] = $stat->nome;
+													}
+												}
+												Form::Select(
+													"Status",
+													"status",
+													$options,
 													array(
 														'required' => 1
 													)
@@ -131,7 +143,7 @@
 														<tr>
 															<td>R$ <?php echo number_format($atd->vlneg, 2, ",", "."); ?></td>
 															<td><?php echo $atd->obs; ?></td>
-															<td><?php echo $atd->status; ?></td>
+															<td><?php echo State::find_by_id($atd->status)->nome; ?></td>
 															<td><?php echo date("Y-m-d H:m", strtotime($atd->data_cad)); ?></td>
 														</tr>
 														<?php

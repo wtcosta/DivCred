@@ -41,4 +41,9 @@ class State extends \HXPHP\System\Model
 
 		return $callbackObj;
 	}
+
+	public static function busca($tipo='')
+	{
+		return self::find('all',array('conditions' => array('tipo = ?', $tipo)));
+	}
 }

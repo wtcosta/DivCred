@@ -88,9 +88,19 @@
       'required' => 1
     )
   );
-  Form::Textbox(
-    'Status:',
-    'status',
+  $status = State::busca(1);
+  $options = array();
+  if (count($status) < 1) {
+    $options[0] = 'Nenhum status informado, contate o admin';
+  }else{
+    foreach ($status as $stat) {
+      $options[$stat->id] = $stat->nome;
+    }
+  }
+  Form::Select(
+    "Status",
+    "status",
+    $options,
     array(
       'required' => 1
     )
