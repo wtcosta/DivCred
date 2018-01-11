@@ -55,7 +55,16 @@ class CadastroController extends \HXPHP\System\Controller
 					$cadastrarUsuario->errors
 				));
 			}else{
-				$this->auth->login($cadastrarUsuario->user->id, $cadastrarUsuario->user->username);
+				$this->load('Helpers\Alert', array(
+					'success',
+					'Cadastro realizado com sucesso!'
+				));
+				$this->view
+				->setPath('usuarios')
+				->setFile('index')
+				->setVars([
+					'users' => User::all()
+				]);
 			}
 		}
 	}

@@ -46,14 +46,7 @@ class User extends \HXPHP\System\Model
 		$callbackObj->status = false;
 		$callbackObj->errors = array();
 
-		//Recupera o role_id de user
-		$role = Role::find_by_role('User');
-		if (is_null($role)) {
-			array_push($callbackObj->errors, 'A role user não existe. Contato o administrator');
-			return $callbackObj;
-		}
 		$user_data = array(
-			'role_id' => $role->id,
 			'status' => 1
 		);
 
