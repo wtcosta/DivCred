@@ -1,10 +1,23 @@
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#tipo").on('change', function(){
+			if (this.value == 2) {
+				$('#' + this.value).show();
+			}else{
+				$('#2').hide();
+				$('#relacionamento').val("");
+			}
+		});
+	});
+</script>
 <div class="panel-body">
-	<div class="col-md-6">
+	<div class="col-md-7">
 		<table class="table">
 			<thead>
 				<tr>
 					<th>Tipo</th>
 					<th>Nome</th>
+					<th>Relacionamento</th>
 					<th>Ações</th>
 				</tr>
 			</thead>
@@ -17,6 +30,20 @@
 							<td><?php echo ($status->tipo == 1) ? 'Dívida' : 'Atd' ?></td>
 							<td><?php echo $status->nome ?></td>
 							<td>
+								<?php
+								if ($status->relacionamento) {
+									echo State::find_by_id($status->relacionamento)->nome;
+								}else{
+									$relacs = State::find_by_relacionamento($status->id);
+									if (count($relacs) == 0) {
+										?>
+										<p class="alert alert-danger" role="alert">Nenhum status de Atd Cadastrado<br />Favor cadastrar!</p>
+										<?php
+									}
+								}
+								?>
+							</td>
+							<td>
 								<a href="<?php echo BASE.'status/editar/'.$status->id ?>" class="btn btn-warning btn-sm">Editar</a>
 								<a href="<?php echo BASE.'status/excluir/'.$status->id ?>" class="btn btn-danger btn-sm">Excluir</a>
 							</td>
@@ -28,7 +55,7 @@
 			</tbody>
 		</table>
 	</div>
-	<div class="col-md-6">
+	<div class="col-md-5">
 		<h4 style="text-align: center;margin-bottom: 25px;">Adicionar novo status</h4>
 		<?php
 		if (isset($view_statusForm)) {
@@ -51,15 +78,35 @@
 				'focus'
 			]
 		]);
-		$options = Array (1 => "Dívida", 2 => "Atend");
-        Form::Select(
-        	"Tipo",
-        	"tipo",
-        	$options,
-        	array(
+		$options = Array ('' => 'Selecione o tipo', 1 => "Dívida", 2 => "Atend");
+		Form::Select(
+			"Tipo",
+			"tipo",
+			$options,
+			array(
 				'required' => 1
 			)
-        );
+		);
+		?>
+		<div id="2" style="display: none">
+			<?php
+			$status = State::busca(1);
+			$optionDivida = array('0' => 'Selecione o status da dívida correspondente');
+			if (count($status) < 1) {
+				$optionDivida[0] = 'Nenhum status de dívida informada';
+			}else{
+				foreach ($status as $stat) {
+					$optionDivida[$stat->id] = $stat->nome;
+				}
+			}
+			Form::Select(
+				"Status da dívida",
+				"relacionamento",
+				$optionDivida
+			);
+			?>
+		</div>
+		<?php
 		Form::Textbox(
 			'Nome:',
 			'nome',

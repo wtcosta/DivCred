@@ -54,6 +54,7 @@ class State extends \HXPHP\System\Model
 
 		$status->tipo = $post['tipo'];
 		$status->nome = $post['nome'];
+		$status->relacionamento = $post['relacionamento'];
 
 		$atualizar = $status->save(false);
 

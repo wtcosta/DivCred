@@ -40,23 +40,34 @@ class StatusController extends \HXPHP\System\Controller
 
 		if (!empty($post)) {
 
-			$cadStatus = State::cadastrar($post);
-
-			if ($cadStatus->status === false) {
+			if ($post['tipo'] == 2 && $post['relacionamento'] == 0) {
 				$this->load('Helpers\Alert', array(
 					'danger',
-					'Não foi possível efetuar seu cadastro.<br />Verifique os erros abaixo:',
-					$cadStatus->errors
-				));
-			}else{
-				$this->load('Helpers\Alert', array(
-					'success',
-					'Dívida cadastrada com sucesso!'
+					'Para cada status de atendimento é necessário informar<br />a qual status de dívida ele pertence'
 				));
 				$this->view->setFile('index')
 				->setVars([
 					'status' => State::find('all', array('order' => 'tipo ASC'))
 				]);
+			}else{
+				$cadStatus = State::cadastrar($post);
+
+				if ($cadStatus->status === false) {
+					$this->load('Helpers\Alert', array(
+						'danger',
+						'Não foi possível efetuar seu cadastro.<br />Verifique os erros abaixo:',
+						$cadStatus->errors
+					));
+				}else{
+					$this->load('Helpers\Alert', array(
+						'success',
+						'Dívida cadastrada com sucesso!'
+					));
+					$this->view->setFile('index')
+					->setVars([
+						'status' => State::find('all', array('order' => 'tipo ASC'))
+					]);
+				}
 			}
 		}
 	}
