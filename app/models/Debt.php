@@ -25,18 +25,7 @@ class Debt extends \HXPHP\System\Model
 			'message' => 'O usuário é um campo obrigatório.'
 		)
 	);
-/*
-	static $validates_uniqueness_of = array(
-		array(
-			'cpf',
-			'message' => 'Já existe um usuário cadastrado!'
-		),
-		array(
-			'email',
-			'message' => 'Já existe um e-mail cadastrado!'
-		)
-	);
-*/
+
 	public static function cadastrar($post,$user_id)
 	{
 		//Cria uma classe vazia pra armazenar o retorno das validações
@@ -107,5 +96,12 @@ class Debt extends \HXPHP\System\Model
 	public static function busca_empresa($empresa)
 	{
 		return self::find('all',array('conditions' => array('empresa = ?', $empresa), 'order' => 'data_cad desc'));
+	}
+
+	public static function atualizaStatus($divida_id, $status_new)
+	{
+		$divida = self::find($divida_id);
+		$divida->status = $status_new;
+		return $divida->save(false);
 	}
 }

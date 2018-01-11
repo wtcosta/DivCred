@@ -13,7 +13,6 @@ class Call extends \HXPHP\System\Model
 
 	public static function cadastrar($post, $user_id, $divida)
 	{
-		//Cria uma classe vazia pra armazenar o retorno das validações
 		$callbackObj = new \stdClass;
 		$callbackObj->divida = false;
 		$callbackObj->status = false;
@@ -26,7 +25,15 @@ class Call extends \HXPHP\System\Model
 
 		$post = array_merge($post, $userCad);
 
-		//Salva os dados no banco de dados
+		$statusDate = State::find_by_id($post['status']);
+
+		$atualizaStatusDivida = Debt::atualizaStatus($divida, $statusDate->relacionamento);
+
+		if (is_null($atualizaStatusDivida)) {
+			$callbackObj->errors = 'Não foi possível atualizar o status da dívida<br />Verifique o cadastro de status';
+			return $callbackObj;
+		}
+
 		$cadastrar = self::create($post);
 
 		if ($cadastrar->is_valid()) {
