@@ -6,7 +6,7 @@ body{
     cursor: pointer;
     background-clip: content-box;
     border:2px dashed #0071BF;
-    margin-top: 20%;
+    margin-top: 2%;
 }
 .panel.panel-custom:hover{
     border-style: solid;
@@ -18,4 +18,17 @@ body{
 .panel.panel-custom .panel-body{
     background: #0071BF;
     color: #fff;
+}
+.modal{
+    color: #000
+}
+.modal-title{
+    float: left;
+    color: #000
+}
+.modal-subtitulo{
+    float: left;
+    width: 98%;
+    margin-bottom: 0;
+    margin-top: 10px;
 }

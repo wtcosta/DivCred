@@ -1,6 +1,6 @@
 <div class="panel-body">
 	<div class="row">
-		<div class="col-md-9">
+		<div class="col-md-10">
 			<?php
 			if (isset($view_empresa) && !is_null($view_empresa)) {
 				?>
@@ -12,7 +12,7 @@
 			}
 			?>
 		</div>
-		<div class="col-md-3" style="text-align: center;">
+		<div class="col-md-2" style="text-align: center;">
 			<a href="<?php echo BASE.'divida/cadastrar' ?>" class="btn btn-success">Cadastrar</a>
 		</div>
 	</div>
@@ -22,9 +22,13 @@
 				<th>CPF</th>
 				<th>Empresa</th>
 				<th>Nome</th>
-				<th>Valor</th>
+				<th>Contato</th>
+				<th>Valor Divida</th>
+				<th>Valor Atual</th>
+				<th>Vencimento</th>
+				<th>Atend.</th>
 				<th>Status</th>
-				<th>Ações</th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -32,16 +36,31 @@
 			if ($view_dividas){
 				foreach ($view_dividas as $divida){
 					$empresa = Company::find_by_id($divida->empresa);
+					$atds = Call::busca($divida->id);
 					?>
 					<tr>
 						<td><?php echo $divida->cpf ?></td>
 						<td><?php echo $empresa->empresa; ?></td>
 						<td><?php echo $divida->nome ?></td>
+						<td>
+							<?php
+							echo $divida->celular;
+							if ($divida->telefone != "") {
+								echo "<br />".$divida->telefone;
+							}
+							if ($divida->recado != "") {
+								echo "<br />".$divida->recado;
+							}
+							?>
+						</td>
 						<td>R$ <?php echo number_format($divida->valor, 2, ",", ".") ?></td>
+						<td>***R$ <?php echo number_format($divida->valor, 2, ",", ".") ?>***</td>
+						<td style="text-align: center;"><?php echo date('d/m/Y', strtotime($divida->vencimento)) ?></td>
+						<td style="text-align: center;"><?php echo count($atds); ?></td>
 						<td><?php echo State::find_by_id($divida->status)->nome; ?></td>
 						<td>
 							<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalAtd<?php echo $divida->id ?>">
-								Atd
+								Atend.
 							</button>
 							<?php
 							if ($this->auth->getUserRole() == 'administrator') {
@@ -53,9 +72,6 @@
 							?>
 
 							<!-- Modal -->
-							<?php
-							$atds = Call::busca($divida->id);
-							?>
 							<div class="modal fade bd-example-modal-lg" id="modalAtd<?php echo $divida->id ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 								<div class="modal-dialog modal-lg" role="document">
 									<div class="modal-content">
@@ -74,7 +90,7 @@
 											<?php
 											$action = BASE . 'divida/cadLog/'.$divida->id.'/'.$divida->empresa;
 											$values = [
-												'vlNegociado' => $this->request->post('vlNegociado'),
+												'vlNeg' => number_format($divida->valor, 2, ".", ""),
 												'obs' => $this->request->post('obs'),
 												'status' => $this->request->post('status')
 											];
@@ -93,8 +109,9 @@
 													'Valor da Negociação:',
 													'vlNeg',
 													array(
-														'value' => $divida->valor,
-														'required' => 1
+														'required' => 1,
+														'min' => 0,
+														'step' => '.01'
 													)
 												);
 												$status = State::busca(2);

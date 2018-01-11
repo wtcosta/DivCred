@@ -38,81 +38,93 @@
       'focus'
     ]
   ]);
-  Form::Textbox(
-    'Cpf:',
-    'cpf',
-    array(
-      'required' => 1
-    )
-  );
-  Form::Select(
-    "Empresa",
-    "empresa",
-    $view_option,
-    $attributes = null
-  );
-  Form::Textbox(
-    'Nome:',
-    'nome',
-    array(
-      'required' => 1
-    )
-  );
-  Form::Textarea(
-    'Endereço:',
-    'endereco'
-  );
-  Form::Textbox(
-    'Celular:',
-    'celular'
-  );
-  Form::Textbox(
-    'Telefone:',
-    'telefone'
-  );
-  Form::Textbox(
-    'Recado:',
-    'recado'
-  );
-  Form::Number(
-    'Valor:',
-    'valor',
-    array(
-      'required' => 1
-    )
-  );
-  Form::Date(
-    'Vencimento:',
-    'vencimento',
-    array(
-      'required' => 1
-    )
-  );
-  $status = State::busca(1);
-  $options = array();
-  if (count($status) < 1) {
-    $options[0] = 'Nenhum status informado, contate o admin';
-  }else{
-    foreach ($status as $stat) {
-      $options[$stat->id] = $stat->nome;
+  ?>
+  <div class="col-sm-6">
+    <?php
+    Form::Textbox(
+      'Cpf:',
+      'cpf',
+      array(
+        'required' => 1
+      )
+    );
+    Form::Select(
+      "Empresa",
+      "empresa",
+      $view_option,
+      $attributes = null
+    );
+    Form::Textbox(
+      'Nome:',
+      'nome',
+      array(
+        'required' => 1
+      )
+    );
+    Form::Number(
+      'Valor:',
+      'valor',
+      array(
+        'required' => 1,
+        'min' => 0,
+        'step' => '.01'
+      )
+    );
+    Form::Date(
+      'Vencimento:',
+      'vencimento',
+      array(
+        'required' => 1
+      )
+    );
+    $status = State::busca(1);
+    $options = array();
+    if (count($status) < 1) {
+      $options[0] = 'Nenhum status informado, contate o admin';
+    }else{
+      foreach ($status as $stat) {
+        $options[$stat->id] = $stat->nome;
+      }
     }
-  }
-  Form::Select(
-    "Status",
-    "status",
-    $options,
-    array(
-      'required' => 1
-    )
-  );
-  Form::Textarea(
-    'Observações:',
-    'obs'
-  );
-  Form::Button('Cadastrar Dívida', 'submit', [
-    'style' => 'width: 100%',
-    'class' => 'btn-success'
-  ]);
+    Form::Select(
+      "Status",
+      "status",
+      $options,
+      array(
+        'required' => 1
+      )
+    );
+    Form::Textarea(
+      'Endereço:',
+      'endereco'
+    );
+    ?>
+  </div>
+  <div class="col-sm-6">
+    <?php
+    Form::Textbox(
+      'Celular:',
+      'celular'
+    );
+    Form::Textbox(
+      'Telefone:',
+      'telefone'
+    );
+    Form::Textbox(
+      'Recado:',
+      'recado'
+    );
+    Form::Textarea(
+      'Observações:',
+      'obs'
+    );
+    Form::Button('Cadastrar Dívida', 'submit', [
+      'style' => 'width: 80%;float:  right;margin-top: 45px;',
+      'class' => 'btn-success'
+    ]);
+    ?>
+  </div>
+  <?php
   Form::close(false);
   ?>
 </div>

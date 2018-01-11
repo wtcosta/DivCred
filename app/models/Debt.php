@@ -103,4 +103,9 @@ class Debt extends \HXPHP\System\Model
 
 		return $callbackObj;
 	}
+
+	public static function busca_empresa($empresa)
+	{
+		return self::find('all',array('conditions' => array('empresa = ?', $empresa), 'order' => 'data_cad desc'));
+	}
 }

@@ -8,7 +8,10 @@
 				<th>CNPJ</th>
 				<th>Empresa</th>
 				<th>Contato</th>
+				<th>Email</th>
 				<th>Telefones</th>
+				<th>Qtd de dívidas</th>
+				<th>Valor total</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -16,11 +19,13 @@
 			<?php
 			if ($view_empresa){
 				foreach ($view_empresa as $emp){
+					$dividas = Debt::busca_empresa($emp->id);
 					?>
 					<tr>
 						<td><?php echo $emp->cnpj ?></td>
 						<td><?php echo $emp->empresa ?></td>
 						<td><?php echo $emp->contato ?></td>
+						<td><?php echo $emp->email ?></td>
 						<td><?php
 						if ($emp->telefone) {
 							echo $emp->telefone;
@@ -29,6 +34,18 @@
 							echo "<br />".$emp->celular;
 						}
 						?></td>
+						<td>
+							<?php echo count($dividas); ?>
+						</td>
+						<td>
+							<?php
+							$vlTotal = 0;
+							foreach ($dividas as $divida) {
+								$vlTotal += $divida->valor;
+							}
+							echo "R$ ".number_format($vlTotal, 2, ",", ".");
+							?>
+						</td>
 						<td>
 							<a href="<?php echo BASE.'divida/filtrar/'.$emp->id ?>" class="btn btn-info btn-sm">Dívidas</a>
 							<?php
