@@ -1,3 +1,32 @@
+<div class="col-md-offset-5 resumo">
+	<?php
+	$dividasAll = Debt::all();
+	$div_total = 0;
+	$div_paga = 0;
+	$div_a_pagar = 0;
+	foreach ($dividasAll as $divida) {
+		$div_total += $divida->valor;
+		if ($divida->status == 7) {
+			$div_paga += $divida->valor;
+		}
+		if ($divida->status == 10) {
+			$div_a_pagar += $divida->valor;
+		}
+	}
+	?>
+	<p class="total">
+		<span class="lab">Total de Dívidas:</span>
+		<span class="vl">R$ <?php echo number_format($div_total, 2, ",", "."); ?></span>
+	</p>
+	<p class="pagas">
+		<span class="lab">Dívidas Pagas:</span>
+		<span class="vl">R$ <?php echo number_format($div_paga, 2, ",", "."); ?></span>
+	</p>
+	<p class="npagas">
+		<span class="lab">Dívidas A Pagar:</span>
+		<span class="vl">R$ <?php echo number_format($div_a_pagar, 2, ",", "."); ?></span>
+	</p>
+</div>
 <div class="panel-body">
 	<div class="col-md-offset-10">
 		<a href="<?php echo BASE.'empresa/cadastrar' ?>" class="btn btn-success">Cadastrar</a>

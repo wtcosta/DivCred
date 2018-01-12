@@ -25,7 +25,7 @@ $configs->env->development->auth->setURLs('/divcred/empresa/', '/divcred/login')
 
 $configs->env->development->menu->setMenus(array(
   'Editar Perfil/cog' => '%baseURI%/perfil/editar',
-  'Empresa/university' => '%baseURI%/empresa',
+  'Empresas/university' => '%baseURI%/empresa',
   'Dívidas/money' => '%baseURI%/divida',
   'Sair/sign-out' => '%baseURI%/login/sair'
 ), 'cobrança');
@@ -37,7 +37,7 @@ $configs->env->development->menu->setMenus(array(
     'Cadastrar/user-plus' => '%baseURI%/cadastro',
     'Status/check-circle-o' => '%baseURI%/status'
   ],
-  'Empresa/university' => '%baseURI%/empresa',
+  'Empresas/university' => '%baseURI%/empresa',
   'Dívidas/money' => '%baseURI%/divida',
   'Sair/sign-out' => '%baseURI%/login/sair'
 ), 'administrator');

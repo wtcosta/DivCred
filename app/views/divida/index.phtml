@@ -23,9 +23,9 @@
 				<th>Empresa</th>
 				<th>Nome</th>
 				<th>Contato</th>
-				<th>Valor Divida</th>
-				<th>Valor Atual</th>
-				<th>Vencimento</th>
+				<th>Valor Original</th>
+				<th>Valor Atualizado</th>
+				<th>Dívida desde...</th>
 				<th>Atend.</th>
 				<th>Status</th>
 				<th></th>
@@ -60,7 +60,7 @@
 						<td><?php echo State::find_by_id($divida->status)->nome; ?></td>
 						<td>
 							<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalAtd<?php echo $divida->id ?>">
-								Atend.
+								ATENDIMENTO
 							</button>
 							<?php
 							if ($this->auth->getUserRole() == 'administrator') {
@@ -131,7 +131,7 @@
 														'required' => 1
 													)
 												);
-												Form::Button('Cadastrar Atd', 'submit', [
+												Form::Button('CADASTRAR ATENDIMENTO', 'submit', [
 													'style' => 'width: 100%',
 													'class' => 'btn-success'
 												]);
@@ -140,7 +140,7 @@
 											<div class="col-md-6">
 												<?php
 												Form::Textarea(
-													'Atendimento:',
+													'Registre aqui todos os detalhes do atendimento:',
 													'obs',
 													array(
 														'required' => 1,
@@ -167,7 +167,7 @@
 															<td>R$ <?php echo number_format($atd->vlneg, 2, ",", "."); ?></td>
 															<td><?php echo $atd->obs; ?></td>
 															<td><?php echo State::find_by_id($atd->status)->nome; ?></td>
-															<td><?php echo date("Y-m-d H:m", strtotime($atd->data_cad)); ?></td>
+															<td><?php echo date("d/m/Y H:m", strtotime($atd->data_cad)); ?></td>
 														</tr>
 														<?php
 													}

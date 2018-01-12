@@ -1,19 +1,17 @@
 body{
-    background: #081E2D;
-    color: #fff;
+    background: #fff;
+    color: #105049;
 }
 .panel.panel-custom{
     cursor: pointer;
     background-clip: content-box;
-    border:2px dashed #0071BF;
+    border:1px solid #0071BF;
     margin-top: 2%;
-}
-.panel.panel-custom:hover{
-    border-style: solid;
 }
 .panel.panel-custom .panel-heading img{
     margin: 0 auto;
-    width: 250px;
+    padding-top: 0px;
+    margin-bottom: -20px;
 }
 .panel.panel-custom .panel-body{
     background: #0071BF;
@@ -31,4 +29,27 @@ body{
     width: 98%;
     margin-bottom: 0;
     margin-top: 10px;
+}
+
+.resumo{
+    padding-right: 20px;
+    margin-top: -70px;
+    float: right;
+    position: relative;
+}
+.resumo p{
+    float: left;
+    margin: 0 3px;
+    font-size: 110%;
+    padding: 2px;
+    border-radius: 10px;
+}
+.resumo .total{
+    border: 1px solid #f0ad4e;
+}
+.resumo .pagas{
+    border: 1px solid #5cb85c;
+}
+.resumo .npagas{
+    border: 1px solid #d9534f;
 }

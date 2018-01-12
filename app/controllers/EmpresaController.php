@@ -23,7 +23,7 @@ class EmpresaController extends \HXPHP\System\Controller
 			$role->role
 		);
 
-		$this->view->setTitle('HXPHP - Empresas')
+		$this->view->setTitle('DivCred - Assessoria Financeira & Cobrança')
 		->setFile('index')
 		->setVars([
 			'empresa' => Company::all()
