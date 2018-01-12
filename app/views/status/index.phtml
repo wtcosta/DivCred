@@ -17,7 +17,6 @@
 				<tr>
 					<th>Tipo</th>
 					<th>Nome</th>
-					<th>Relacionamento</th>
 					<th>Ações</th>
 				</tr>
 			</thead>
@@ -25,30 +24,42 @@
 				<?php
 				if ($view_status){
 					foreach ($view_status as $status){
+						if ($status->relacionamento) {
+							$statusSub[$status->relacionamento][] = $status;
+						}else{
+							$statusPrincipal[] = $status;
+						}
+					}
+					foreach ($statusPrincipal as $status){
 						?>
 						<tr>
 							<td><?php echo ($status->tipo == 1) ? 'Dívida' : 'Atd' ?></td>
-							<td><?php echo $status->nome ?></td>
-							<td>
-								<?php
-								if ($status->relacionamento) {
-									echo State::find_by_id($status->relacionamento)->nome;
-								}else{
-									$relacs = State::find_by_relacionamento($status->id);
-									if (count($relacs) == 0) {
-										?>
-										<p class="alert alert-danger" role="alert">Nenhum status de Atd Cadastrado<br />Favor cadastrar!</p>
-										<?php
-									}
-								}
-								?>
-							</td>
+							<td style="width: 425px;font-weight: 700;"><?php echo $status->nome ?></td>
 							<td>
 								<a href="<?php echo BASE.'status/editar/'.$status->id ?>" class="btn btn-warning btn-sm">Editar</a>
 								<a href="<?php echo BASE.'status/excluir/'.$status->id ?>" class="btn btn-danger btn-sm">Excluir</a>
 							</td>
 						</tr>
 						<?php
+						foreach ($statusSub[$status->id] as $key => $statusSubList) {
+							?>
+							<tr class="sub">
+								<td style="text-align: center;"> - </td>
+								<td colspan="3">
+									<table style="width: 100%">
+										<tr>
+											<td><?php echo ($statusSubList->tipo == 1) ? 'Dívida' : 'Atendimento' ?></td>
+											<td style="width: 345px;padding-left: 20px;"><?php echo $statusSubList->nome ?></td>
+											<td>
+												<a href="<?php echo BASE.'status/editar/'.$statusSubList->id ?>" class="btn btn-warning btn-sm">Editar</a>
+												<a href="<?php echo BASE.'status/excluir/'.$statusSubList->id ?>" class="btn btn-danger btn-sm">Excluir</a>
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<?php
+						}
 					}
 				}
 				?>
