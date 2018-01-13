@@ -189,4 +189,22 @@ class DividaController extends \HXPHP\System\Controller
 			}
 		}
 	}
+
+	public function diasAtraso($vencimento='')
+	{
+		$data_inicio = new DateTime($vencimento);
+		$data_fim = new DateTime();
+
+		$dateInterval = $data_inicio->diff($data_fim);
+		return $dateInterval->days;
+	}
+
+	public function vlAtualizado($dividaValor='', $dividaVencimento='', $multa='', $juros='')
+	{
+		$diasAtraso = DividaController::diasAtraso($dividaVencimento);
+
+		$vlAtualizado = (((($dividaValor/100)*$multa)+$dividaValor)/100)*(($juros/30)*$diasAtraso)+((($dividaValor/100)*$multa)+$dividaValor);
+
+		return number_format($vlAtualizado, 2, ",", ".");
+	}
 }

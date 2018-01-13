@@ -37,6 +37,7 @@
 				foreach ($view_dividas as $divida){
 					$empresa = Company::find_by_id($divida->empresa);
 					$atds = Call::busca($divida->id);
+					$vlAtualizado = DividaController::vlAtualizado($divida->valor, $divida->vencimento, $empresa->multa, $empresa->juros);
 					?>
 					<tr>
 						<td><?php echo $divida->cpf ?></td>
@@ -54,7 +55,7 @@
 							?>
 						</td>
 						<td>R$ <?php echo number_format($divida->valor, 2, ",", ".") ?></td>
-						<td>***R$ <?php echo number_format($divida->valor, 2, ",", ".") ?>***</td>
+						<td>R$ <?php echo $vlAtualizado; ?></td>
 						<td style="text-align: center;"><?php echo date('d/m/Y', strtotime($divida->vencimento)) ?></td>
 						<td style="text-align: center;"><?php echo count($atds); ?></td>
 						<td><?php echo State::find_by_id($divida->status)->nome; ?></td>
