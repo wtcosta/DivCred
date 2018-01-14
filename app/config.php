@@ -31,6 +31,25 @@ $configs->env->development->menu->setMenus(array(
 ), 'cobrança');
 
 $configs->env->development->menu->setMenus(array(
+  'Editar Perfil/cog' => '%baseURI%/perfil/editar',
+  'Empresas/university' => '%baseURI%/empresa',
+  'Dívidas/money' => '%baseURI%/divida',
+  'Sair/sign-out' => '%baseURI%/login/sair'
+), 'juridico');
+
+$configs->env->development->menu->setMenus(array(
+  'Editar Perfil/cog' => '%baseURI%/perfil/editar',
+  'Dívidas/money' => '%baseURI%/divida',
+  'Sair/sign-out' => '%baseURI%/login/sair'
+), 'empresa');
+
+$configs->env->development->menu->setMenus(array(
+  'Editar Perfil/cog' => '%baseURI%/perfil/editar',
+  'Dívidas/money' => '%baseURI%/divida',
+  'Sair/sign-out' => '%baseURI%/login/sair'
+), 'cliente');
+
+$configs->env->development->menu->setMenus(array(
   'Administrativo/dashboard' => [
     'Usuário/dashboard' => '%baseURI%/usuarios',
     'Editar Perfil/cog' => '%baseURI%/perfil/editar',
