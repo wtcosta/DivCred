@@ -23,10 +23,24 @@ class DividaController extends \HXPHP\System\Controller
 			$role->role
 		);
 
+		if ($role->role == 'empresa' || $role->role == 'cliente') {
+			$file = $role->role;
+			if ($file == 'empresa') {
+				$dividas = Debt::all();
+			}elseif ($file == 'cliente') {
+				$dividas = Debt::all();
+			}else{
+				$dividas = '';
+			}
+		}else{
+			$file = 'index';
+			$dividas = Debt::all();
+		}
+
 		$this->view->setTitle('DivCred - Dívidas')
-		->setFile('index')
+		->setFile($file)
 		->setVars([
-			'dividas' => Debt::all()
+			'dividas' => $dividas
 		]);
 	}
 	public function cadastrarAction($post=null)

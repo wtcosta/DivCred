@@ -16,6 +16,10 @@ class EmpresaController extends \HXPHP\System\Controller
 		$user = User::find($user_id);
 		$role = Role::find($user->role_id);
 
+		if ($role->role == 'empresa' || $role->role == 'cliente') {
+			$this->redirectTo('divida', false, false);
+		}
+
 		$this->load(
 			'Helpers\Menu',
 			$this->request,
