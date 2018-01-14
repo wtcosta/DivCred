@@ -12,8 +12,6 @@ class PerfilController extends \HXPHP\System\Controller
 			true
 		);
 
-		$this->auth->redirectCheck();
-
 		$this->load(
 			'Helpers\Menu',
 			$this->request,

@@ -36,12 +36,6 @@ class EmpresaController extends \HXPHP\System\Controller
 
 	public function cadastrarAction()
 	{
-		$this->auth->redirectCheck();
-		$this->auth->roleCheck(array(
-			'administrator',
-			'cobrança'
-		));
-
 		//Redireciona para uma view
 		$this->view->setFile('cadastrar');
 

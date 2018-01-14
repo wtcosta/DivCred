@@ -45,12 +45,6 @@ class DividaController extends \HXPHP\System\Controller
 	}
 	public function cadastrarAction($post=null)
 	{
-		$this->auth->redirectCheck();
-		$this->auth->roleCheck(array(
-			'administrator',
-			'cobrança'
-		));
-
 		$empresas = Company::all();
 		$option = array();
 		foreach ($empresas as $value) {
