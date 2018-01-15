@@ -6,25 +6,20 @@
 class Debt extends \HXPHP\System\Model
 {
 
-	static $belongs_to = array(
-		array('role'),
-		array('company')
-	);
-
 	static $validates_presence_of = array(
 		array(
 			'nome',
 			'message' => 'O nome é um campo obrigatório.'
-		),
+			),
 		array(
 			'cpf',
 			'message' => 'O e-mail é um campo obrigatório.'
-		),
+			),
 		array(
 			'valor',
 			'message' => 'O usuário é um campo obrigatório.'
-		)
-	);
+			)
+		);
 
 	public static function cadastrar($post,$user_id)
 	{
@@ -35,7 +30,7 @@ class Debt extends \HXPHP\System\Model
 
 		$userCad = array(
 			'user_cad' => $user_id
-		);
+			);
 
 		$post = array_merge($post, $userCad);
 

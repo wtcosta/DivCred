@@ -93,6 +93,14 @@ class Company extends \HXPHP\System\Model
 			}
 		}
 
+		echo "<pre>";
+		var_dump($post);
+		echo "<hr />";
+		var_dump($post['idUserEmpresa']);
+		echo "<hr />";
+		var_dump(intval($post['idUserEmpresa']));
+		echo "</pre>";
+
 		$emp->cnpj = $post['cnpj'];
 		$emp->empresa = $post['empresa'];
 		$emp->contato = $post['contato'];
@@ -102,6 +110,7 @@ class Company extends \HXPHP\System\Model
 		$emp->celular = $post['celular'];
 		$emp->multa = $post['multa'];
 		$emp->juros = $post['juros'];
+		$emp->idUserEmpresa = intval($post['idUserEmpresa']);
 
 		$atualizar = $emp->save(false);
 

@@ -10,7 +10,7 @@ class DividaController extends \HXPHP\System\Controller
 			$configs->auth->after_login,
 			$configs->auth->after_logout,
 			true
-		);
+			);
 
 		$user_id = $this->auth->getUserId();
 		$user = User::find($user_id);
@@ -21,12 +21,14 @@ class DividaController extends \HXPHP\System\Controller
 			$this->request,
 			$this->configs,
 			$role->role
-		);
+			);
 
 		if ($role->role == 'empresa' || $role->role == 'cliente') {
 			$file = $role->role;
+
 			if ($file == 'empresa') {
-				$dividas = Debt::all();
+				$empUser = Company::find('all',array('conditions' => array('idUserEmpresa = ?', $user_id)));
+				$dividas = Debt::find('all',array('conditions' => array('empresa = ?', $empUser[0]->id)));
 			}elseif ($file == 'cliente') {
 				$dividas = Debt::all();
 			}else{
@@ -41,11 +43,20 @@ class DividaController extends \HXPHP\System\Controller
 		->setFile($file)
 		->setVars([
 			'dividas' => $dividas
-		]);
+			]);
 	}
 	public function cadastrarAction($post=null)
 	{
-		$empresas = Company::all();
+		$user_id = $this->auth->getUserId();
+		$user = User::find($user_id);
+		$role = Role::find($user->role_id);
+
+		if ($role->role == 'empresa') {
+			$empresas = Company::find('all',array('conditions' => array('idUserEmpresa = ?', $user_id)));
+		}else{
+			$empresas = Company::all();
+		}
+
 		$option = array();
 		foreach ($empresas as $value) {
 			$option[$value->id] = $value->empresa;
@@ -67,27 +78,39 @@ class DividaController extends \HXPHP\System\Controller
 					'danger',
 					'Não foi possível efetuar seu cadastro.<br />Verifique os erros abaixo:',
 					$cadDivida->errors
-				));
+					));
 			}else{
 				$this->load('Helpers\Alert', array(
 					'success',
 					'Dívida cadastrada com sucesso!'
-				));
-				$this->view->setFile('index')
+					));
+
+				if ($role->role == 'empresa' || $role->role == 'cliente') {
+					$file = $role->role;
+
+					if ($file == 'empresa') {
+						$empUser = Company::find('all',array('conditions' => array('idUserEmpresa = ?', $user_id)));
+						$dividas = Debt::find('all',array('conditions' => array('empresa = ?', $empUser[0]->id)));
+					}elseif ($file == 'cliente') {
+						$dividas = Debt::all();
+					}else{
+						$dividas = '';
+					}
+				}else{
+					$file = 'index';
+					$dividas = Debt::all();
+				}
+
+				$this->view->setFile($file)
 				->setVars([
-					'dividas' => Debt::all()
-				]);
+					'dividas' => $dividas
+					]);
 			}
 		}
 	}
 
 	public function editarAction($divida)
 	{
-		$this->auth->redirectCheck();
-		$this->auth->roleCheck(array(
-			'administrator'
-		));
-
 		$this->view->setFile('cadastrar');
 
 		$user_id = $this->auth->getUserId();
@@ -104,7 +127,7 @@ class DividaController extends \HXPHP\System\Controller
 		->setVars([
 			'divida' => Debt::find($divida),
 			'option' => $option
-		]);
+			]);
 
 		$post = $this->request->post();
 
@@ -116,27 +139,22 @@ class DividaController extends \HXPHP\System\Controller
 					'danger',
 					'Ops! Não foi possível atualizar o cadastro. <br> Verifique os erros abaixo:',
 					$atualizaDivida->errors
-				));
+					));
 			}else{
 				$this->load('Helpers\Alert', array(
 					'success',
 					'Dívida editada com sucesso!'
-				));
+					));
 				$this->view->setFile('index')
 				->setVars([
 					'dividas' => Debt::all()
-				]);
+					]);
 			}
 		}
 	}
 
 	public function excluirAction($divida_id)
 	{
-		$this->auth->redirectCheck();
-		$this->auth->roleCheck(array(
-			'administrator'
-		));
-
 		if (is_numeric($divida_id)) {
 			$divida = Debt::find_by_id($divida_id);
 
@@ -146,11 +164,11 @@ class DividaController extends \HXPHP\System\Controller
 				$this->load('Helpers\Alert', array(
 					'success',
 					'Dívida excluida com sucesso!'
-				));
+					));
 				$this->view->setFile('index')
 				->setVars([
 					'dividas' => Debt::all()
-				]);
+					]);
 			}
 		}
 	}
@@ -161,20 +179,14 @@ class DividaController extends \HXPHP\System\Controller
 		$this->view->setFile('index')
 		->setVars(
 			[
-				'dividas' => Debt::find('all',array('conditions' => array('empresa = ?', $empresa_id))),
-				'empresa' => $empresa
+			'dividas' => Debt::find('all',array('conditions' => array('empresa = ?', $empresa_id))),
+			'empresa' => $empresa
 			]
-		);
+			);
 	}
 
 	public function cadLogAction($divida_id='', $divida_empresa)
 	{
-		$this->auth->redirectCheck();
-		$this->auth->roleCheck(array(
-			'administrator',
-			'cobrança'
-		));
-
 		$post = $this->request->post();
 
 		if (!empty($post)) {
@@ -187,12 +199,12 @@ class DividaController extends \HXPHP\System\Controller
 					'danger',
 					'Não foi possível efetuar seu cadastro.<br />Verifique os erros abaixo:',
 					$cadLog->errors
-				));
+					));
 			}else{
 				$this->load('Helpers\Alert', array(
 					'success',
 					'Atendimento cadastrado com sucesso!'
-				));
+					));
 				$this->filtrarAction($divida_empresa);
 			}
 		}

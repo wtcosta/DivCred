@@ -50,6 +50,24 @@ class EmpresaController extends \HXPHP\System\Controller
 		if (!empty($post) && $post['email'] !== null) {
 
 			$user_id = $this->auth->getUserId();
+
+			//Cadastra o user
+			$cadUser = array(
+				'name' => $post['empresa'],
+				'email' => $post['email'],
+				'username' => $post['cnpj'],
+				'password' => $post['password'],
+				'role_id' => 3
+			);
+
+			$cadUserData = User::cadastrar($cadUser);
+
+			$insertUserEmpresa = array('idUserEmpresa' => $cadUserData->user->id);
+
+			$post = array_merge($post, $insertUserEmpresa);
+
+			unset($post['password']);
+
 			$cadEmpresa = Company::cadastrar($post, $user_id);
 
 			if ($cadEmpresa->status === false) {
@@ -73,11 +91,6 @@ class EmpresaController extends \HXPHP\System\Controller
 
 	public function editarAction($empresa)
 	{
-		$this->auth->redirectCheck();
-		$this->auth->roleCheck(array(
-			'administrator'
-		));
-
 		$this->view->setFile('cadastrar');
 
 		$user_id = $this->auth->getUserId();
@@ -88,8 +101,17 @@ class EmpresaController extends \HXPHP\System\Controller
 
 		$post = $this->request->post();
 
+		$users = User::all();
+		$option2 = array();
+		foreach ($users as $value) {
+			$option2[$value->id] = $value->name;
+		}
+
 		$this->view->setTitle('DivCred - Editar Empresa')
-		->setVar('emp', Company::find($empresa));
+		->setVars([
+			'emp' => Company::find($empresa),
+			'option2' => $option2
+			]);
 
 		$post = $this->request->post();
 
@@ -117,11 +139,6 @@ class EmpresaController extends \HXPHP\System\Controller
 
 	public function excluirAction($emp_id)
 	{
-		$this->auth->redirectCheck();
-		$this->auth->roleCheck(array(
-			'administrator'
-		));
-
 		if (is_numeric($emp_id)) {
 			$empresa = Company::find_by_id($emp_id);
 

@@ -38,7 +38,6 @@ $configs->env->development->menu->setMenus(array(
 ), 'juridico');
 
 $configs->env->development->menu->setMenus(array(
-  'Editar Perfil/cog' => '%baseURI%/perfil/editar',
   'Dívidas/money' => '%baseURI%/divida',
   'Sair/sign-out' => '%baseURI%/login/sair'
 ), 'empresa');
