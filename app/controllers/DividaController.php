@@ -185,6 +185,37 @@ class DividaController extends \HXPHP\System\Controller
 			);
 	}
 
+	public function filtrarCpfAction($cpf)
+	{
+		$user_id = $this->auth->getUserId();
+		$user = User::find($user_id);
+		$role = Role::find($user->role_id);
+
+		$cpf = str_replace("aa", "/", $cpf);
+
+		if ($role->role == 'empresa' || $role->role == 'cliente') {
+			$file = $role->role;
+
+			if ($file == 'empresa') {
+				$empUser = Company::find('all',array('conditions' => array('idUserEmpresa = ?', $user_id)));
+				$dividas = Debt::find('all',array('conditions' => array('empresa = ? AND cpf = ?', $empUser[0]->id, $cpf)));
+			}elseif ($file == 'cliente') {
+				$dividas = Debt::all();
+			}else{
+				$dividas = '';
+			}
+		}else{
+			$file = 'index';
+			$dividas = Debt::find('all',array('conditions' => array('cpf = ?', $cpf)));
+		}
+
+		$this->view->setTitle('DivCred - Dívidas')
+		->setFile($file)
+		->setVars([
+			'dividas' => $dividas
+			]);
+	}
+
 	public function cadLogAction($divida_id='', $divida_empresa)
 	{
 		$post = $this->request->post();

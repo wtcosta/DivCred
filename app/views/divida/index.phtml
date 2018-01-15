@@ -40,7 +40,11 @@
 					$vlAtualizado = DividaController::vlAtualizado($divida->valor, $divida->vencimento, $empresa->multa, $empresa->juros);
 					?>
 					<tr>
-						<td><?php echo $divida->cpf ?></td>
+						<td>
+						<a href="<?php echo BASE.'divida/filtrarCpf/'.str_replace("/", "aa", $divida->cpf) ?>" class="btn btn-success">
+								<?php echo $divida->cpf ?>
+							</a>
+						</td>
 						<td><?php echo $empresa->empresa; ?></td>
 						<td><?php echo $divida->nome ?></td>
 						<td>
@@ -91,103 +95,103 @@
 											<?php
 											$action = BASE . 'divida/cadLog/'.$divida->id.'/'.$divida->empresa;
 											$values = [
-												'vlNeg' => number_format($divida->valor, 2, ".", ""),
-												'obs' => $this->request->post('obs'),
-												'status' => $this->request->post('status')
+											'vlNeg' => number_format($divida->valor, 2, ".", ""),
+											'obs' => $this->request->post('obs'),
+											'status' => $this->request->post('status')
 											];
 											Form::open('cadLog'.$divida->id, $values, [
 												'action' => $action,
 												'view' => "Vertical",
 												'enctype' => 'multipart/form-data',
 												'prevent' => [
-													'focus'
+												'focus'
 												]
-											]);
-											?>
-											<div class="col-md-6">
-												<?php
-												Form::Number(
-													'Valor da Negociação:',
-													'vlNeg',
-													array(
-														'required' => 1,
-														'min' => 0,
-														'step' => '.01'
-													)
-												);
-												$status = State::busca(2);
-												$options = array();
-												if (count($status) < 1) {
-													$options[0] = 'Nenhum status informado, contate o admin';
-												}else{
-													foreach ($status as $stat) {
-														$options[$stat->id] = $stat->nome;
-													}
-												}
-												Form::Select(
-													"Status",
-													"status",
-													$options,
-													array(
-														'required' => 1
-													)
-												);
-												Form::Button('CADASTRAR ATENDIMENTO', 'submit', [
-													'style' => 'width: 100%',
-													'class' => 'btn-success'
 												]);
 												?>
-											</div>
-											<div class="col-md-6">
-												<?php
-												Form::Textarea(
-													'Registre aqui todos os detalhes do atendimento:',
-													'obs',
-													array(
-														'required' => 1,
-														'rows' => 6
-													)
-												);
-												?>
-											</div>
-											<?php
-											Form::close(false);
-											?>
-											<table class="table">
-												<thead>
-													<th>Valor</th>
-													<th>Atendimento</th>
-													<th>Status</th>
-													<th>Data</th>
-												</thead>
-												<tbody>
+												<div class="col-md-6">
 													<?php
-													foreach ($atds as $atd) {
-														?>
-														<tr>
-															<td>R$ <?php echo number_format($atd->vlneg, 2, ",", "."); ?></td>
-															<td><?php echo $atd->obs; ?></td>
-															<td><?php echo State::find_by_id($atd->status)->nome; ?></td>
-															<td><?php echo date("d/m/Y H:m", strtotime($atd->data_cad)); ?></td>
-														</tr>
-														<?php
+													Form::Number(
+														'Valor da Negociação:',
+														'vlNeg',
+														array(
+															'required' => 1,
+															'min' => 0,
+															'step' => '.01'
+															)
+														);
+													$status = State::busca(2);
+													$options = array();
+													if (count($status) < 1) {
+														$options[0] = 'Nenhum status informado, contate o admin';
+													}else{
+														foreach ($status as $stat) {
+															$options[$stat->id] = $stat->nome;
+														}
 													}
-													?>
-												</tbody>
-											</table>
+													Form::Select(
+														"Status",
+														"status",
+														$options,
+														array(
+															'required' => 1
+															)
+														);
+													Form::Button('CADASTRAR ATENDIMENTO', 'submit', [
+														'style' => 'width: 100%',
+														'class' => 'btn-success'
+														]);
+														?>
+													</div>
+													<div class="col-md-6">
+														<?php
+														Form::Textarea(
+															'Registre aqui todos os detalhes do atendimento:',
+															'obs',
+															array(
+																'required' => 1,
+																'rows' => 6
+																)
+															);
+															?>
+														</div>
+														<?php
+														Form::close(false);
+														?>
+														<table class="table">
+															<thead>
+																<th>Valor</th>
+																<th>Atendimento</th>
+																<th>Status</th>
+																<th>Data</th>
+															</thead>
+															<tbody>
+																<?php
+																foreach ($atds as $atd) {
+																	?>
+																	<tr>
+																		<td>R$ <?php echo number_format($atd->vlneg, 2, ",", "."); ?></td>
+																		<td><?php echo $atd->obs; ?></td>
+																		<td><?php echo State::find_by_id($atd->status)->nome; ?></td>
+																		<td><?php echo date("d/m/Y H:m", strtotime($atd->data_cad)); ?></td>
+																	</tr>
+																	<?php
+																}
+																?>
+															</tbody>
+														</table>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+													</div>
+												</div>
+											</div>
 										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-										</div>
-									</div>
-								</div>
-							</div>
-						</td>
-					</tr>
-					<?php
-				}
-			}
-			?>
-		</tbody>
-	</table>
-</div>
+									</td>
+								</tr>
+								<?php
+							}
+						}
+						?>
+					</tbody>
+				</table>
+			</div>

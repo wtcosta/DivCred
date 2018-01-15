@@ -16,9 +16,7 @@
 		<thead>
 			<tr>
 				<th>CPF</th>
-				<th>Empresa</th>
 				<th>Nome</th>
-				<th>Contato</th>
 				<th>Valor Original</th>
 				<th>Valor Atualizado</th>
 				<th>Dívida desde...</th>
@@ -36,20 +34,12 @@
 					$vlAtualizado = DividaController::vlAtualizado($divida->valor, $divida->vencimento, $empresa->multa, $empresa->juros);
 					?>
 					<tr>
-						<td><?php echo $divida->cpf ?></td>
-						<td><?php echo $empresa->empresa; ?></td>
-						<td><?php echo $divida->nome ?></td>
 						<td>
-							<?php
-							echo $divida->celular;
-							if ($divida->telefone != "") {
-								echo "<br />".$divida->telefone;
-							}
-							if ($divida->recado != "") {
-								echo "<br />".$divida->recado;
-							}
-							?>
+							<a href="<?php echo BASE.'divida/filtrarCpf/'.str_replace("/", "aa", $divida->cpf) ?>" class="btn btn-success">
+								<?php echo $divida->cpf ?>
+							</a>
 						</td>
+						<td><?php echo $divida->nome ?></td>
 						<td>R$ <?php echo number_format($divida->valor, 2, ",", ".") ?></td>
 						<td>R$ <?php echo $vlAtualizado; ?></td>
 						<td style="text-align: center;"><?php echo date('d/m/Y', strtotime($divida->vencimento)) ?></td>
