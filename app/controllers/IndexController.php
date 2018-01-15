@@ -5,7 +5,35 @@ class IndexController extends \HXPHP\System\Controller
 	{
 		parent::__construct($configs);
 
-		$this->view->setPath('login')
-					->setFile('index');
+		$this->load(
+			'Services\Auth',
+			$configs->auth->after_login,
+			$configs->auth->after_logout,
+			true
+		);
+
+		$this->auth->redirectCheck();
+
+		$user_id = $this->auth->getUserId();
+		$user = User::find($user_id);
+		$role = Role::find($user->role_id);
+
+		if ($role->role == 'empresa' || $role->role == 'cliente') {
+			$this->redirectTo('divida', false, false);
+		}
+
+		$this->load(
+			'Helpers\Menu',
+			$this->request,
+			$this->configs,
+			$role->role
+		);
+
+		$this->view->setTitle('DivCred - Assessoria Financeira & Cobrança')
+		->setPath('empresa')
+		->setFile('index')
+		->setVars([
+			'empresa' => Company::all()
+		]);
 	}
 }

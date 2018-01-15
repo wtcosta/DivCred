@@ -74,7 +74,7 @@ class User extends \HXPHP\System\Model
 		return $callbackObj;
 	}
 
-	public function login($post)
+	public static function login($post)
 	{
 		//Cria uma classe vazia pra armazenar o retorno das validações
 		$callbackObj = new \stdClass;

@@ -241,7 +241,7 @@ class DividaController extends \HXPHP\System\Controller
 		}
 	}
 
-	public function diasAtraso($vencimento='')
+	public static function diasAtraso($vencimento='')
 	{
 		$data_inicio = new DateTime($vencimento);
 		$data_fim = new DateTime();
@@ -250,7 +250,7 @@ class DividaController extends \HXPHP\System\Controller
 		return $dateInterval->days;
 	}
 
-	public function vlAtualizado($dividaValor='', $dividaVencimento='', $multa='', $juros='')
+	public static function vlAtualizado($dividaValor='', $dividaVencimento='', $multa='', $juros='')
 	{
 		$diasAtraso = DividaController::diasAtraso($dividaVencimento);
 

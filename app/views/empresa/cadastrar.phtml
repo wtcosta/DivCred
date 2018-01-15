@@ -1,5 +1,6 @@
 <div class="panel-body">
   <?php
+  $idUserEmpresa = "";
   if (isset($view_emp)) {
     $action = BASE . 'empresa/editar/'.$view_emp->id;
     $idUserEmpresa = $view_emp->iduserempresa;
@@ -109,7 +110,7 @@
             'step' => '.01'
             )
           );
-        if ($idUserEmpresa) {
+        if ($idUserEmpresa != "") {
           Form::Select(
             "Usuário",
             "iduserempresa",
