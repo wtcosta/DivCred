@@ -12,6 +12,11 @@ class StatusController extends \HXPHP\System\Controller
 			true
 		);
 
+		$this->auth->redirectCheck();
+		$this->auth->roleCheck(array(
+			'administrator'
+		));
+
 		$user_id = $this->auth->getUserId();
 		$user = User::find($user_id);
 		$role = Role::find($user->role_id);

@@ -12,6 +12,13 @@ class EmpresaController extends \HXPHP\System\Controller
 			true
 		);
 
+		$this->auth->redirectCheck();
+		$this->auth->roleCheck(array(
+			'administrator',
+			'cobrança',
+			'juridico'
+		));
+
 		$user_id = $this->auth->getUserId();
 		$user = User::find($user_id);
 		$role = Role::find($user->role_id);
@@ -139,6 +146,10 @@ class EmpresaController extends \HXPHP\System\Controller
 
 	public function excluirAction($emp_id)
 	{
+		$this->auth->roleCheck(array(
+			'administrator'
+		));
+
 		if (is_numeric($emp_id)) {
 			$empresa = Company::find_by_id($emp_id);
 

@@ -13,6 +13,8 @@ class RecuperarController extends \HXPHP\System\Controller
 			true
 		);
 
+		$this->auth->redirectCheck(true);
+
 		//Altera o titulo da views
 		$this->view->setTitle('SistemaHx - Altere sua senha');
 

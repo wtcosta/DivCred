@@ -12,6 +12,8 @@ class DividaController extends \HXPHP\System\Controller
 			true
 			);
 
+		$this->auth->redirectCheck();
+
 		$user_id = $this->auth->getUserId();
 		$user = User::find($user_id);
 		$role = Role::find($user->role_id);
@@ -111,6 +113,12 @@ class DividaController extends \HXPHP\System\Controller
 
 	public function editarAction($divida)
 	{
+		$this->auth->roleCheck(array(
+			'administrator',
+			'cobrança',
+			'juridico'
+		));
+
 		$this->view->setFile('cadastrar');
 
 		$user_id = $this->auth->getUserId();
@@ -155,6 +163,10 @@ class DividaController extends \HXPHP\System\Controller
 
 	public function excluirAction($divida_id)
 	{
+		$this->auth->roleCheck(array(
+			'administrator'
+		));
+
 		if (is_numeric($divida_id)) {
 			$divida = Debt::find_by_id($divida_id);
 
@@ -218,6 +230,12 @@ class DividaController extends \HXPHP\System\Controller
 
 	public function cadLogAction($divida_id='', $divida_empresa)
 	{
+		$this->auth->roleCheck(array(
+			'administrator',
+			'cobrança',
+			'juridico'
+		));
+
 		$post = $this->request->post();
 
 		if (!empty($post)) {
