@@ -10,7 +10,7 @@ class DividaController extends \HXPHP\System\Controller
 			$configs->auth->after_login,
 			$configs->auth->after_logout,
 			true
-			);
+		);
 
 		$user_id = $this->auth->getUserId();
 		$user = User::find($user_id);
@@ -21,7 +21,7 @@ class DividaController extends \HXPHP\System\Controller
 			$this->request,
 			$this->configs,
 			$role->role
-			);
+		);
 
 		if ($role->role == 'empresa' || $role->role == 'cliente') {
 			$file = $role->role;
@@ -43,7 +43,7 @@ class DividaController extends \HXPHP\System\Controller
 		->setFile($file)
 		->setVars([
 			'dividas' => $dividas
-			]);
+		]);
 	}
 	public function cadastrarAction($post=null)
 	{
@@ -78,12 +78,12 @@ class DividaController extends \HXPHP\System\Controller
 					'danger',
 					'Não foi possível efetuar seu cadastro.<br />Verifique os erros abaixo:',
 					$cadDivida->errors
-					));
+				));
 			}else{
 				$this->load('Helpers\Alert', array(
 					'success',
 					'Dívida cadastrada com sucesso!'
-					));
+				));
 
 				if ($role->role == 'empresa' || $role->role == 'cliente') {
 					$file = $role->role;
@@ -104,7 +104,7 @@ class DividaController extends \HXPHP\System\Controller
 				$this->view->setFile($file)
 				->setVars([
 					'dividas' => $dividas
-					]);
+				]);
 			}
 		}
 	}
@@ -127,7 +127,7 @@ class DividaController extends \HXPHP\System\Controller
 		->setVars([
 			'divida' => Debt::find($divida),
 			'option' => $option
-			]);
+		]);
 
 		$post = $this->request->post();
 
@@ -139,16 +139,16 @@ class DividaController extends \HXPHP\System\Controller
 					'danger',
 					'Ops! Não foi possível atualizar o cadastro. <br> Verifique os erros abaixo:',
 					$atualizaDivida->errors
-					));
+				));
 			}else{
 				$this->load('Helpers\Alert', array(
 					'success',
 					'Dívida editada com sucesso!'
-					));
+				));
 				$this->view->setFile('index')
 				->setVars([
 					'dividas' => Debt::all()
-					]);
+				]);
 			}
 		}
 	}
@@ -164,11 +164,11 @@ class DividaController extends \HXPHP\System\Controller
 				$this->load('Helpers\Alert', array(
 					'success',
 					'Dívida excluida com sucesso!'
-					));
+				));
 				$this->view->setFile('index')
 				->setVars([
 					'dividas' => Debt::all()
-					]);
+				]);
 			}
 		}
 	}
@@ -179,10 +179,10 @@ class DividaController extends \HXPHP\System\Controller
 		$this->view->setFile('index')
 		->setVars(
 			[
-			'dividas' => Debt::find('all',array('conditions' => array('empresa = ?', $empresa_id))),
-			'empresa' => $empresa
+				'dividas' => Debt::find('all',array('conditions' => array('empresa = ?', $empresa_id))),
+				'empresa' => $empresa
 			]
-			);
+		);
 	}
 
 	public function filtrarCpfAction($cpf)
@@ -205,7 +205,7 @@ class DividaController extends \HXPHP\System\Controller
 				$dividas = '';
 			}
 		}else{
-			$file = 'index';
+			$file = 'cobranca';
 			$dividas = Debt::find('all',array('conditions' => array('cpf = ?', $cpf)));
 		}
 
@@ -213,30 +213,37 @@ class DividaController extends \HXPHP\System\Controller
 		->setFile($file)
 		->setVars([
 			'dividas' => $dividas
-			]);
+		]);
 	}
 
-	public function cadLogAction($divida_id='', $divida_empresa)
+	public function cadLogAction($cpf)
 	{
 		$post = $this->request->post();
 
 		if (!empty($post)) {
 
 			$user_id = $this->auth->getUserId();
-			$cadLog = Call::cadastrar($post, $user_id, $divida_id);
+			$cadLog = Call::cadastrar($post, $user_id, $cpf);
 
 			if ($cadLog->status === false) {
 				$this->load('Helpers\Alert', array(
 					'danger',
 					'Não foi possível efetuar seu cadastro.<br />Verifique os erros abaixo:',
 					$cadLog->errors
-					));
+				));
 			}else{
 				$this->load('Helpers\Alert', array(
 					'success',
 					'Atendimento cadastrado com sucesso!'
-					));
-				$this->filtrarAction($divida_empresa);
+				));
+
+				$file = 'cobranca';
+				$dividas = Debt::find('all',array('conditions' => array('cpf = ?', $cpf)));
+				$this->view->setTitle('DivCred - Dívidas')
+				->setFile($file)
+				->setVars([
+					'dividas' => $dividas
+				]);
 			}
 		}
 	}
@@ -256,6 +263,6 @@ class DividaController extends \HXPHP\System\Controller
 
 		$vlAtualizado = (((($dividaValor/100)*$multa)+$dividaValor)/100)*(($juros/30)*$diasAtraso)+((($dividaValor/100)*$multa)+$dividaValor);
 
-		return number_format($vlAtualizado, 2, ",", ".");
+		return $vlAtualizado;
 	}
 }

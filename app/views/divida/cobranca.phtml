@@ -1,0 +1,224 @@
+<div class="panel-body">
+	<?php
+	$vlTotal = 0;
+	$vlTotalAtualizado = 0;
+	foreach ($view_dividas as $divida) {
+		$empresa = Company::find_by_id($divida->empresa);
+		$atds = Call::busca($divida->cpf);
+		$vlAtualizado = DividaController::vlAtualizado($divida->valor, $divida->vencimento, $empresa->multa, $empresa->juros);
+		$vlTotal += $divida->valor;
+		$vlTotalAtualizado += $vlAtualizado;
+
+		if ($divida->cpf != "") {
+			$cpf = $divida->cpf;
+		}
+		if ($divida->nome != "") {
+			$nome = $divida->nome;
+		}
+		if ($empresa->empresa != "") {
+			$empresa = $empresa->empresa;
+		}
+		if ($divida->celular != "") {
+			$celular = $divida->celular;
+		}
+		if ($divida->telefone != "") {
+			$telefone = $divida->telefone;
+		}
+		if ($divida->recado != "") {
+			$recado = $divida->recado;
+		}
+	}
+	?>
+	<div class="row">
+		<div class="col-md-8">
+			<p>Dados do cliente:</p>
+			<table class="table table-bordered">
+				<tr>
+					<td>
+						<b>CPF:</b> <?php echo $cpf; ?>
+					</td>
+					<td>
+						<b>Nome:</b> <?php echo $nome; ?>
+					</td>
+					<td>
+						<b>Empresa:</b> <?php echo $empresa; ?>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<b>Celular:</b> <?php echo @$celular; ?>
+					</td>
+					<td>
+						<b>Telefone:</b> <?php echo @$telefone; ?>
+					</td>
+					<td>
+						<b>Recado:</b> <?php echo @$recado; ?>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="col-md-4">
+			<div class="row-fluid valorDivida">
+				<div class="col-md-6">
+					Valor Total:<br />
+					<b>R$ <?php echo number_format($vlTotal, 2, ",", ".") ?></b>
+				</div>
+				<div class="col-md-6">
+					Valor Atualizado:<br />
+					<b>R$ <?php echo number_format($vlTotalAtualizado, 2, ",", ".") ?></b>
+				</div>
+			</div>
+			<div class="row-fluid">
+				<div class="col-md-12" style="text-align: center;padding: 25px 0;">
+					<button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalAtd<?php echo $divida->id ?>">
+						ATENDIMENTO
+					</button>
+					<!-- Modal -->
+					<div class="modal fade bd-example-modal-lg" id="modalAtd<?php echo $divida->id ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h3 class="modal-title" id="exampleModalLongTitle">
+										<b>Nome: </b><?php echo $divida->nome; ?> - <b>CPF: </b><?php echo $divida->cpf; ?> - <b>Vencimento: </b><?php echo date('d/m/Y', strtotime($divida->vencimento)); ?>
+									</h3>
+									<p class="modal-subtitulo">
+										<?php echo 'Celular: '.$divida->celular; ?> - <?php echo 'Telefone: '.$divida->telefone; ?> - <?php echo 'Recado: '.$divida->recado; ?>
+									</p>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<?php
+									$action = BASE . 'divida/cadLog/'.$divida->cpf;
+									$values = [
+										'vlNeg' => number_format($divida->valor, 2, ".", ""),
+										'obs' => $this->request->post('obs'),
+										'status' => $this->request->post('status')
+									];
+									Form::open('cadLog'.$divida->id, $values, [
+										'action' => $action,
+										'view' => "Vertical",
+										'enctype' => 'multipart/form-data',
+										'prevent' => [
+											'focus'
+										]
+									]);
+									?>
+									<div class="col-md-6">
+										<?php
+										Form::Number(
+											'Valor da Negociação:',
+											'vlNeg',
+											array(
+												'required' => 1,
+												'min' => 0,
+												'step' => '.01'
+											)
+										);
+										$status = State::busca(2);
+										$options = array();
+										if (count($status) < 1) {
+											$options[0] = 'Nenhum status informado, contate o admin';
+										}else{
+											foreach ($status as $stat) {
+												$options[$stat->id] = $stat->nome;
+											}
+										}
+										Form::Select(
+											"Status",
+											"status",
+											$options,
+											array(
+												'required' => 1
+											)
+										);
+										Form::Button('CADASTRAR ATENDIMENTO', 'submit', [
+											'style' => 'width: 100%',
+											'class' => 'btn-success'
+										]);
+										?>
+									</div>
+									<div class="col-md-6">
+										<?php
+										Form::Textarea(
+											'Registre aqui todos os detalhes do atendimento:',
+											'obs',
+											array(
+												'required' => 1,
+												'rows' => 6
+											)
+										);
+										?>
+									</div>
+									<?php
+									Form::close(false);
+									?>
+									<table class="table">
+										<thead>
+											<th>Valor</th>
+											<th>Atendimento</th>
+											<th>Status</th>
+											<th>Data</th>
+										</thead>
+										<tbody>
+											<?php
+											foreach ($atds as $atd) {
+												?>
+												<tr>
+													<td>R$ <?php echo number_format($atd->vlneg, 2, ",", "."); ?></td>
+													<td><?php echo $atd->obs; ?></td>
+													<td><?php echo State::find_by_id($atd->status)->nome; ?></td>
+													<td><?php echo date("d/m/Y H:m", strtotime($atd->data_cad)); ?></td>
+												</tr>
+												<?php
+											}
+											?>
+										</tbody>
+									</table>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<table class="table">
+		<thead>
+			<tr>
+				<th></th>
+				<th>Cadastrada em</th>
+				<th>Valor Original</th>
+				<th>Valor Atualizado</th>
+				<th>Dívida desde...</th>
+				<th>Status</th>
+				<th>Observações</th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php
+			if ($view_dividas){
+				foreach ($view_dividas as $divida){
+					$empresa = Company::find_by_id($divida->empresa);
+					$vlAtualizado = DividaController::vlAtualizado($divida->valor, $divida->vencimento, $empresa->multa, $empresa->juros);
+					?>
+					<tr>
+						<td></td>
+						<td><?php echo date('d/m/Y', strtotime($divida->data_cad)) ?></td>
+						<td>R$ <?php echo number_format($divida->valor, 2, ",", ".") ?></td>
+						<td>R$ <?php echo $vlAtualizado; ?></td>
+						<td><?php echo date('d/m/Y', strtotime($divida->vencimento)) ?></td>
+						<td><?php echo State::find_by_id($divida->status)->nome; ?></td>
+						<td><?php echo $divida->obs; ?></td>
+					</tr>
+					<?php
+				}
+			}
+			?>
+		</tbody>
+	</table>
+</div>

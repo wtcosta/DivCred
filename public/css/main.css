@@ -53,3 +53,10 @@ body{
 .resumo .npagas{
     border: 1px solid #d9534f;
 }
+
+.valorDivida{
+    font-size: 120%;
+}
+.valorDivida b{
+    font-size: 140%;
+}

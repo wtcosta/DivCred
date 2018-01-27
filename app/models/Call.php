@@ -6,12 +6,12 @@ class Call extends \HXPHP\System\Model
 		array('debt')
 	);
 
-	public static function busca($divida)
+	public static function busca($cpf)
 	{
-		return self::find('all',array('conditions' => array('divida = ?', $divida), 'order' => 'data_cad desc'));
+		return self::find('all',array('conditions' => array('cpf = ?', $cpf), 'order' => 'data_cad desc'));
 	}
 
-	public static function cadastrar($post, $user_id, $divida)
+	public static function cadastrar($post, $user_id, $cpf)
 	{
 		$callbackObj = new \stdClass;
 		$callbackObj->divida = false;
@@ -19,20 +19,21 @@ class Call extends \HXPHP\System\Model
 		$callbackObj->errors = array();
 
 		$userCad = array(
-			'divida' => $divida,
+			'cpf' => $cpf,
 			'user_cad' => $user_id
 		);
 
 		$post = array_merge($post, $userCad);
 
+		/*
+		//Atualiza o status da divida - DESATIVADO!
 		$statusDate = State::find_by_id($post['status']);
-
 		$atualizaStatusDivida = Debt::atualizaStatus($divida, $statusDate->relacionamento);
-
 		if (is_null($atualizaStatusDivida)) {
 			$callbackObj->errors = 'Não foi possível atualizar o status da dívida<br />Verifique o cadastro de status';
 			return $callbackObj;
 		}
+		*/
 
 		$cadastrar = self::create($post);
 
