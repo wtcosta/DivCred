@@ -27,6 +27,7 @@
 				<th>Valor Atualizado</th>
 				<th>Dívida desde...</th>
 				<th>Status</th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -59,6 +60,16 @@
 						<td>R$ <?php echo $vlAtualizado; ?></td>
 						<td style="text-align: center;"><?php echo date('d/m/Y', strtotime($divida->vencimento)) ?></td>
 						<td><?php echo State::find_by_id($divida->status)->nome; ?></td>
+						<td>
+							<?php
+							if ($this->auth->getUserRole() == 'administrator') {
+								?>
+								<a href="<?php echo BASE.'divida/editar/'.$divida->id ?>" class="btn btn-warning btn-sm">Editar</a>
+								<a href="<?php echo BASE.'divida/excluir/'.$divida->id ?>" class="btn btn-danger btn-sm">Excluir</a>
+								<?php
+							}
+							?>
+						</td>
 					</tr>
 					<?php
 				}
