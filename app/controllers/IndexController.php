@@ -19,21 +19,9 @@ class IndexController extends \HXPHP\System\Controller
 		$role = Role::find($user->role_id);
 
 		if ($role->role == 'empresa' || $role->role == 'cliente') {
-			$this->redirectTo('divida', false, false);
+			$this->redirectTo('divida/', false, false);
+		}else{
+			$this->redirectTo('empresa/', false, false);
 		}
-
-		$this->load(
-			'Helpers\Menu',
-			$this->request,
-			$this->configs,
-			$role->role
-		);
-
-		$this->view->setTitle('DivCred - Assessoria Financeira & Cobrança')
-		->setPath('empresa')
-		->setFile('index')
-		->setVars([
-			'empresa' => Company::all()
-		]);
 	}
 }

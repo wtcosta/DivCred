@@ -1,0 +1,255 @@
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP Notice:  Undefined offset: 0 in /home/divcred/public_html/painel/src/HXPHP/System/Http/Request.php on line 55
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP Stack trace:
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP   1. {main}() /home/divcred/public_html/painel/index.php:0
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP   2. HXPHP\System\App->__construct() /home/divcred/public_html/painel/index.php:50
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP   3. HXPHP\System\Http\Request->__construct() /home/divcred/public_html/painel/src/HXPHP/System/App.php:35
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP   4. HXPHP\System\Http\Request->initialize() /home/divcred/public_html/painel/src/HXPHP/System/Http/Request.php:29
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP Notice:  Undefined offset: 0 in /home/divcred/public_html/painel/src/HXPHP/System/Http/Request.php on line 56
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP Stack trace:
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP   1. {main}() /home/divcred/public_html/painel/index.php:0
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP   2. HXPHP\System\App->__construct() /home/divcred/public_html/painel/index.php:50
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP   3. HXPHP\System\Http\Request->__construct() /home/divcred/public_html/painel/src/HXPHP/System/App.php:35
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP   4. HXPHP\System\Http\Request->initialize() /home/divcred/public_html/painel/src/HXPHP/System/Http/Request.php:29
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP Notice:  Undefined offset: 0 in /home/divcred/public_html/painel/src/HXPHP/System/Http/Request.php on line 55
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP Stack trace:
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP   1. {main}() /home/divcred/public_html/painel/index.php:0
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP   2. HXPHP\System\App->run() /home/divcred/public_html/painel/index.php:52
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP   3. HXPHP\System\Controller->__construct() /home/divcred/public_html/painel/src/HXPHP/System/App.php:94
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP   4. HXPHP\System\Controller->setConfigs() /home/divcred/public_html/painel/src/HXPHP/System/Controller.php:42
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP   5. HXPHP\System\Http\Request->__construct() /home/divcred/public_html/painel/src/HXPHP/System/Controller.php:54
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP   6. HXPHP\System\Http\Request->initialize() /home/divcred/public_html/painel/src/HXPHP/System/Http/Request.php:29
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP Notice:  Undefined offset: 0 in /home/divcred/public_html/painel/src/HXPHP/System/Http/Request.php on line 56
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP Stack trace:
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP   1. {main}() /home/divcred/public_html/painel/index.php:0
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP   2. HXPHP\System\App->run() /home/divcred/public_html/painel/index.php:52
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP   3. HXPHP\System\Controller->__construct() /home/divcred/public_html/painel/src/HXPHP/System/App.php:94
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP   4. HXPHP\System\Controller->setConfigs() /home/divcred/public_html/painel/src/HXPHP/System/Controller.php:42
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP   5. HXPHP\System\Http\Request->__construct() /home/divcred/public_html/painel/src/HXPHP/System/Controller.php:54
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP   6. HXPHP\System\Http\Request->initialize() /home/divcred/public_html/painel/src/HXPHP/System/Http/Request.php:29
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP Notice:  Undefined offset: 0 in /home/divcred/public_html/painel/src/HXPHP/System/Http/Request.php on line 55
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP Stack trace:
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP   1. {main}() /home/divcred/public_html/painel/index.php:0
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP   2. HXPHP\System\App->run() /home/divcred/public_html/painel/index.php:52
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP   3. HXPHP\System\Controller->setConfigs() /home/divcred/public_html/painel/src/HXPHP/System/App.php:101
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP   4. HXPHP\System\Http\Request->__construct() /home/divcred/public_html/painel/src/HXPHP/System/Controller.php:54
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP   5. HXPHP\System\Http\Request->initialize() /home/divcred/public_html/painel/src/HXPHP/System/Http/Request.php:29
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP Notice:  Undefined offset: 0 in /home/divcred/public_html/painel/src/HXPHP/System/Http/Request.php on line 56
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP Stack trace:
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP   1. {main}() /home/divcred/public_html/painel/index.php:0
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP   2. HXPHP\System\App->run() /home/divcred/public_html/painel/index.php:52
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP   3. HXPHP\System\Controller->setConfigs() /home/divcred/public_html/painel/src/HXPHP/System/App.php:101
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP   4. HXPHP\System\Http\Request->__construct() /home/divcred/public_html/painel/src/HXPHP/System/Controller.php:54
+[17-Jan-2018 01:58:22 America/Sao_Paulo] PHP   5. HXPHP\System\Http\Request->initialize() /home/divcred/public_html/painel/src/HXPHP/System/Http/Request.php:29
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP Notice:  Undefined offset: 0 in /home/divcred/public_html/painel/src/HXPHP/System/Http/Request.php on line 55
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP Stack trace:
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP   1. {main}() /home/divcred/public_html/painel/index.php:0
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP   2. HXPHP\System\App->__construct() /home/divcred/public_html/painel/index.php:50
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP   3. HXPHP\System\Http\Request->__construct() /home/divcred/public_html/painel/src/HXPHP/System/App.php:35
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP   4. HXPHP\System\Http\Request->initialize() /home/divcred/public_html/painel/src/HXPHP/System/Http/Request.php:29
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP Notice:  Undefined offset: 0 in /home/divcred/public_html/painel/src/HXPHP/System/Http/Request.php on line 56
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP Stack trace:
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP   1. {main}() /home/divcred/public_html/painel/index.php:0
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP   2. HXPHP\System\App->__construct() /home/divcred/public_html/painel/index.php:50
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP   3. HXPHP\System\Http\Request->__construct() /home/divcred/public_html/painel/src/HXPHP/System/App.php:35
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP   4. HXPHP\System\Http\Request->initialize() /home/divcred/public_html/painel/src/HXPHP/System/Http/Request.php:29
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP Notice:  Undefined offset: 0 in /home/divcred/public_html/painel/src/HXPHP/System/Http/Request.php on line 55
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP Stack trace:
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP   1. {main}() /home/divcred/public_html/painel/index.php:0
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP   2. HXPHP\System\App->run() /home/divcred/public_html/painel/index.php:52
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP   3. HXPHP\System\Controller->__construct() /home/divcred/public_html/painel/src/HXPHP/System/App.php:94
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP   4. HXPHP\System\Controller->setConfigs() /home/divcred/public_html/painel/src/HXPHP/System/Controller.php:42
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP   5. HXPHP\System\Http\Request->__construct() /home/divcred/public_html/painel/src/HXPHP/System/Controller.php:54
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP   6. HXPHP\System\Http\Request->initialize() /home/divcred/public_html/painel/src/HXPHP/System/Http/Request.php:29
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP Notice:  Undefined offset: 0 in /home/divcred/public_html/painel/src/HXPHP/System/Http/Request.php on line 56
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP Stack trace:
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP   1. {main}() /home/divcred/public_html/painel/index.php:0
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP   2. HXPHP\System\App->run() /home/divcred/public_html/painel/index.php:52
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP   3. HXPHP\System\Controller->__construct() /home/divcred/public_html/painel/src/HXPHP/System/App.php:94
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP   4. HXPHP\System\Controller->setConfigs() /home/divcred/public_html/painel/src/HXPHP/System/Controller.php:42
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP   5. HXPHP\System\Http\Request->__construct() /home/divcred/public_html/painel/src/HXPHP/System/Controller.php:54
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP   6. HXPHP\System\Http\Request->initialize() /home/divcred/public_html/painel/src/HXPHP/System/Http/Request.php:29
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP Notice:  Undefined offset: 0 in /home/divcred/public_html/painel/src/HXPHP/System/Http/Request.php on line 55
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP Stack trace:
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP   1. {main}() /home/divcred/public_html/painel/index.php:0
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP   2. HXPHP\System\App->run() /home/divcred/public_html/painel/index.php:52
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP   3. HXPHP\System\Controller->setConfigs() /home/divcred/public_html/painel/src/HXPHP/System/App.php:101
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP   4. HXPHP\System\Http\Request->__construct() /home/divcred/public_html/painel/src/HXPHP/System/Controller.php:54
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP   5. HXPHP\System\Http\Request->initialize() /home/divcred/public_html/painel/src/HXPHP/System/Http/Request.php:29
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP Notice:  Undefined offset: 0 in /home/divcred/public_html/painel/src/HXPHP/System/Http/Request.php on line 56
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP Stack trace:
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP   1. {main}() /home/divcred/public_html/painel/index.php:0
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP   2. HXPHP\System\App->run() /home/divcred/public_html/painel/index.php:52
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP   3. HXPHP\System\Controller->setConfigs() /home/divcred/public_html/painel/src/HXPHP/System/App.php:101
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP   4. HXPHP\System\Http\Request->__construct() /home/divcred/public_html/painel/src/HXPHP/System/Controller.php:54
+[17-Jan-2018 01:58:39 America/Sao_Paulo] PHP   5. HXPHP\System\Http\Request->initialize() /home/divcred/public_html/painel/src/HXPHP/System/Http/Request.php:29
+[17-Jan-2018 02:13:08 America/Sao_Paulo] PHP Fatal error:  Uncaught TypeError: Return value of HXPHP\System\Services\Auth\Auth::getUserId() must be of the type integer, null returned in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php:152
+Stack trace:
+#0 /home/divcred/public_html/painel/app/controllers/EmpresaController.php(15): HXPHP\System\Services\Auth\Auth->getUserId()
+#1 /home/divcred/public_html/painel/src/HXPHP/System/App.php(94): EmpresaController->__construct(Object(HXPHP\System\Configs\Config))
+#2 /home/divcred/public_html/painel/index.php(52): HXPHP\System\App->run()
+#3 {main}
+  thrown in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php on line 152
+[17-Jan-2018 02:13:22 America/Sao_Paulo] PHP Fatal error:  Uncaught TypeError: Return value of HXPHP\System\Services\Auth\Auth::getUserId() must be of the type integer, null returned in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php:152
+Stack trace:
+#0 /home/divcred/public_html/painel/app/controllers/EmpresaController.php(15): HXPHP\System\Services\Auth\Auth->getUserId()
+#1 /home/divcred/public_html/painel/src/HXPHP/System/App.php(94): EmpresaController->__construct(Object(HXPHP\System\Configs\Config))
+#2 /home/divcred/public_html/painel/index.php(52): HXPHP\System\App->run()
+#3 {main}
+  thrown in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php on line 152
+[17-Jan-2018 09:35:51 America/Sao_Paulo] PHP Fatal error:  Uncaught ActiveRecord\DatabaseException: PDOException: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`divcred_painel`.`calls`, CONSTRAINT `logs_divida` FOREIGN KEY (`divida`) REFERENCES `debts` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION) in /home/divcred/public_html/painel/vendor/php-activerecord/php-activerecord/lib/Connection.php:333
+Stack trace:
+#0 /home/divcred/public_html/painel/vendor/php-activerecord/php-activerecord/lib/Connection.php(333): PDOStatement->execute(Array)
+#1 /home/divcred/public_html/painel/vendor/php-activerecord/php-activerecord/lib/Table.php(381): ActiveRecord\Connection->query('DELETE FROM `de...', Array)
+#2 /home/divcred/public_html/painel/vendor/php-activerecord/php-activerecord/lib/Model.php(1042): ActiveRecord\Table->delete(Array)
+#3 /home/divcred/public_html/painel/app/controllers/DividaController.php(162): ActiveRecord\Model->delete()
+#4 [internal function]: DividaController->excluirAction('280')
+ in /home/divcred/public_html/painel/vendor/php-activerecord/php-activerecord/lib/Connection.php on line 336
+[19-Jan-2018 12:03:22 America/Sao_Paulo] PHP Notice:  Undefined index: idUserEmpresa in /home/divcred/public_html/painel/app/models/Company.php on line 99
+[19-Jan-2018 12:03:22 America/Sao_Paulo] PHP Stack trace:
+[19-Jan-2018 12:03:22 America/Sao_Paulo] PHP   1. {main}() /home/divcred/public_html/painel/index.php:0
+[19-Jan-2018 12:03:22 America/Sao_Paulo] PHP   2. HXPHP\System\App->run() /home/divcred/public_html/painel/index.php:52
+[19-Jan-2018 12:03:22 America/Sao_Paulo] PHP   3. call_user_func_array:{/home/divcred/public_html/painel/src/HXPHP/System/App.php:107}() /home/divcred/public_html/painel/src/HXPHP/System/App.php:107
+[19-Jan-2018 12:03:22 America/Sao_Paulo] PHP   4. EmpresaController->editarAction() /home/divcred/public_html/painel/src/HXPHP/System/App.php:107
+[19-Jan-2018 12:03:22 America/Sao_Paulo] PHP   5. Company::atualizar() /home/divcred/public_html/painel/app/controllers/EmpresaController.php:119
+[19-Jan-2018 12:03:22 America/Sao_Paulo] PHP Notice:  Undefined index: idUserEmpresa in /home/divcred/public_html/painel/app/models/Company.php on line 101
+[19-Jan-2018 12:03:22 America/Sao_Paulo] PHP Stack trace:
+[19-Jan-2018 12:03:22 America/Sao_Paulo] PHP   1. {main}() /home/divcred/public_html/painel/index.php:0
+[19-Jan-2018 12:03:22 America/Sao_Paulo] PHP   2. HXPHP\System\App->run() /home/divcred/public_html/painel/index.php:52
+[19-Jan-2018 12:03:22 America/Sao_Paulo] PHP   3. call_user_func_array:{/home/divcred/public_html/painel/src/HXPHP/System/App.php:107}() /home/divcred/public_html/painel/src/HXPHP/System/App.php:107
+[19-Jan-2018 12:03:22 America/Sao_Paulo] PHP   4. EmpresaController->editarAction() /home/divcred/public_html/painel/src/HXPHP/System/App.php:107
+[19-Jan-2018 12:03:22 America/Sao_Paulo] PHP   5. Company::atualizar() /home/divcred/public_html/painel/app/controllers/EmpresaController.php:119
+[19-Jan-2018 12:03:22 America/Sao_Paulo] PHP Notice:  Undefined index: idUserEmpresa in /home/divcred/public_html/painel/app/models/Company.php on line 113
+[19-Jan-2018 12:03:22 America/Sao_Paulo] PHP Stack trace:
+[19-Jan-2018 12:03:22 America/Sao_Paulo] PHP   1. {main}() /home/divcred/public_html/painel/index.php:0
+[19-Jan-2018 12:03:22 America/Sao_Paulo] PHP   2. HXPHP\System\App->run() /home/divcred/public_html/painel/index.php:52
+[19-Jan-2018 12:03:22 America/Sao_Paulo] PHP   3. call_user_func_array:{/home/divcred/public_html/painel/src/HXPHP/System/App.php:107}() /home/divcred/public_html/painel/src/HXPHP/System/App.php:107
+[19-Jan-2018 12:03:22 America/Sao_Paulo] PHP   4. EmpresaController->editarAction() /home/divcred/public_html/painel/src/HXPHP/System/App.php:107
+[19-Jan-2018 12:03:22 America/Sao_Paulo] PHP   5. Company::atualizar() /home/divcred/public_html/painel/app/controllers/EmpresaController.php:119
+[19-Jan-2018 12:03:22 America/Sao_Paulo] PHP Fatal error:  Uncaught ActiveRecord\UndefinedPropertyException: Undefined property: Company->idUserEmpresa in /home/divcred/public_html/painel/vendor/php-activerecord/php-activerecord/lib/Model.php on line 434 in /home/divcred/public_html/painel/vendor/php-activerecord/php-activerecord/lib/Model.php:434
+Stack trace:
+#0 /home/divcred/public_html/painel/app/models/Company.php(113): ActiveRecord\Model->__set('idUserEmpresa', 0)
+#1 /home/divcred/public_html/painel/app/controllers/EmpresaController.php(119): Company::atualizar(Array, '4')
+#2 [internal function]: EmpresaController->editarAction('4')
+#3 /home/divcred/public_html/painel/src/HXPHP/System/App.php(107): call_user_func_array(Array, Array)
+#4 /home/divcred/public_html/painel/index.php(52): HXPHP\System\App->run()
+#5 {main}
+  thrown in /home/divcred/public_html/painel/vendor/php-activerecord/php-activerecord/lib/Model.php on line 434
+[19-Jan-2018 17:34:05 America/Sao_Paulo] PHP Fatal error:  Uncaught TypeError: Return value of HXPHP\System\Services\Auth\Auth::getUserId() must be of the type integer, null returned in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php:152
+Stack trace:
+#0 /home/divcred/public_html/painel/app/controllers/DividaController.php(15): HXPHP\System\Services\Auth\Auth->getUserId()
+#1 /home/divcred/public_html/painel/src/HXPHP/System/App.php(94): DividaController->__construct(Object(HXPHP\System\Configs\Config))
+#2 /home/divcred/public_html/painel/index.php(52): HXPHP\System\App->run()
+#3 {main}
+  thrown in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php on line 152
+[19-Jan-2018 17:36:37 America/Sao_Paulo] PHP Fatal error:  Uncaught TypeError: Return value of HXPHP\System\Services\Auth\Auth::getUserId() must be of the type integer, null returned in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php:152
+Stack trace:
+#0 /home/divcred/public_html/painel/app/controllers/DividaController.php(15): HXPHP\System\Services\Auth\Auth->getUserId()
+#1 /home/divcred/public_html/painel/src/HXPHP/System/App.php(94): DividaController->__construct(Object(HXPHP\System\Configs\Config))
+#2 /home/divcred/public_html/painel/index.php(52): HXPHP\System\App->run()
+#3 {main}
+  thrown in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php on line 152
+[19-Jan-2018 17:36:43 America/Sao_Paulo] PHP Fatal error:  Uncaught TypeError: Return value of HXPHP\System\Services\Auth\Auth::getUserId() must be of the type integer, null returned in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php:152
+Stack trace:
+#0 /home/divcred/public_html/painel/app/controllers/DividaController.php(15): HXPHP\System\Services\Auth\Auth->getUserId()
+#1 /home/divcred/public_html/painel/src/HXPHP/System/App.php(94): DividaController->__construct(Object(HXPHP\System\Configs\Config))
+#2 /home/divcred/public_html/painel/index.php(52): HXPHP\System\App->run()
+#3 {main}
+  thrown in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php on line 152
+[19-Jan-2018 17:36:46 America/Sao_Paulo] PHP Fatal error:  Uncaught TypeError: Return value of HXPHP\System\Services\Auth\Auth::getUserId() must be of the type integer, null returned in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php:152
+Stack trace:
+#0 /home/divcred/public_html/painel/app/controllers/DividaController.php(15): HXPHP\System\Services\Auth\Auth->getUserId()
+#1 /home/divcred/public_html/painel/src/HXPHP/System/App.php(94): DividaController->__construct(Object(HXPHP\System\Configs\Config))
+#2 /home/divcred/public_html/painel/index.php(52): HXPHP\System\App->run()
+#3 {main}
+  thrown in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php on line 152
+[19-Jan-2018 17:36:50 America/Sao_Paulo] PHP Fatal error:  Uncaught TypeError: Return value of HXPHP\System\Services\Auth\Auth::getUserId() must be of the type integer, null returned in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php:152
+Stack trace:
+#0 /home/divcred/public_html/painel/app/controllers/DividaController.php(15): HXPHP\System\Services\Auth\Auth->getUserId()
+#1 /home/divcred/public_html/painel/src/HXPHP/System/App.php(94): DividaController->__construct(Object(HXPHP\System\Configs\Config))
+#2 /home/divcred/public_html/painel/index.php(52): HXPHP\System\App->run()
+#3 {main}
+  thrown in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php on line 152
+[19-Jan-2018 17:36:52 America/Sao_Paulo] PHP Fatal error:  Uncaught TypeError: Return value of HXPHP\System\Services\Auth\Auth::getUserId() must be of the type integer, null returned in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php:152
+Stack trace:
+#0 /home/divcred/public_html/painel/app/controllers/DividaController.php(15): HXPHP\System\Services\Auth\Auth->getUserId()
+#1 /home/divcred/public_html/painel/src/HXPHP/System/App.php(94): DividaController->__construct(Object(HXPHP\System\Configs\Config))
+#2 /home/divcred/public_html/painel/index.php(52): HXPHP\System\App->run()
+#3 {main}
+  thrown in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php on line 152
+[22-Jan-2018 10:35:29 America/Sao_Paulo] PHP Fatal error:  Uncaught TypeError: Return value of HXPHP\System\Services\Auth\Auth::getUserId() must be of the type integer, null returned in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php:152
+Stack trace:
+#0 /home/divcred/public_html/painel/app/controllers/DividaController.php(15): HXPHP\System\Services\Auth\Auth->getUserId()
+#1 /home/divcred/public_html/painel/src/HXPHP/System/App.php(94): DividaController->__construct(Object(HXPHP\System\Configs\Config))
+#2 /home/divcred/public_html/painel/index.php(52): HXPHP\System\App->run()
+#3 {main}
+  thrown in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php on line 152
+[22-Jan-2018 15:03:01 America/Sao_Paulo] PHP Fatal error:  Uncaught TypeError: Return value of HXPHP\System\Services\Auth\Auth::getUserId() must be of the type integer, null returned in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php:152
+Stack trace:
+#0 /home/divcred/public_html/painel/app/controllers/EmpresaController.php(15): HXPHP\System\Services\Auth\Auth->getUserId()
+#1 /home/divcred/public_html/painel/src/HXPHP/System/App.php(94): EmpresaController->__construct(Object(HXPHP\System\Configs\Config))
+#2 /home/divcred/public_html/painel/index.php(52): HXPHP\System\App->run()
+#3 {main}
+  thrown in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php on line 152
+[25-Jan-2018 11:31:41 America/Sao_Paulo] PHP Fatal error:  Uncaught TypeError: Return value of HXPHP\System\Services\Auth\Auth::getUserId() must be of the type integer, null returned in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php:152
+Stack trace:
+#0 /home/divcred/public_html/painel/app/controllers/DividaController.php(15): HXPHP\System\Services\Auth\Auth->getUserId()
+#1 /home/divcred/public_html/painel/src/HXPHP/System/App.php(94): DividaController->__construct(Object(HXPHP\System\Configs\Config))
+#2 /home/divcred/public_html/painel/index.php(52): HXPHP\System\App->run()
+#3 {main}
+  thrown in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php on line 152
+[25-Jan-2018 11:31:44 America/Sao_Paulo] PHP Fatal error:  Uncaught TypeError: Return value of HXPHP\System\Services\Auth\Auth::getUserId() must be of the type integer, null returned in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php:152
+Stack trace:
+#0 /home/divcred/public_html/painel/app/controllers/DividaController.php(15): HXPHP\System\Services\Auth\Auth->getUserId()
+#1 /home/divcred/public_html/painel/src/HXPHP/System/App.php(94): DividaController->__construct(Object(HXPHP\System\Configs\Config))
+#2 /home/divcred/public_html/painel/index.php(52): HXPHP\System\App->run()
+#3 {main}
+  thrown in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php on line 152
+[25-Jan-2018 11:31:49 America/Sao_Paulo] PHP Fatal error:  Uncaught TypeError: Return value of HXPHP\System\Services\Auth\Auth::getUserId() must be of the type integer, null returned in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php:152
+Stack trace:
+#0 /home/divcred/public_html/painel/app/controllers/EmpresaController.php(15): HXPHP\System\Services\Auth\Auth->getUserId()
+#1 /home/divcred/public_html/painel/src/HXPHP/System/App.php(94): EmpresaController->__construct(Object(HXPHP\System\Configs\Config))
+#2 /home/divcred/public_html/painel/index.php(52): HXPHP\System\App->run()
+#3 {main}
+  thrown in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php on line 152
+[25-Jan-2018 11:31:52 America/Sao_Paulo] PHP Fatal error:  Uncaught TypeError: Return value of HXPHP\System\Services\Auth\Auth::getUserId() must be of the type integer, null returned in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php:152
+Stack trace:
+#0 /home/divcred/public_html/painel/app/controllers/DividaController.php(15): HXPHP\System\Services\Auth\Auth->getUserId()
+#1 /home/divcred/public_html/painel/src/HXPHP/System/App.php(94): DividaController->__construct(Object(HXPHP\System\Configs\Config))
+#2 /home/divcred/public_html/painel/index.php(52): HXPHP\System\App->run()
+#3 {main}
+  thrown in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php on line 152
+[25-Jan-2018 11:31:53 America/Sao_Paulo] PHP Fatal error:  Uncaught TypeError: Return value of HXPHP\System\Services\Auth\Auth::getUserId() must be of the type integer, null returned in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php:152
+Stack trace:
+#0 /home/divcred/public_html/painel/app/controllers/DividaController.php(15): HXPHP\System\Services\Auth\Auth->getUserId()
+#1 /home/divcred/public_html/painel/src/HXPHP/System/App.php(94): DividaController->__construct(Object(HXPHP\System\Configs\Config))
+#2 /home/divcred/public_html/painel/index.php(52): HXPHP\System\App->run()
+#3 {main}
+  thrown in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php on line 152
+[25-Jan-2018 11:32:04 America/Sao_Paulo] PHP Fatal error:  Uncaught TypeError: Return value of HXPHP\System\Services\Auth\Auth::getUserId() must be of the type integer, null returned in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php:152
+Stack trace:
+#0 /home/divcred/public_html/painel/app/controllers/DividaController.php(15): HXPHP\System\Services\Auth\Auth->getUserId()
+#1 /home/divcred/public_html/painel/src/HXPHP/System/App.php(94): DividaController->__construct(Object(HXPHP\System\Configs\Config))
+#2 /home/divcred/public_html/painel/index.php(52): HXPHP\System\App->run()
+#3 {main}
+  thrown in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php on line 152
+[25-Jan-2018 11:32:06 America/Sao_Paulo] PHP Fatal error:  Uncaught TypeError: Return value of HXPHP\System\Services\Auth\Auth::getUserId() must be of the type integer, null returned in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php:152
+Stack trace:
+#0 /home/divcred/public_html/painel/app/controllers/EmpresaController.php(15): HXPHP\System\Services\Auth\Auth->getUserId()
+#1 /home/divcred/public_html/painel/src/HXPHP/System/App.php(94): EmpresaController->__construct(Object(HXPHP\System\Configs\Config))
+#2 /home/divcred/public_html/painel/index.php(52): HXPHP\System\App->run()
+#3 {main}
+  thrown in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php on line 152
+[25-Jan-2018 11:32:08 America/Sao_Paulo] PHP Fatal error:  Uncaught TypeError: Return value of HXPHP\System\Services\Auth\Auth::getUserId() must be of the type integer, null returned in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php:152
+Stack trace:
+#0 /home/divcred/public_html/painel/app/controllers/DividaController.php(15): HXPHP\System\Services\Auth\Auth->getUserId()
+#1 /home/divcred/public_html/painel/src/HXPHP/System/App.php(94): DividaController->__construct(Object(HXPHP\System\Configs\Config))
+#2 /home/divcred/public_html/painel/index.php(52): HXPHP\System\App->run()
+#3 {main}
+  thrown in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php on line 152
+[25-Jan-2018 11:32:09 America/Sao_Paulo] PHP Fatal error:  Uncaught TypeError: Return value of HXPHP\System\Services\Auth\Auth::getUserId() must be of the type integer, null returned in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php:152
+Stack trace:
+#0 /home/divcred/public_html/painel/app/controllers/EmpresaController.php(15): HXPHP\System\Services\Auth\Auth->getUserId()
+#1 /home/divcred/public_html/painel/src/HXPHP/System/App.php(94): EmpresaController->__construct(Object(HXPHP\System\Configs\Config))
+#2 /home/divcred/public_html/painel/index.php(52): HXPHP\System\App->run()
+#3 {main}
+  thrown in /home/divcred/public_html/painel/src/HXPHP/System/Services/Auth/Auth.php on line 152
