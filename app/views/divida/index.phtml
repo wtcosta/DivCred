@@ -57,7 +57,7 @@
 							?>
 						</td>
 						<td>R$ <?php echo number_format($divida->valor, 2, ",", ".") ?></td>
-						<td>R$ <?php echo $vlAtualizado; ?></td>
+						<td>R$ <?php echo number_format($vlAtualizado, 2, ",", "."); ?></td>
 						<td style="text-align: center;"><?php echo date('d/m/Y', strtotime($divida->vencimento)) ?></td>
 						<td><?php echo State::find_by_id($divida->status)->nome; ?></td>
 						<td>
