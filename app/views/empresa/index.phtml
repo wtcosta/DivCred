@@ -6,10 +6,10 @@
 	$div_a_pagar = 0;
 	foreach ($dividasAll as $divida) {
 		$div_total += $divida->valor;
-		if ($divida->status == 7) {
+		if ($divida->status == 15) {
 			$div_paga += $divida->valor;
 		}
-		if ($divida->status == 10) {
+		if ($divida->status != 15) {
 			$div_a_pagar += $divida->valor;
 		}
 	}

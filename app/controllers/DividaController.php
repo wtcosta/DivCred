@@ -219,12 +219,59 @@ class DividaController extends \HXPHP\System\Controller
 	public function cadLogAction($cpf)
 	{
 		$post = $this->request->post();
-
+		$divida = Debt::find(array('conditions' => array('cpf = ?', $cpf)));
+		/*
+		echo "<pre>";
+		var_dump($post);
+		echo "<hr />";
+		var_dump($divida);
+		echo "</pre>";
+		*/
 		if (!empty($post)) {
 
 			$user_id = $this->auth->getUserId();
-			$cadLog = Call::cadastrar($post, $user_id, $cpf);
 
+			//Verifica a necessidade de gerar boleto
+			if ($post['tipo'] == 'geraBoleto') {
+				$geraBoleto = true;
+			}else{
+				$geraBoleto = false;
+			}
+
+			//Retira campo tipo para inserir as informações no banco
+			unset($post['tipo']);
+
+			$cadLog = Call::cadastrar($post, $user_id, $cpf);
+			/*
+			//Gera boleto
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, "https://www.asaas.com/api/v3/payments");
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+			curl_setopt($ch, CURLOPT_HEADER, FALSE);
+			curl_setopt($ch, CURLOPT_POST, TRUE);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, "{
+				\"customer\": \"c44d226495dee483cdc7cf6dba6cc43db7bf092dcb9d2a3180515a2bba96b91a\",
+				\"billingType\": \"BOLETO\",
+				\"dueDate\": \"".date('Y-m-d')."\",
+				\"value\": ".$post['vlNeg'].",
+				\"description\": \"Cliente: ".$divida->nome."\",
+				\"externalReference\": \"".$divida->cpf."\",
+				\"remoteIp\": \"".$_SERVER['REMOTE_ADDR']."\"
+			}");
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				"Content-Type: application/json",
+				"access_token: c44d226495dee483cdc7cf6dba6cc43db7bf092dcb9d2a3180515a2bba96b91a"
+			));
+			$response = curl_exec($ch);
+			$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			curl_close($ch);
+
+			echo "<pre>";
+			var_dump($httpCode);
+			echo "<hr />";
+			var_dump($response);
+			echo "</pre>";
+			*/
 			if ($cadLog->status === false) {
 				$this->load('Helpers\Alert', array(
 					'danger',

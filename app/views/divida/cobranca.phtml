@@ -99,6 +99,7 @@
 									Form::open('cadLog'.$divida->id, $values, [
 										'action' => $action,
 										'view' => "Vertical",
+										'name' => "atendimento",
 										'enctype' => 'multipart/form-data',
 										'prevent' => [
 											'focus'
@@ -133,11 +134,19 @@
 												'required' => 1
 											)
 										);
-										Form::Button('CADASTRAR ATENDIMENTO', 'submit', [
-											'style' => 'width: 100%',
-											'class' => 'btn-success'
-										]);
 										?>
+										<div class="row-fluid">
+											<div class="col-md-6">
+												<?php
+												Form::Button('CADASTRAR ATENDIMENTO', 'submit', [
+													'class' => 'btn-success'
+												]);
+												?>
+											</div>
+											<div class="col-md-6">
+												<!--<button class="btn btn-info" onclick="geraBoleto()">Gerar Boleto</button>-->
+											</div>
+										</div>
 									</div>
 									<div class="col-md-6">
 										<?php
@@ -152,6 +161,11 @@
 										?>
 									</div>
 									<?php
+									Form::Hidden(
+										'tipo',
+										'',
+										array('id' => 'tipo')
+									);
 									Form::close(false);
 									?>
 									<table class="table">
@@ -222,3 +236,9 @@
 		</tbody>
 	</table>
 </div>
+<script type="text/javascript">
+	function geraBoleto() {
+		document.getElementById('tipo').value = "geraBoleto";
+		document.atendimento.submit();
+	}
+</script>

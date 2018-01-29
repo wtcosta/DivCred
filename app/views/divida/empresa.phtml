@@ -2,11 +2,21 @@
 	<div class="row">
 		<div class="col-md-10">
 			<?php
-			$empresa = Company::find_by_id($view_dividas[0]->empresa);
+			if ($view_dividas) {
+				$empresa = Company::find_by_id($view_dividas[0]->empresa);
+				?>
+				<h4 style="margin-top: 7px;margin-bottom: 20px;">
+					Dívidas da empresa: <?php echo $empresa->empresa ?>
+				</h4>
+				<?php
+			}else{
+				?>
+				<h4 style="margin-top: 7px;margin-bottom: 20px;">
+					Nenhuma dívida cadastrada para essa empresa!
+				</h4>
+				<?php
+			}
 			?>
-			<h4 style="margin-top: 7px;margin-bottom: 20px;">
-				Dívidas da empresa: <?php echo $empresa->empresa ?>
-			</h4>
 		</div>
 		<div class="col-md-2" style="text-align: center;">
 			<a href="<?php echo BASE.'divida/cadastrar' ?>" class="btn btn-success">Cadastrar</a>
