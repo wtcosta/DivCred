@@ -24,41 +24,51 @@ $configs->env->development->database->setConnectionData(array(
 $configs->env->development->auth->setURLs('/divcred/empresa/', '/divcred/login');
 
 $configs->env->development->menu->setMenus(array(
-  'Editar Perfil/cog' => '%baseURI%/perfil/editar',
-  'Empresas/university' => '%baseURI%/empresa',
-  'Dívidas/money' => '%baseURI%/divida',
-  'Sair/sign-out' => '%baseURI%/login/sair'
+  'Administrativo/dashboard' => [
+    'Usuário/dashboard' => '%baseURI%/usuarios',
+    'Cadastrar/user-plus' => '%baseURI%/cadastro',
+    'Status/check-circle-o' => '%baseURI%/status',
+    'Triagem/bars' => '%baseURI%/sequencia'
+  ],
+  'Empresas/university' => [
+    'Listar/university' => '%baseURI%/empresa',
+    'Cadastrar/bars' => '%baseURI%/empresa/cadastrar'
+  ],
+  'Cliente/user' => [
+    'Listar/user' => '%baseURI%/cliente',
+    'Cadastrar/user-plus' => '%baseURI%/cliente/cadastrar'
+  ],
+), 'administrator');
+
+$configs->env->development->menu->setMenus(array(
+  'Cliente/user' => '%baseURI%/cliente'
 ), 'cobrança');
 
 $configs->env->development->menu->setMenus(array(
-  'Editar Perfil/cog' => '%baseURI%/perfil/editar',
-  'Empresas/university' => '%baseURI%/empresa',
-  'Dívidas/money' => '%baseURI%/divida',
-  'Sair/sign-out' => '%baseURI%/login/sair'
-), 'juridico');
-
-$configs->env->development->menu->setMenus(array(
-  'Dívidas/money' => '%baseURI%/divida',
-  'Sair/sign-out' => '%baseURI%/login/sair'
+  'Cliente/user' => '%baseURI%/cliente'
 ), 'empresa');
 
 $configs->env->development->menu->setMenus(array(
-  'Editar Perfil/cog' => '%baseURI%/perfil/editar',
-  'Dívidas/money' => '%baseURI%/divida',
-  'Sair/sign-out' => '%baseURI%/login/sair'
+  'Cliente/user' => '%baseURI%/cliente'
 ), 'cliente');
 
 $configs->env->development->menu->setMenus(array(
-  'Administrativo/dashboard' => [
-    'Usuário/dashboard' => '%baseURI%/usuarios',
-    'Editar Perfil/cog' => '%baseURI%/perfil/editar',
-    'Cadastrar/user-plus' => '%baseURI%/cadastro',
-    'Status/check-circle-o' => '%baseURI%/status'
+  'Empresas/university' => [
+    'Listar/university' => '%baseURI%/empresa',
+    'Cadastrar/bars' => '%baseURI%/empresa/cadastrar'
   ],
-  'Empresas/university' => '%baseURI%/empresa',
-  'Dívidas/money' => '%baseURI%/divida',
-  'Sair/sign-out' => '%baseURI%/login/sair'
-), 'administrator');
+  'Cliente/user' => [
+    'Listar/user' => '%baseURI%/cliente',
+    'Cadastrar/user-plus' => '%baseURI%/cliente/cadastrar'
+  ],
+), 'juridico');
+
+$configs->env->development->menu->setConfigs([
+    'container_class' => 'menu_section active',
+    'menu_class' => 'nav side-menu',
+    'menu_item_active_class' => 'active',
+    'dropdown_class' => 'nav child_menu',
+]);
 
 /*
   //Globais

@@ -1,0 +1,144 @@
+<div class="page-title">
+
+	<div class="title_left">
+
+		<h2>Lista de clientes</h2>
+
+	</div>
+
+	<div style="float:  right;padding-top: 10px;">
+		<?php if ($this->auth->getUserRole() != 'cobrança' && $this->auth->getUserRole() != 'cliente') { ?>
+		<a href="<?php echo BASE ?>cliente/cadastrar" class="btn btn-info">ADICIONAR CLIENTE</a>
+		<?php } ?>
+	</div>
+
+</div>
+
+<div class="clearfix"></div>
+
+<div class="panel-body">
+
+	<table class="table" id="tableFull">
+
+		<thead>
+
+			<tr>
+
+				<th>Empresa</th>
+
+				<th>Nome</th>
+
+				<th>CPF</th>
+
+				<th>Email</th>
+
+				<th>Telefones</th>
+
+				<th>Valor Dívida</th>
+
+				<th>Valor Atualizado</th>
+
+				<th></th>
+
+			</tr>
+
+		</thead>
+
+		<tbody>
+
+			<?php
+
+			if ($view_clientes){
+
+				foreach ($view_clientes as $cliente){
+
+					$empresa = Company::find_by_id($cliente->companies_id);
+
+					$dividas = Debt::find('all', array('conditions' => array('cliente_id = ?', $cliente->id)));
+
+
+
+					$valorTotal = 0;
+
+					$vlAtualizado = 0;
+
+					foreach ($dividas as $divida) {
+
+						$valorTotal = $valorTotal+$divida->valor;
+
+						$vlAtualizado = $vlAtualizado+Debt::vlAtualizado($divida->valor, $divida->vencimento, $empresa->multa, $empresa->juros);
+
+					}
+
+					?>
+
+					<tr>
+
+						<td><?php echo $empresa->empresa ?></td>
+
+						<td><?php echo $cliente->nome; ?></td>
+
+						<td><?php echo $cliente->cpf ?></td>
+
+						<td><?php echo $cliente->email ?></td>
+
+						<td>
+
+							<?php
+
+							echo $cliente->celular;
+
+							if ($cliente->telefone != "") {
+
+								echo "<br />".$cliente->telefone;
+
+							}
+
+							if ($cliente->recado != "") {
+
+								echo "<br />".$cliente->recado;
+
+							}
+
+							?>
+
+						</td>
+
+						<td>R$ <?php echo number_format($valorTotal, 2, ",", ".") ?></td>
+
+						<td>R$ <?php echo number_format($vlAtualizado, 2, ",", "."); ?></td>
+
+						<td style="text-align: right;">
+
+							<a href="<?php echo BASE.'cliente/filtrar/'.$cliente->id ?>" class="btn btn-info btn-sm">Dívidas</a>
+
+							<?php
+
+							if ($this->auth->getUserRole() == 'administrator') {
+
+								?>
+								<a href="<?php echo BASE.'cliente/editar/'.$cliente->id ?>" class="btn btn-warning btn-sm">Editar</a>
+								<!--<a href="<?php echo BASE.'cliente/excluir/'.$divida->id ?>" class="btn btn-danger btn-sm">Excluir</a>-->
+								<?php
+
+							}
+
+							?>
+
+						</td>
+
+					</tr>
+
+					<?php
+
+				}
+
+			}
+
+			?>
+
+		</tbody>
+
+	</table>
+
+</div>

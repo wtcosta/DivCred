@@ -35,17 +35,23 @@ class Company extends \HXPHP\System\Model
 		)
 	);
 
-	public static function cadastrar($post, $user_id)
+	public static function cadastrar($post, $user_id, $user_empresa)
 	{
 		//Cria uma classe vazia pra armazenar o retorno das validações
 		$callbackObj = new \stdClass;
-		$callbackObj->user = null;
+		$callbackObj->emp = null;
 		$callbackObj->status = false;
 		$callbackObj->errors = array();
 
 		$userCad = array(
-			'user_cad' => $user_id
+			'user_id' => $user_id,
+			'idUserEmpresa' => $user_empresa,
+			'juros' => str_replace(",", ".", $post['juros']),
+			'multa' => str_replace(",", ".", $post['multa'])
 		);
+
+		unset($post['juros']);
+		unset($post['multa']);
 
 		$post = array_merge($post, $userCad);
 
@@ -53,7 +59,7 @@ class Company extends \HXPHP\System\Model
 		$cadastrar = self::create($post);
 
 		if ($cadastrar->is_valid()) {
-			$callbackObj->user = $cadastrar;
+			$callbackObj->emp = $cadastrar;
 			$callbackObj->status = true;
 			return $callbackObj;
 		}
@@ -93,24 +99,17 @@ class Company extends \HXPHP\System\Model
 			}
 		}
 
-		echo "<pre>";
-		var_dump($post);
-		echo "<hr />";
-		var_dump($post['idUserEmpresa']);
-		echo "<hr />";
-		var_dump(intval($post['idUserEmpresa']));
-		echo "</pre>";
-
 		$emp->cnpj = $post['cnpj'];
+		$emp->gerente = $post['gerente'];
 		$emp->empresa = $post['empresa'];
 		$emp->contato = $post['contato'];
 		$emp->email = $post['email'];
 		$emp->endereco = $post['endereco'];
 		$emp->telefone = $post['telefone'];
 		$emp->celular = $post['celular'];
-		$emp->multa = $post['multa'];
-		$emp->juros = $post['juros'];
-		$emp->idUserEmpresa = intval($post['idUserEmpresa']);
+		$emp->multa = str_replace(",", ".", $post['multa']);
+		$emp->juros = str_replace(",", ".", $post['juros']);
+		$emp->iduserempresa = $post['iduserempresa'];
 
 		$atualizar = $emp->save(false);
 

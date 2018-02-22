@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="Wesley Teixeira - wesleyteixeira.com.br">
+  <meta name="generator" content="DivCred">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><?php echo $view_title; ?></title>
+  <link rel="shortcut icon" href="<?php echo IMG; ?>favicon.jpg" type="image/x-icon">
+  <!--<link rel="stylesheet" href="<?php echo BOWER; ?>bootstrap/dist/css/bootstrap.min.css" type="text/css">
+  <link rel="stylesheet" href="<?php echo BOWER; ?>font-awesome/css/font-awesome.min.css" type="text/css">
+  <script type="text/javascript" src="<?php echo BOWER ?>jquery/dist/jquery.min.js"></script>-->
+  <link rel="stylesheet" href="<?php echo CSS; ?>main.css" type="text/css">
+
+  <!-- Bootstrap -->
+  <link href="<?php echo BOWER; ?>vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="<?php echo BOWER; ?>vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <!-- NProgress -->
+  <link href="<?php echo BOWER; ?>vendors/nprogress/nprogress.css" rel="stylesheet">
+  <!-- Animate.css -->
+  <link href="<?php echo BOWER; ?>vendors/animate.css/animate.min.css" rel="stylesheet">
+
+  <!-- Custom Theme Style -->
+  <link href="<?php echo BOWER; ?>build/css/custom.min.css" rel="stylesheet">
+
+  <?php
+  echo $add_css;
+  echo $add_js;
+
+  //$user_id = $this->auth->getUserId();
+  //$user = User::find($user_id);
+  ?>
+</head>
+<body class="login">
+  <div class="">

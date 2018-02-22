@@ -23,7 +23,7 @@ class StatusController extends \HXPHP\System\Controller
 			$role->role
 		);
 
-		$this->view->setTitle('DivCred - Status')
+		$this->view
 		->setFile('index')
 		->setVars([
 			'status' => State::find('all', array('order' => 'tipo ASC'))
@@ -88,7 +88,7 @@ class StatusController extends \HXPHP\System\Controller
 
 	public function editarAction($status_id)
 	{
-		$this->view->setTitle('DivCred - Status')
+		$this->view
 		->setFile('index')
 		->setVars([
 			'status' => State::find('all', array('order' => 'tipo ASC')),

@@ -11,35 +11,42 @@ class Call extends \HXPHP\System\Model
 		return self::find('all',array('conditions' => array('cpf = ?', $cpf), 'order' => 'data_cad desc'));
 	}
 
-	public static function cadastrar($post, $user_id, $cpf)
+	public static function cadastrar($post, $user_id, $cliente)
 	{
 		$callbackObj = new \stdClass;
 		$callbackObj->divida = false;
+		$callbackObj->atd = false;
 		$callbackObj->status = false;
 		$callbackObj->errors = array();
 
+		$dividasAux = explode(",", $post['dividas']);
+		$dividasJson = json_encode($dividasAux);
+
 		$userCad = array(
-			'cpf' => $cpf,
-			'user_cad' => $user_id
+			'cliente_id' => $cliente,
+			'user_id' => $user_id,
+			'dividas' => $dividasJson
 		);
 
 		$post = array_merge($post, $userCad);
 
-		/*
-		//Atualiza o status da divida - DESATIVADO!
-		$statusDate = State::find_by_id($post['status']);
-		$atualizaStatusDivida = Debt::atualizaStatus($divida, $statusDate->relacionamento);
-		if (is_null($atualizaStatusDivida)) {
-			$callbackObj->errors = 'Não foi possível atualizar o status da dívida<br />Verifique o cadastro de status';
-			return $callbackObj;
+
+		/*user o $dividasJson para atualizar o status*/
+		$statusDate = State::find_by_id($post['status_id']);
+		foreach ($dividasAux as $value) {
+			$atualizaStatusDivida = Debt::atualizaStatus($value, $statusDate->relacionamento);
+			if (is_null($atualizaStatusDivida)) {
+				$callbackObj->errors = 'Não foi possível atualizar o status da dívida<br />Verifique o cadastro de status';
+				return $callbackObj;
+			}
 		}
-		*/
 
 		$cadastrar = self::create($post);
 
 		if ($cadastrar->is_valid()) {
 			$callbackObj->status = true;
 			$callbackObj->divida = $post;
+			$callbackObj->atd = $cadastrar;
 			return $callbackObj;
 		}
 

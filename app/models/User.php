@@ -62,6 +62,7 @@ class User extends \HXPHP\System\Model
 		if ($cadastrar->is_valid()) {
 			$callbackObj->user = $cadastrar;
 			$callbackObj->status = true;
+
 			return $callbackObj;
 		}
 

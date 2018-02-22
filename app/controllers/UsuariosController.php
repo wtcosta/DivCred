@@ -23,7 +23,7 @@ class UsuariosController extends \HXPHP\System\Controller
 			$role->role
 		);
 
-		$this->view->setTitle('HXPHP - Administrativo')
+		$this->view
 		->setFile('index')
 		->setVars([
 			'user' => $user,
@@ -61,14 +61,23 @@ class UsuariosController extends \HXPHP\System\Controller
 
 	public function excluirAction($user_id)
 	{
-		if (is_numeric($user_id)) {
+		$empresa = Company::find(array('conditions' => array('idUserEmpresa = ?', $user_id)));
+		if (is_numeric($user_id) && @!$empresa->id) {
 			$user = User::find_by_id($user_id);
-
 			if (!is_null($user)) {
+				$this->load('Helpers\Alert', array(
+					'success',
+					'Usuário excluido com sucesso!'
+				));
 				$user->delete();
-
 				$this->view->setVar('users', User::all());
 			}
+		}else{
+			$this->load('Helpers\Alert', array(
+				'danger',
+				'Usário não pode ser excluido!<br />Verifique se ele não está associado a uma empresa.'
+			));
+			$this->view->setVar('users', User::all());
 		}
 	}
 }

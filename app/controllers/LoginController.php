@@ -12,6 +12,10 @@ class LoginController extends \HXPHP\System\Controller
 			$configs->auth->after_logout,
 			true
 		);
+
+		$this->view
+		->setHeader('header_login')
+		->setFooter('footer_login');
 	}
 
 	public function indexAction()
@@ -27,8 +31,6 @@ class LoginController extends \HXPHP\System\Controller
 
 		if (!empty($post)) {
 			$login = User::login($post);
-
-			var_dump($login);
 
 			if ($login->status === true) {
 				$this->auth->login($login->user->id, $login->user->username, $login->user->role->role);

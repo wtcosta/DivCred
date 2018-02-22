@@ -1,0 +1,72 @@
+<div class="page-title">
+	<div class="title_left">
+		<h2>Triagem</h2>
+	</div>
+</div>
+<div class="clearfix"></div>
+<div class="panel-body">
+	<div class="col-md-7">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Nome</th>
+					<th>Ações</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+				if ($view_seq){
+					foreach ($view_seq as $seq){
+						?>
+						<tr>
+							<td><?php echo $seq->id ?></td>
+							<td><?php echo $seq->tipo ?></td>
+							<td>
+								<a href="<?php echo BASE.'sequencia/editar/'.$seq->id ?>" class="btn btn-warning btn-sm">Editar</a>
+								<a href="<?php echo BASE.'sequencia/excluir/'.$seq->id ?>" class="btn btn-danger btn-sm">Excluir</a>
+							</td>
+						</tr>
+						<?php
+					}
+				}
+				?>
+			</tbody>
+		</table>
+	</div>
+	<div class="col-md-5">
+		<h4 style="text-align: center;margin-bottom: 25px;">Adicionar uma sequencia</h4>
+		<?php
+		if (isset($view_seqForm)) {
+			$action = BASE . 'sequencia/atualizar/'.$view_seqForm->id;
+			$values = [
+				'tipo' => $view_seqForm->tipo
+			];
+		}else{
+			$action = BASE . 'sequencia/cadastrar/';
+			$values = [
+				'tipo' => $this->request->post('tipo')
+			];
+		}
+		Form::open('cadastrarsequencia', $values, [
+			'action' => $action,
+			'enctype' => 'multipart/form-data',
+			'prevent' => [
+				'focus'
+			]
+		]);
+		Form::Textbox(
+			'Nome:',
+			'tipo',
+			array(
+				'required' => 1
+			)
+		);
+		Form::Button('Salvar', 'submit', [
+			'style' => 'width: 65%;float:  right;',
+			'class' => 'btn-success'
+		]);
+		Form::close(false);
+		?>
+	</div>
+</div>

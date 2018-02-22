@@ -1,15 +1,9 @@
-<script type="text/javascript">
-	$(document).ready(function(){
-		$("#tipo").on('change', function(){
-			if (this.value == 2) {
-				$('#' + this.value).show();
-			}else{
-				$('#2').hide();
-				$('#relacionamento').val("");
-			}
-		});
-	});
-</script>
+<div class="page-title">
+	<div class="title_left">
+		<h2>Status</h2>
+	</div>
+</div>
+<div class="clearfix"></div>
 <div class="panel-body">
 	<div class="col-md-7">
 		<table class="table">
@@ -133,3 +127,15 @@
 		?>
 	</div>
 </div>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#tipo").on('change', function(){
+			if (this.value == 2) {
+				$('#' + this.value).show();
+			}else{
+				$('#2').hide();
+				$('#relacionamento').val("");
+			}
+		});
+	});
+</script>

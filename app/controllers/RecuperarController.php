@@ -13,9 +13,6 @@ class RecuperarController extends \HXPHP\System\Controller
 			true
 		);
 
-		//Altera o titulo da views
-		$this->view->setTitle('SistemaHx - Altere sua senha');
-
 		//Carrega o modulo de mensagens
 		$this->load('Modules\Messages', 'password-recovery');
 		$this->messages->setBlock('alerts');

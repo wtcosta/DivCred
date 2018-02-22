@@ -5,39 +5,24 @@
 */
 class Debt extends \HXPHP\System\Model
 {
-
-	static $validates_presence_of = array(
-		array(
-			'nome',
-			'message' => 'O nome é um campo obrigatório.'
-			),
-		array(
-			'cpf',
-			'message' => 'O e-mail é um campo obrigatório.'
-			),
-		array(
-			'valor',
-			'message' => 'O usuário é um campo obrigatório.'
-			)
-		);
-
-	public static function cadastrar($post,$user_id)
+	public static function cadastrar($post,$cliente_id,$user_id)
 	{
-		//Cria uma classe vazia pra armazenar o retorno das validações
 		$callbackObj = new \stdClass;
+		$callbackObj->divida = '';
 		$callbackObj->status = false;
 		$callbackObj->errors = array();
 
-		$userCad = array(
-			'user_cad' => $user_id
+		$post_aux = array(
+			'user_id' => $user_id,
+			'cliente_id' => $cliente_id
 			);
 
-		$post = array_merge($post, $userCad);
+		$post = array_merge($post, $post_aux);
 
-		//Salva os dados no banco de dados
 		$cadastrar = self::create($post);
 
 		if ($cadastrar->is_valid()) {
+			$callbackObj->divida = $cadastrar;
 			$callbackObj->status = true;
 			return $callbackObj;
 		}
@@ -60,16 +45,9 @@ class Debt extends \HXPHP\System\Model
 
 		$divida = self::find($divida_id);
 
-		$divida->cpf = $post['cpf'];
-		$divida->empresa = $post['empresa'];
-		$divida->nome = $post['nome'];
-		$divida->endereco = $post['endereco'];
-		$divida->celular = $post['celular'];
-		$divida->telefone = $post['telefone'];
-		$divida->recado = $post['recado'];
 		$divida->valor = $post['valor'];
 		$divida->vencimento = $post['vencimento'];
-		$divida->status = $post['status'];
+		$divida->status_id = $post['status_id'];
 		$divida->obs = $post['obs'];
 
 		$atualizar = $divida->save(false);
@@ -88,15 +66,28 @@ class Debt extends \HXPHP\System\Model
 		return $callbackObj;
 	}
 
-	public static function busca_empresa($empresa)
+	public static function diasAtraso($vencimento='')
 	{
-		return self::find('all',array('conditions' => array('empresa = ?', $empresa), 'order' => 'data_cad desc'));
+		$data_inicio = new DateTime($vencimento);
+		$data_fim = new DateTime();
+
+		$dateInterval = $data_inicio->diff($data_fim);
+		return $dateInterval->days;
+	}
+
+	public static function vlAtualizado($dividaValor='', $dividaVencimento='', $multa='', $juros='')
+	{
+		$diasAtraso = Debt::diasAtraso($dividaVencimento);
+
+		$vlAtualizado = (((($dividaValor/100)*$multa)+$dividaValor)/100)*(($juros/30)*$diasAtraso)+((($dividaValor/100)*$multa)+$dividaValor);
+
+		return $vlAtualizado;
 	}
 
 	public static function atualizaStatus($divida_id, $status_new)
 	{
 		$divida = self::find($divida_id);
-		$divida->status = $status_new;
+		$divida->status_id = $status_new;
 		return $divida->save(false);
 	}
 }

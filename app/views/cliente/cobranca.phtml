@@ -1,0 +1,620 @@
+<?php
+$empresa = Company::find_by_id($view_clientes->companies_id);
+$dividas = Debt::find('all', array('conditions' => array('cliente_id = ?', $view_clientes->id), 'order' => 'data_cad desc'));
+$atds = Call::find('all', array('conditions' => array('cliente_id = ?', $view_clientes->id), 'order' => 'data_cad desc'));
+
+$valorTotal = 0;
+$vlAtualizado = 0;
+foreach ($dividas as $divida) {
+	$valorTotal = $valorTotal+$divida->valor;
+	$vlAtualizado = $vlAtualizado+Debt::vlAtualizado($divida->valor, $divida->vencimento, $empresa->multa, $empresa->juros);
+}
+?>
+<style type="text/css">
+.tableBoleto .dataTables_length label{
+	color: #fff;
+}
+.tableBoleto .dataTables_length select{
+	color: #73879C;
+}
+</style>
+<div class="page-title">
+	<div class="title_left">
+		<h2>Dados do cliente:</h2>
+	</div>
+</div>
+<div class="clearfix"></div>
+<div class="panel-body">
+	<div class="row">
+		<div class="col-md-8" style="margin-bottom: 20px;">
+			<p><?php echo $empresa->empresa; ?></p>
+			<h1><?php echo $view_clientes->nome; ?></h1>
+			<h2><?php echo $view_clientes->cpf; ?></h2>
+			<p><?php echo @$view_clientes->celular.' '.@$view_clientes->telefone.' '.@$view_clientes->recado; ?></p>
+		</div>
+		<div class="col-md-4">
+			<div class="row-fluid valorDivida">
+				<div class="col-md-6">
+					Valor Total:<br />
+					<b>R$ <?php echo number_format($valorTotal, 2, ",", ".") ?></b>
+				</div>
+				<div class="col-md-6">
+					Valor Atualizado:<br />
+					<b>R$ <?php echo number_format($vlAtualizado, 2, ",", ".") ?></b>
+				</div>
+			</div>
+			<div class="row-fluid">
+				<?php if ($this->auth->getUserRole() != 'empresa') { ?>
+				<div class="col-md-6" style="text-align: center;padding: 25px 0;">
+					<button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalAtd">
+						ATENDIMENTO
+					</button>
+					<!-- Modal -->
+					<div class="modal fade bd-example-modal-lg" id="modalAtd" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<div class="col-md-6">
+										<h1 class="modal-title" id="exampleModalLongTitle" style="width:  100%;text-align: left;"><?php echo $view_clientes->nome; ?></h1>
+										<h3 class="modal-title" id="exampleModalLongTitle" style="width:  100%;text-align: left;"><?php echo $view_clientes->cpf; ?></h3>
+										<p class="modal-subtitulo">
+											<?php echo $view_clientes->celular.' - '.$view_clientes->telefone.' - '.$view_clientes->recado; ?>
+										</p>
+									</div>
+									<div class="col-md-5 vlAtd">
+										Valor Total:
+										<b>R$ <?php echo number_format($valorTotal, 2, ",", ".") ?></b>
+										<br />
+										Valor Atualizado:
+										<b>R$ <?php echo number_format($vlAtualizado, 2, ",", ".") ?></b>
+									</div>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<?php
+									$action = BASE . 'cliente/cadLog/'.$view_clientes->id;
+									$values = [
+										'vlNeg' => $this->request->post('vlNeg'),
+										'obs' => $this->request->post('obs'),
+										'status' => $this->request->post('status')
+									];
+									Form::open('cadLog'.$view_clientes->id, $values, [
+										'action' => $action,
+										'view' => "Vertical",
+										'name' => "atendimento",
+										'enctype' => 'multipart/form-data',
+										'prevent' => [
+											'focus'
+										]
+									]);
+									?>
+									<div class="row-fluid">
+										<div class="col-md-6">
+											<?php
+											Form::Number(
+												'Valor da Negociação:',
+												'vlNeg',
+												array(
+													'min' => 0,
+													'step' => '.01'
+												)
+											);
+											$status = State::busca(2);
+											$options = array();
+											if (count($status) < 1) {
+												$options[0] = 'Nenhum status informado, contate o admin';
+											}else{
+												foreach ($status as $stat) {
+													$options[$stat->id] = $stat->nome;
+												}
+											}
+											Form::Select(
+												"Status",
+												"status_id",
+												$options,
+												array(
+													'required' => 1
+												)
+											);
+											?>
+											<div class="row-fluid">
+												<div class="col-md-6">
+													<?php
+													Form::Button('CADASTRAR ATENDIMENTO', 'submit', [
+														'class' => 'btn-success'
+													]);
+													?>
+												</div>
+												<div class="col-md-6">
+													<span class="btn btn-info" onclick="geraBoleto()">Gerar Boleto</span>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<?php
+											Form::Textarea(
+												'Registre aqui todos os detalhes do atendimento:',
+												'obs',
+												array(
+													'rows' => 6
+												)
+											);
+											?>
+										</div>
+									</div>
+									<div class="col-md-12" id="boletos" style="display: none;float: left;width: 100%;margin: 30px 0;">
+										<?php
+										for ($i=1; $i <= 10; $i++) {
+											if ($i==1) {
+												echo '<div class="row" id="boletoItem_'.$i.'">';
+											}else{
+												echo '<div class="row" id="boletoItem_'.$i.'" style="display: none;">';
+											}
+											echo '<div class="col-md-4">';
+											Form::Date(
+												"Vencimento",
+												"vencimento[".$i."]",
+												$attributes = null
+											);
+											echo "</div>";
+											echo '<div class="col-md-4">';
+											Form::Number(
+												"Valor",
+												"valor[".$i."]",
+												$attributes = null
+											);
+											echo "</div>";
+											echo '<div class="col-md-4">';
+											?>
+											<buttom class="btn btn-primary" onclick="add(<?php echo $i+1 ?>)">Adicionar Boleto</buttom>
+											<?php
+											echo "</div>";
+											echo '</div>';
+										}
+										?>
+									</div>
+									<?php
+									Form::Hidden(
+										'tipo',
+										'',
+										array('id' => 'tipo')
+									);
+									Form::Hidden(
+										'dividas',
+										'',
+										array(
+											'id' => 'dividas',
+											'value' => ''
+										)
+									);
+									Form::close(false);
+									?>
+									<table class="table" id="tableAtd">
+										<thead>
+											<th>Valor</th>
+											<th>Atendimento</th>
+											<th>Status</th>
+											<th>Data</th>
+											<th></th>
+										</thead>
+										<tbody>
+											<?php
+											foreach ($atds as $atd) {
+												?>
+												<tr>
+													<td>
+														R$ <?php echo number_format($atd->vlneg, 2, ",", "."); ?>
+													</td>
+													<td><?php echo $atd->obs; ?></td>
+													<td><?php echo State::find_by_id($atd->status_id)->nome; ?></td>
+													<td><?php echo date("d/m/Y H:m", strtotime($atd->data_cad)); ?></td>
+													<td>
+														<?php
+														$boleto = Payment::find(array('conditions' => array('atendimento_id = ?', $atd->id)));
+														if (!is_null($boleto)) {
+															?>
+															<span class="btn btn-success">Boleto Gerado!</span>
+															<?php
+														}
+														?>
+													</td>
+												</tr>
+												<?php
+											}
+											?>
+										</tbody>
+									</table>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-dismiss="modal">
+										Fechar
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<?php } ?>
+				<?php if ($this->auth->getUserRole() != 'cobrança' && $this->auth->getUserRole() != 'cliente') { ?>
+				<div class="col-md-6" style="text-align: center;padding: 25px 0;">
+					<button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalDivida">
+						CADASTRAR DÍVIDA
+					</button>
+					<!-- Modal -->
+					<div class="modal fade bd-example-modal-lg" id="modalDivida" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h3 class="modal-title" id="exampleModalLongTitle">
+										Cadastro de dívida cliente <?php echo $view_clientes->nome ?>
+									</h3>
+								</div>
+								<div class="modal-body">
+									<?php
+									$action = BASE . 'cliente/cadastrarDivida/'.$view_clientes->id;
+									$values = [
+										'valor' => $this->request->post('valor'),
+										'vencimento' => $this->request->post('vencimento'),
+										'obs' => $this->request->post('obs'),
+										'status_id' => $this->request->post('status_id')
+									];
+									Form::open('cadLog'.$view_clientes->id, $values, [
+										'action' => $action,
+										'view' => "Vertical",
+										'name' => "atendimento",
+										'enctype' => 'multipart/form-data',
+										'prevent' => [
+											'focus'
+										]
+									]);
+									?>
+									<div class="row-fluid">
+										<div class="col-md-4">
+											<?php
+											Form::Number(
+												'Valor da Dívida:',
+												'valor',
+												array(
+													'required' => 1,
+													'min' => 0,
+													'step' => '.01'
+												)
+											);
+											?>
+										</div>
+										<div class="col-md-4">
+											<?php
+											Form::Date(
+												'Vencimento:',
+												'vencimento',
+												array(
+													'required' => 1
+												)
+											);
+											?>
+										</div>
+										<div class="col-md-4">
+											<?php
+											$status = State::busca(1);
+											$options = array();
+											if (count($status) < 1) {
+												$options[0] = 'Nenhum status informado, contate o admin';
+											}else{
+												foreach ($status as $stat) {
+													$options[$stat->id] = $stat->nome;
+												}
+											}
+											Form::Select(
+												"Status",
+												"status_id",
+												$options,
+												array(
+													'required' => 1,
+													'value' => 20
+												)
+											);
+											?>
+										</div>
+									</div>
+									<div class="row-fluid">
+										<div class="col-md-8">
+											<?php
+											Form::Textarea(
+												'Observações:',
+												'obs',
+												array(
+													'required' => 1,
+													'rows' => 6
+												)
+											);
+											?>
+										</div>
+										<div class="col-md-4">
+											<label style="float: left;width: 100%">Triagem</label>
+											<?php
+											$tipos = Type::all();
+											$options = array();
+											foreach ($tipos as $tipo) {
+												$options[$tipo->id] = $tipo->tipo;
+											}
+											Form::Checkbox(
+												'Tipo de dívida',
+												'tipo',
+												$options
+											);
+											?>
+										</div>
+									</div>
+									<div class="row-fluid">
+										<div class="col-md-12">
+											<?php
+											Form::Button('CADASTRAR DÍVIDA', 'submit', [
+												'class' => 'btn-success'
+											]);
+											?>
+										</div>
+									</div>
+									<?php
+									Form::close(false);
+									?>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-dismiss="modal">
+										Fechar
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<?php }else{ ?>
+				<!-- BTN Prox -->
+				<?php } ?>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-7">
+			<div class="page-title">
+				<div class="title_left">
+					<h2>Dívidas</h2>
+				</div>
+			</div>
+			<table class="table" id="tableFull">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Valor Original</th>
+						<th>Valor Atualizado</th>
+						<th>Dívida desde...</th>
+						<th>Status</th>
+						<th>Triagem</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php
+					foreach ($dividas as $divida){
+						$vlAtualizado = Debt::vlAtualizado($divida->valor, $divida->vencimento, $empresa->multa, $empresa->juros);
+						?>
+						<tr>
+							<td>
+								<input type="checkbox" id="dividaSelec" value="<?php echo $divida->id ?>" class="form-check-input" checked="true">
+							</td>
+							<td>R$ <?php echo number_format($divida->valor, 2, ",", "."); ?></td>
+							<td>R$ <?php echo number_format($vlAtualizado, 2, ",", "."); ?></td>
+							<td><?php echo date('d/m/Y', strtotime($divida->vencimento)); ?> (<?php echo Debt::diasAtraso($divida->vencimento); ?> dias)</td>
+							<td><?php echo State::find_by_id($divida->status_id)->nome; ?></td>
+							<td><?php echo Types_debt::lista($divida->id); ?></td>
+							<td>
+								<?php if ($this->auth->getUserRole() == 'administrator') { ?>
+								<button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#edit_<?php echo $divida->id ?>">
+									Editar
+								</button>
+								<?php } ?>
+							</td>
+						</tr>
+						<div class="modal fade bd-example-modal-lg" id="edit_<?php echo $divida->id ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+							<div class="modal-dialog modal-lg" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h3 class="modal-title" id="exampleModalLongTitle">
+											Editar dívida de <?php echo $view_clientes->nome ?>
+										</h3>
+									</div>
+									<div class="modal-body">
+										<?php
+										$action = BASE . 'cliente/editarDivida/'.$view_clientes->id.'/'.$divida->id;
+										$values = [
+											'valor' => $divida->valor,
+											'vencimento' => date("Y-m-d", strtotime($divida->vencimento)),
+											'obs' => $divida->obs
+										];
+										Form::open('cadLog'.$view_clientes->id, $values, [
+											'action' => $action,
+											'view' => "Vertical",
+											'name' => "atendimento",
+											'enctype' => 'multipart/form-data',
+											'prevent' => [
+												'focus'
+											]
+										]);
+										?>
+										<div class="row-fluid">
+											<div class="col-md-4">
+												<?php
+												Form::Number(
+													'Valor da Dívida:',
+													'valor',
+													array(
+														'required' => 1,
+														'min' => 0,
+														'step' => '.01'
+													)
+												);
+												?>
+											</div>
+											<div class="col-md-4">
+												<?php
+												Form::Date(
+													'Vencimento:',
+													'vencimento',
+													array(
+														'required' => 1
+													)
+												);
+												?>
+											</div>
+											<div class="col-md-4">
+												<?php
+												$status = State::busca(1);
+												$options = array();
+												if (count($status) < 1) {
+													$options[0] = 'Nenhum status informado, contate o admin';
+												}else{
+													foreach ($status as $stat) {
+														$options[$stat->id] = $stat->nome;
+													}
+												}
+												Form::Select(
+													"Status",
+													"status_id",
+													$options,
+													array(
+														'value' => $divida->status_id,
+														'required' => 1
+													)
+												);
+												?>
+											</div>
+										</div>
+										<div class="row-fluid">
+											<div class="col-md-8">
+												<?php
+												Form::Textarea(
+													'Observações:',
+													'obs',
+													array(
+														'required' => 1,
+														'rows' => 6
+													)
+												);
+												?>
+											</div>
+											<div class="col-md-4">
+												<label style="float: left;width: 100%">Triagem</label>
+												<?php
+												$tipos = Type::all();
+												$seq = Types_debt::listaArray($divida->id);
+												$options = array();
+												foreach ($tipos as $tipo) {
+													$options[$tipo->id] = $tipo->tipo;
+												}
+												Form::Checkbox(
+													'Tipo de dívida',
+													'tipo',
+													$options,
+													array(
+														'value' => $seq
+													)
+												);
+												?>
+											</div>
+										</div>
+										<div class="row-fluid">
+											<div class="col-md-12" style="text-align: center;">
+												<?php
+												Form::Button('ATUALIZAR DÍVIDA', 'submit', [
+													'class' => 'btn-success'
+												]);
+												?>
+											</div>
+										</div>
+										<?php
+										Form::close(false);
+										?>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-dismiss="modal">
+											Fechar
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<?php
+					}
+					?>
+				</tbody>
+			</table>
+		</div>
+		<div class="col-md-5 tableBoleto">
+			<div class="page-title">
+				<div class="title_left">
+					<h2>Boletos</h2>
+				</div>
+			</div>
+			<?php
+			$boletosData = Payment::find('all', array('conditions' => array('cliente_id = ?', $view_clientes->id), 'order' => 'vencimento desc'));
+			?>
+			<table class="table" id="tableFull2">
+				<thead>
+					<tr>
+						<th>Valor</th>
+						<th>Vencimento</th>
+						<th>Pagamento</th>
+						<th>Status</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php
+					foreach ($boletosData as $boleto) {
+						?>
+						<tr>
+							<td>
+								<a href="<?php echo $boleto->boleto ?>" target="_blank">
+									R$ <?php echo number_format($boleto->valor, 2, ",", ";") ?>
+								</a>
+							</td>
+							<td><?php echo date("d/m/Y", strtotime($boleto->vencimento)) ?></td>
+							<td><?php if ($boleto->pagamento) { echo date("d/m/Y", strtotime($boleto->pagamento)); } ?></td>
+							<td><?php echo Payment::status($boleto->status) ?></td>
+						</tr>
+						<?php
+					}
+					?>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$(document).ready(function(e) {
+				//Verifica todos os campos checados e manda para o campo qundo a página carrega
+				dividas = [];
+				$.each(($("#dividaSelec:checked")), function(index, obj){
+					dividas.push(obj.value);
+				});
+				$('#dividas').val(dividas);
+
+		//Verifica quais dívidas ficarem selecionadas após alteração e envia pro campo
+		$("input[id=dividaSelec]").click(function(e) {
+			dividas = [];
+			$.each(($("#dividaSelec:checked")), function(index, obj){
+				dividas.push(obj.value);
+			});
+			$('#dividas').val(dividas);
+		});
+	});
+
+	function geraBoleto() {
+		$("#boletos").show('slow');
+		document.getElementById('tipo').value = "geraBoleto";
+	}
+
+	function add(id) {
+		$('#boletoItem_'+id).show('slow');
+	}
+</script>

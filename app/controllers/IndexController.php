@@ -18,10 +18,12 @@ class IndexController extends \HXPHP\System\Controller
 		$user = User::find($user_id);
 		$role = Role::find($user->role_id);
 
+		$_SESSION['user'] = $user;
+
 		if ($role->role == 'empresa' || $role->role == 'cliente') {
-			$this->redirectTo('divida/', false, false);
+			$this->redirectTo('divida', false, false);
 		}else{
-			$this->redirectTo('empresa/', false, false);
+			$this->redirectTo('empresa', false, false);
 		}
 	}
 }

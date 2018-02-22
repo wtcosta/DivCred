@@ -21,7 +21,7 @@ class PerfilController extends \HXPHP\System\Controller
 
 		$user_id = $this->auth->getUserId();
 
-		$this->view->setTitle('HXPHP - Editar perfil')
+		$this->view
 		->setVar('user', User::find($user_id));
 	}
 
@@ -54,7 +54,7 @@ class PerfilController extends \HXPHP\System\Controller
 						$uploadUserImage->file_new_name_body = $image_name;
 						$uploadUserImage->file_new_name_ext = 'png';
 						$uploadUserImage->resize = true;
-						$uploadUserImage->image_x = 500;
+						$uploadUserImage->image_x = 200;
 						$uploadUserImage->image_ratio_y = true;
 						$dir_path = ROOT_PATH . DS . 'public' . DS . 'uploads' . DS . 'users' . DS . $atualizarUsuario->user->id . DS;
 						$uploadUserImage->process($dir_path);

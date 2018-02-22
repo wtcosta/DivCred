@@ -1,46 +1,18 @@
-<div class="col-md-offset-4 resumo">
-	<?php
-	$dividasAll = Debt::all();
-	$div_total = 0;
-	$div_paga = 0;
-	$div_a_pagar = 0;
-	foreach ($dividasAll as $divida) {
-		$div_total += $divida->valor;
-		if ($divida->status == 15) {
-			$div_paga += $divida->valor;
-		}
-		if ($divida->status != 15) {
-			$div_a_pagar += $divida->valor;
-		}
-	}
-	?>
-	<p class="total">
-		<span class="lab">Total de Dívidas:</span>
-		<span class="vl">R$ <?php echo number_format($div_total, 2, ",", "."); ?></span>
-	</p>
-	<p class="pagas">
-		<span class="lab">Dívidas Pagas:</span>
-		<span class="vl">R$ <?php echo number_format($div_paga, 2, ",", "."); ?></span>
-	</p>
-	<p class="npagas">
-		<span class="lab">Dívidas A Pagar:</span>
-		<span class="vl">R$ <?php echo number_format($div_a_pagar, 2, ",", "."); ?></span>
-	</p>
-</div>
-<div class="panel-body">
-	<div class="col-md-offset-10">
-		<a href="<?php echo BASE.'empresa/cadastrar' ?>" class="btn btn-success">Cadastrar</a>
+<div class="row-fluid">
+	<div class="page-title">
+		<div class="title_left">
+			<h2>Lista de Empresas</h2>
+		</div>
 	</div>
-	<table class="table">
+	<table class="table" id="tableFull">
 		<thead>
 			<tr>
-				<th>CNPJ</th>
+				<th></th>
 				<th>Empresa</th>
-				<th>Contato</th>
-				<th>Email</th>
-				<th>Telefones</th>
-				<th>Qtd de dívidas</th>
-				<th>Valor total</th>
+				<th>Documentos Faltantes</th>
+				<th>Boletos Emitidos</th>
+				<th>Boletos Pagos</th>
+				<th>Clientes</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -48,40 +20,62 @@
 			<?php
 			if ($view_empresa){
 				foreach ($view_empresa as $emp){
-					$dividas = Debt::busca_empresa($emp->id);
+					$clientes = Client::busca_cliente($emp->id);
+					$gerente = User::find_by_id($emp->gerente);
+					$docs = Document::find(array('conditions' => array('companies_id = ?', $emp->id)));
+					if (isset($gerente->cor)) {
+						$bg = $gerente->cor;
+					}else{
+						$bg = '#fff';
+					}
 					?>
 					<tr>
-						<td><?php echo $emp->cnpj ?></td>
-						<td><?php echo $emp->empresa ?></td>
-						<td><?php echo $emp->contato ?></td>
-						<td><?php echo $emp->email ?></td>
-						<td><?php
-						if ($emp->telefone) {
-							echo $emp->telefone;
-						}
-						if ($emp->celular) {
-							echo "<br />".$emp->celular;
-						}
-						?></td>
 						<td>
-							<?php echo count($dividas); ?>
+							<div class="corEmp" style="background: <?php echo $bg ?>"></div>
+						</td>
+						<td>
+							<small><?php echo $emp->cnpj ?></small>
+							<p><?php echo $emp->empresa ?></p>
+						</td>
+						<td><?php if ($docs) { echo '<ul class="list-group docs">'.Document::printDoc($docs).'</ul>'; } ?></td>
+						<td>
+							<?php
+							$vlTotal = 0;
+							foreach ($clientes as $cliente) {
+								$pags = Payment::find('all', array('conditions' => array('cliente_id = ?', $cliente->id)));
+								if (count($pags)>0) {
+									foreach ($pags as $pag) {
+										$vlTotal += $pag->valor;
+									}
+								}
+							}
+							echo 'R$ '.number_format($vlTotal, 2, ",", ".");
+							?>
 						</td>
 						<td>
 							<?php
 							$vlTotal = 0;
-							foreach ($dividas as $divida) {
-								$vlTotal += $divida->valor;
+							foreach ($clientes as $cliente) {
+								$pags = Payment::find('all', array('conditions' => array('cliente_id = ? AND status = "RECEIVED"', $cliente->id)));
+								if (count($pags)>0) {
+									foreach ($pags as $pag) {
+										$vlTotal += $pag->valor;
+									}
+								}
 							}
-							echo "R$ ".number_format($vlTotal, 2, ",", ".");
+							echo 'R$ '.number_format($vlTotal, 2, ",", ".");
 							?>
 						</td>
 						<td>
-							<a href="<?php echo BASE.'divida/filtrar/'.$emp->id ?>" class="btn btn-info btn-sm">Dívidas</a>
+							<?php echo count($clientes); ?>
+						</td>
+						<td>
+							<a href="<?php echo BASE.'cliente/empresa/'.$emp->id ?>" class="btn btn-info btn-sm">Clientes</a>
 							<?php
 							if ($this->auth->getUserRole() == 'administrator') {
 								?>
 								<a href="<?php echo BASE.'empresa/editar/'.$emp->id ?>" class="btn btn-warning btn-sm">Editar</a>
-								<a href="<?php echo BASE.'empresa/excluir/'.$emp->id ?>" class="btn btn-danger btn-sm">Excluir</a>
+								<!--<a href="<?php echo BASE.'empresa/excluir/'.$emp->id ?>" class="btn btn-danger btn-sm">Excluir</a>-->
 								<?php
 							}
 							?>
@@ -94,3 +88,37 @@
 		</tbody>
 	</table>
 </div>
+
+<!-- FastClick -->
+<script src="<?php echo BOWER; ?>vendors/fastclick/lib/fastclick.js"></script>
+<!-- NProgress -->
+<script src="<?php echo BOWER; ?>vendors/nprogress/nprogress.js"></script>
+<!-- Chart.js -->
+<script src="<?php echo BOWER; ?>vendors/Chart.js/dist/Chart.min.js"></script>
+<!-- gauge.js -->
+<script src="<?php echo BOWER; ?>vendors/gauge.js/dist/gauge.min.js"></script>
+<!-- bootstrap-progressbar -->
+<script src="<?php echo BOWER; ?>vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+<!-- iCheck -->
+<script src="<?php echo BOWER; ?>vendors/iCheck/icheck.min.js"></script>
+<!-- Skycons -->
+<script src="<?php echo BOWER; ?>vendors/skycons/skycons.js"></script>
+<!-- Flot -->
+<script src="<?php echo BOWER; ?>vendors/Flot/jquery.flot.js"></script>
+<script src="<?php echo BOWER; ?>vendors/Flot/jquery.flot.pie.js"></script>
+<script src="<?php echo BOWER; ?>vendors/Flot/jquery.flot.time.js"></script>
+<script src="<?php echo BOWER; ?>vendors/Flot/jquery.flot.stack.js"></script>
+<script src="<?php echo BOWER; ?>vendors/Flot/jquery.flot.resize.js"></script>
+<!-- Flot plugins -->
+<script src="<?php echo BOWER; ?>vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+<script src="<?php echo BOWER; ?>vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+<script src="<?php echo BOWER; ?>vendors/flot.curvedlines/curvedLines.js"></script>
+<!-- DateJS -->
+<script src="<?php echo BOWER; ?>vendors/DateJS/build/date.js"></script>
+<!-- JQVMap -->
+<script src="<?php echo BOWER; ?>vendors/jqvmap/dist/jquery.vmap.js"></script>
+<script src="<?php echo BOWER; ?>vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+<script src="<?php echo BOWER; ?>vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
+<!-- bootstrap-daterangepicker -->
+<script src="<?php echo BOWER; ?>vendors/moment/min/moment.min.js"></script>
+<script src="<?php echo BOWER; ?>vendors/bootstrap-daterangepicker/daterangepicker.js"></script>

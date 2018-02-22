@@ -23,8 +23,6 @@ class CadastroController extends \HXPHP\System\Controller
 			$this->configs,
 			$role->role
 		);
-
-		$this->view->setTitle('DIVCRED - Cadastro de novo usuário');
 	}
 
 	public function cadastrarAction()

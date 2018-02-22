@@ -6,25 +6,137 @@
   <meta name="generator" content="DivCred">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?php echo $view_title; ?></title>
-  <link rel="shortcut icon" href="<?php echo IMG; ?>favicon.jpg" type="image/x-icon">
-  <link rel="stylesheet" href="<?php echo BOWER; ?>bootstrap/dist/css/bootstrap.min.css" type="text/css">
+  <link rel="shortcut icon" href="<?php echo IMG; ?>favi.jpeg" type="image/x-icon">
+  <!--<link rel="stylesheet" href="<?php echo BOWER; ?>bootstrap/dist/css/bootstrap.min.css" type="text/css">
   <link rel="stylesheet" href="<?php echo BOWER; ?>font-awesome/css/font-awesome.min.css" type="text/css">
+  <script type="text/javascript" src="<?php echo BOWER ?>jquery/dist/jquery.min.js"></script>-->
   <link rel="stylesheet" href="<?php echo CSS; ?>main.css" type="text/css">
-  <script type="text/javascript" src="<?php echo BOWER ?>jquery/dist/jquery.min.js"></script>
+
+  <!-- Bootstrap -->
+  <link href="<?php echo BOWER; ?>vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="<?php echo BOWER; ?>vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <!-- NProgress -->
+  <link href="<?php echo BOWER; ?>vendors/nprogress/nprogress.css" rel="stylesheet">
+  <!-- iCheck -->
+  <link href="<?php echo BOWER; ?>vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+  <!-- Custom Theme Style -->
+  <link href="<?php echo BOWER; ?>build/css/custom.css" rel="stylesheet">
+  <!-- bootstrap-progressbar -->
+  <link href="<?php echo BOWER; ?>vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+  <!-- JQVMap -->
+  <link href="<?php echo BOWER; ?>vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
+  <!-- bootstrap-daterangepicker -->
+  <link href="<?php echo BOWER; ?>vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+  <!-- jQuery -->
+  <script src="<?php echo BOWER; ?>vendors/jquery/dist/jquery.min.js"></script>
+  <!-- Bootstrap -->
+  <script src="<?php echo BOWER; ?>vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+  <!-- DataTables -->
+  <link rel="stylesheet" type="text/css" href="<?php echo BOWER; ?>vendors/bootstrap-dataTables/bootstrap4.min.css">
+  <script src="<?php echo BOWER; ?>vendors/datatables/dataTables.min.js"></script>
+  <!-- Select - https://silviomoreto.github.io/bootstrap-select/ -->
+  <link rel="stylesheet" type="text/css" href="<?php echo BOWER; ?>vendors/select/select.min.css">
+  <script src="<?php echo BOWER; ?>vendors/select/select.min.js"></script>
+
   <?php
   echo $add_css;
   echo $add_js;
+  $user_id = $this->auth->getUserId();
+  $user = User::find($user_id);
   ?>
 </head>
-<body>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="panel panel-custom">
-          <div class="panel-heading">
+<body class="nav-md footer_fixed">
+  <div class="container body">
+    <div class="main_container">
+      <div class="col-md-3 left_col">
+        <div class="left_col scroll-view">
+          <div class="navbar nav_title" style="border: 0;">
             <a id="logo" href="<?php echo BASE; ?>">
               <img class="img-responsive" src="<?php echo IMG; ?>logo_divcred.jpg" alt="">
-            </a> <br>
-            <?php echo (isset($this->menu) ? $this->menu : ''); ?>
-            <?php echo(isset($this->alert)?$this->alert:''); ?>
+            </a>
           </div>
+
+          <div class="clearfix"></div>
+
+          <!-- menu profile quick info -->
+          <div class="profile clearfix">
+            <div class="profile_pic">
+              <?php
+              if (!$user->image) {
+                echo '<img src="'.IMG.'user.png" alt="Perfil '.$user->name.'" class="img-circle profile_img">';
+              }else{
+                echo '<img src="'.BASE.'public/uploads/users/'.$user->id.'/'.$user->image.'" alt="Perfil '.$user->name.'" class="img-circle profile_img">';
+              }
+              ?>
+            </div>
+            <div class="profile_info">
+              <span>Painel Administrativo,</span>
+              <h2><?php echo $user->name; ?></h2>
+            </div>
+          </div>
+          <!-- /menu profile quick info -->
+
+          <br />
+
+          <!-- sidebar menu -->
+          <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+            <div class="menu_section">
+              <?php echo (isset($this->menu) ? $this->menu : ''); ?>
+            </div>
+
+          </div>
+          <!-- /sidebar menu -->
+
+          <!-- /menu footer buttons -->
+          <div class="sidebar-footer hidden-small">
+            <!--<a data-toggle="tooltip" data-placement="top" title="Settings">
+              <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+            </a>
+            <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+              <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+            </a>
+            <a data-toggle="tooltip" data-placement="top" title="Lock">
+              <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+            </a>-->
+            <a data-toggle="tooltip" data-placement="top" title="Logout" href="<?php echo BASE ?>login/sair" style="float: right;">
+              <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+            </a>
+          </div>
+          <!-- /menu footer buttons -->
+        </div>
+      </div>
+
+      <!-- top navigation -->
+      <div class="top_nav">
+        <div class="nav_menu">
+          <nav>
+            <div class="nav toggle">
+              <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+            </div>
+
+            <ul class="nav navbar-nav navbar-right">
+              <li class="">
+                <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                  <?php
+                  if (!$user->image) {
+                    echo '<img src="'.IMG.'user.png" alt="Perfil '.$user->name.'" class="">';
+                  }else{
+                    echo '<img src="'.BASE.'public/uploads/users/'.$user->id.'/'.$user->image.'" alt="Perfil '.$user->name.'" class="">';
+                  }
+                  ?><?php echo $user->name ?>
+                  <span class=" fa fa-angle-down"></span>
+                </a>
+                <ul class="dropdown-menu dropdown-usermenu pull-right">
+                  <li><a href="<?php echo BASE ?>perfil/editar"> Perfil</a></li>
+                  <li><a href="<?php echo BASE ?>login/sair"><i class="fa fa-sign-out pull-right"></i> Sair</a></li>
+                </ul>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+      <!-- page content -->
+      <div class="right_col" role="main">
+        <!-- /top navigation -->
+        <?php echo(isset($this->alert)?$this->alert:''); ?>
