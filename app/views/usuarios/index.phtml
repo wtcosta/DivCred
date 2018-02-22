@@ -20,7 +20,7 @@
 				foreach ($view_users as $user) :
 					?>
 					<tr>
-						<td><?php echo $user->name ?></td>
+						<td><?php echo $user->name ?> (<?php echo $user->username ?>)</td>
 						<td><?php echo $user->email ?></td>
 						<td><?php echo $user->role->role; ?></td>
 						<td>

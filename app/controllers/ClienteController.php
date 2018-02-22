@@ -59,18 +59,9 @@ class ClienteController extends \HXPHP\System\Controller
 		$post = $this->request->post();
 
 		//Verifica se o POST não está vazio e chama o model
-		if (!empty($post) && $post['email'] !== null) {
+		if (!empty($post) && $post['cpf'] !== null) {
 
 			$user_id = $this->auth->getUserId();
-
-			//Cadastra o user
-			$cadUser = array(
-				'name' => $post['nome'],
-				'email' => $post['email'],
-				'username' => $post['cpf'],
-				'password' => 'divcred',
-				'role_id' => 4
-			);
 
 			$existeUser = User::find(array('conditions' => array('username = ?', $post['cpf'])));
 
@@ -81,7 +72,31 @@ class ClienteController extends \HXPHP\System\Controller
 				));
 				return;
 			}else{
+				//Cadastra o user
+				$cadUser = array(
+					'name' => $post['nome'],
+					'email' => $post['email'],
+					'username' => $post['cpf'],
+					'password' => 'divcred',
+					'role_id' => 4
+				);
+
 				$cadUserData = User::cadastrar($cadUser);
+
+				echo "<pre>";
+				var_dump($post);
+				echo "<hr />";
+				var_dump($cadUserData);
+				echo "</pre>";
+
+				if ($cadUserData->status == false) {
+					$this->load('Helpers\Alert', array(
+						'danger',
+						'Não foi possível cadastrar o cliente.<br />Verifique os erros abaixo:',
+						$cadUserData->errors
+					));
+					return;
+				}
 			}
 
 			$cadCliente = Client::cadastrar($post, $user_id, $cadUserData->user->id);
@@ -92,6 +107,7 @@ class ClienteController extends \HXPHP\System\Controller
 					'Não foi possível efetuar seu cadastro.<br />Verifique os erros abaixo:',
 					$cadCliente->errors
 				));
+				return;
 			}else{
 				$this->load('Helpers\Alert', array(
 					'success',
@@ -102,6 +118,12 @@ class ClienteController extends \HXPHP\System\Controller
 					'clientes' => Client::find_by_id($cadCliente->cliente->id)
 				]);
 			}
+		}else{
+			$this->load('Helpers\Alert', array(
+				'danger',
+				'Não foi possível efetuar seu cadastro.<br />Verifique os dados informados:',
+				$cadCliente->errors
+			));
 		}
 	}
 

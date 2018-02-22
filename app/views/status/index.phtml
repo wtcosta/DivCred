@@ -35,24 +35,26 @@
 							</td>
 						</tr>
 						<?php
-						foreach ($statusSub[$status->id] as $key => $statusSubList) {
-							?>
-							<tr class="sub">
-								<td style="text-align: center;"> - </td>
-								<td colspan="3">
-									<table style="width: 100%">
-										<tr>
-											<td><?php echo ($statusSubList->tipo == 1) ? 'Dívida' : 'Atendimento' ?></td>
-											<td style="width: 345px;padding-left: 20px;"><?php echo $statusSubList->nome ?></td>
-											<td>
-												<a href="<?php echo BASE.'status/editar/'.$statusSubList->id ?>" class="btn btn-warning btn-sm">Editar</a>
-												<a href="<?php echo BASE.'status/excluir/'.$statusSubList->id ?>" class="btn btn-danger btn-sm">Excluir</a>
-											</td>
-										</tr>
-									</table>
-								</td>
-							</tr>
-							<?php
+						if (isset($statusSub[$status->id])) {
+							foreach ($statusSub[$status->id] as $key => $statusSubList) {
+								?>
+								<tr class="sub">
+									<td style="text-align: center;"> - </td>
+									<td colspan="3">
+										<table style="width: 100%">
+											<tr>
+												<td><?php echo ($statusSubList->tipo == 1) ? 'Dívida' : 'Atendimento' ?></td>
+												<td style="width: 345px;padding-left: 20px;"><?php echo $statusSubList->nome ?></td>
+												<td>
+													<a href="<?php echo BASE.'status/editar/'.$statusSubList->id ?>" class="btn btn-warning btn-sm">Editar</a>
+													<a href="<?php echo BASE.'status/excluir/'.$statusSubList->id ?>" class="btn btn-danger btn-sm">Excluir</a>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<?php
+							}
 						}
 					}
 				}

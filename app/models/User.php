@@ -8,14 +8,11 @@ class User extends \HXPHP\System\Model
 	static $belongs_to = array(
 		array('role')
 	);
+
 	static $validates_presence_of = array(
 		array(
 			'name',
 			'message' => 'O nome é um campo obrigatório.'
-		),
-		array(
-			'email',
-			'message' => 'O e-mail é um campo obrigatório.'
 		),
 		array(
 			'username',

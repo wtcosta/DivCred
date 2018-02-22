@@ -60,15 +60,6 @@ class EmpresaController extends \HXPHP\System\Controller
 
 			$user_id = $this->auth->getUserId();
 
-			//Cadastra o user
-			$cadUser = array(
-				'name' => $post['empresa'],
-				'email' => $post['email'],
-				'username' => $post['cnpj'],
-				'password' => 'divcred',
-				'role_id' => 3
-			);
-
 			$existeUser = User::find(array('conditions' => array('username = ?', $post['cnpj'])));
 
 			if (!is_null($existeUser)) {
@@ -78,7 +69,25 @@ class EmpresaController extends \HXPHP\System\Controller
 				));
 				return;
 			}else{
+				//Cadastra o user
+				$cadUser = array(
+					'name' => $post['empresa'],
+					'email' => $post['email'],
+					'username' => $post['cnpj'],
+					'password' => 'divcred',
+					'role_id' => 3
+				);
+
 				$cadUserData = User::cadastrar($cadUser);
+
+				if ($cadUserData->status == false) {
+					$this->load('Helpers\Alert', array(
+						'danger',
+						'Não foi possível cadastrar o cliente.<br />Verifique os erros abaixo:',
+						$cadUserData->errors
+					));
+					return;
+				}
 			}
 
 			$insertUserEmpresa = array('idUserEmpresa' => $cadUserData->user->id);
