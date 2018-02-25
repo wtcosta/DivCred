@@ -21,7 +21,7 @@ $configs->env->development->database->setConnectionData(array(
   'dbname' => 'wt_divcred'
 ));
 
-$configs->env->development->auth->setURLs('/divcred/empresa/', '/divcred/login');
+$configs->env->development->auth->setURLs('/divcred/empresa', '/divcred/login');
 
 $configs->env->development->menu->setMenus(array(
   'Administrativo/dashboard' => [
