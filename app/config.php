@@ -27,6 +27,7 @@ $configs->env->development->menu->setMenus(array(
   'Administrativo/dashboard' => [
     'Usuário/dashboard' => '%baseURI%/usuarios',
     'Cadastrar/user-plus' => '%baseURI%/cadastro',
+    'Log/history' => '%baseURI%/log',
     'Status/check-circle-o' => '%baseURI%/status',
     'Triagem/bars' => '%baseURI%/sequencia'
   ],
