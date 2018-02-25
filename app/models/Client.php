@@ -54,6 +54,8 @@ class Client extends \HXPHP\System\Model
 		$cliente->recado = $post['recado'];
 		$cliente->obs = $post['obs'];
 		$cliente->companies_id = $post['companies_id'];
+		$cliente->data_up = $post['data_up'];
+		$cliente->user_up = $post['user_up'];
 
 		$atualizar = $cliente->save(false);
 

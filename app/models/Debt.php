@@ -38,6 +38,9 @@ class Debt extends \HXPHP\System\Model
 
 	public static function atualizar($post, $divida_id)
 	{
+		echo "<pre>";
+		var_dump($post);
+		echo "</pre>";
 		//Cria uma classe vazia pra armazenar o retorno das validações
 		$callbackObj = new \stdClass;
 		$callbackObj->status = false;
@@ -49,6 +52,8 @@ class Debt extends \HXPHP\System\Model
 		$divida->vencimento = $post['vencimento'];
 		$divida->status_id = $post['status_id'];
 		$divida->obs = $post['obs'];
+		$divida->data_up = $post['data_up'];
+		$divida->user_up = $post['user_up'];
 
 		$atualizar = $divida->save(false);
 

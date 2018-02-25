@@ -110,6 +110,8 @@ class Company extends \HXPHP\System\Model
 		$emp->multa = str_replace(",", ".", $post['multa']);
 		$emp->juros = str_replace(",", ".", $post['juros']);
 		$emp->iduserempresa = $post['iduserempresa'];
+		$emp->data_up = $post['data_up'];
+		$emp->user_up = $post['user_up'];
 
 		$atualizar = $emp->save(false);
 

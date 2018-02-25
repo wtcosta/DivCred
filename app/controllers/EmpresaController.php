@@ -289,6 +289,13 @@ class EmpresaController extends \HXPHP\System\Controller
 
 		if (!empty($post)) {
 
+			$edit = array(
+				'data_up' => time(),
+				'user_up' => $user_id
+				);
+
+			$post = array_merge($post, $edit);
+
 			$atualizaEmp = Company::atualizar($post, $empresa);
 
 			Document::cadastrar($_POST['documentos'], $atualizaEmp->emp->id);

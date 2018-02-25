@@ -11,7 +11,7 @@ class ClienteController extends \HXPHP\System\Controller
 			$configs->auth->after_login,
 			$configs->auth->after_logout,
 			true
-		);
+			);
 
 		$user_id = $this->auth->getUserId();
 		$user = User::find($user_id);
@@ -22,7 +22,7 @@ class ClienteController extends \HXPHP\System\Controller
 			$this->request,
 			$this->configs,
 			$role->role
-		);
+			);
 
 		if ($role->role == 'cliente') {
 			$cliente = Client::find(array('conditions' => array('idUserCliente = ?', $user_id)));
@@ -34,7 +34,7 @@ class ClienteController extends \HXPHP\System\Controller
 			$this->view
 			->setVars([
 				'clientes' => Client::all()
-			]);
+				]);
 		}
 	}
 
@@ -46,7 +46,7 @@ class ClienteController extends \HXPHP\System\Controller
 			->setFile('cadastrar')
 			->setVars([
 				'empresa' => $empresa
-			]);
+				]);
 		}else{
 			$this->view->setFile('cadastrar');
 		}
@@ -54,7 +54,7 @@ class ClienteController extends \HXPHP\System\Controller
 		//Filtra/valida dados do form
 		$this->request->setCustomFilters(array(
 			'email' => FILTER_VALIDATE_EMAIL
-		));
+			));
 
 		$post = $this->request->post();
 
@@ -75,7 +75,7 @@ class ClienteController extends \HXPHP\System\Controller
 					'username' => $post['cpf'],
 					'password' => 'divcred',
 					'role_id' => 4
-				);
+					);
 
 				$cadUserData = User::cadastrar($cadUser);
 
@@ -84,7 +84,7 @@ class ClienteController extends \HXPHP\System\Controller
 						'danger',
 						'Não foi possível cadastrar o cliente.<br />Verifique os erros abaixo:',
 						$cadUserData->errors
-					));
+						));
 					return;
 				}
 			}
@@ -96,17 +96,17 @@ class ClienteController extends \HXPHP\System\Controller
 					'danger',
 					'Não foi possível efetuar seu cadastro.<br />Verifique os erros abaixo:',
 					$cadCliente->errors
-				));
+					));
 				return;
 			}else{
 				$this->load('Helpers\Alert', array(
 					'success',
 					'Cliente cadastrada com sucesso!'
-				));
+					));
 				$this->view->setFile('cobranca')
 				->setVars([
 					'clientes' => Client::find_by_id($cadCliente->cliente->id)
-				]);
+					]);
 			}
 		}
 	}
@@ -120,17 +120,24 @@ class ClienteController extends \HXPHP\System\Controller
 		->setVars([
 			'cliente' => $clienteData,
 			'idCliente' => $clienteData->idusercliente
-		]);
+			]);
 
 		$user_id = $this->auth->getUserId();
 
 		$this->request->setCustomFilters(array(
 			'email' => FILTER_VALIDATE_EMAIL
-		));
+			));
 
 		$post = $this->request->post();
 
 		if (!empty($post)) {
+			$edit = array(
+				'data_up' => time(),
+				'user_up' => $user_id
+				);
+
+			$post = array_merge($post, $edit);
+
 			$atualizaCliente = Client::atualizar($post, $cliente);
 
 			if ($atualizaCliente->status === false) {
@@ -138,16 +145,16 @@ class ClienteController extends \HXPHP\System\Controller
 					'danger',
 					'Ops! Não foi possível atualizar o cadastro. <br> Verifique os erros abaixo:',
 					$atualizaCliente->errors
-				));
+					));
 			}else{
 				$this->load('Helpers\Alert', array(
 					'success',
 					'Cliente editado com sucesso!'
-				));
+					));
 				$this->view->setFile('index')
 				->setVars([
 					'clientes' => Client::all()
-				]);
+					]);
 			}
 		}
 	}
@@ -158,7 +165,7 @@ class ClienteController extends \HXPHP\System\Controller
 		->setFile('cobranca')
 		->setVars([
 			'clientes' => Client::find_by_id($cliente)
-		]);
+			]);
 	}
 
 	public function empresaAction($empresa)
@@ -171,10 +178,10 @@ class ClienteController extends \HXPHP\System\Controller
 				array(
 					'conditions' => array('companies_id = ?', $empresa),
 					'order' => 'data_cad desc'
-				)
-			),
+					)
+				),
 			'empresa' => Company::find_by_id($empresa)
-		]);
+			]);
 	}
 
 	public function cadLogAction($cliente)
@@ -231,7 +238,7 @@ class ClienteController extends \HXPHP\System\Controller
 						'danger',
 						'Não foi possível enviar o pagamento.<br />Verifique os erros abaixo:',
 						$geraBoleto->errors
-					));
+						));
 				}
 			}
 
@@ -240,19 +247,19 @@ class ClienteController extends \HXPHP\System\Controller
 					'danger',
 					'Não foi possível efetuar seu cadastro.<br />Verifique os erros abaixo:',
 					$cadLog->errors
-				));
+					));
 			}else{
 				$this->load('Helpers\Alert', array(
 					'success',
 					'Atendimento cadastrado com sucesso!'.$msn
-				));
+					));
 
 				$file = 'cobranca';
 				$this->view
 				->setFile($file)
 				->setVars([
 					'clientes' => Client::find_by_id($cliente)
-				]);
+					]);
 			}
 		}
 	}
@@ -263,7 +270,7 @@ class ClienteController extends \HXPHP\System\Controller
 		->setFile('cobranca')
 		->setVars([
 			'clientes' => Client::find_by_id($cliente_id)
-		]);
+			]);
 
 		$user_id = $this->auth->getUserId();
 		$post = $this->request->post();
@@ -285,13 +292,13 @@ class ClienteController extends \HXPHP\System\Controller
 					'danger',
 					'Ops! Não foi possível efetuar seu cadastro.<br />Verifique os erros abaixo:',
 					$cadastrarDivida->errors
-				));
+					));
 			}else{
 				$this->view
 				->setFile('cobranca')
 				->setVars([
 					'clientes' => Client::find_by_id($cliente_id)
-				]);
+					]);
 			}
 		}
 	}
@@ -302,11 +309,19 @@ class ClienteController extends \HXPHP\System\Controller
 		->setFile('cobranca')
 		->setVars([
 			'clientes' => Client::find_by_id($cliente_id)
-		]);
+			]);
 
+		$user_id = $this->auth->getUserId();
 		$post = $this->request->post();
 
 		if (!empty($post)) {
+			$edit = array(
+				'data_up' => time(),
+				'user_up' => $user_id
+				);
+
+			$post = array_merge($post, $edit);
+
 			if (isset($_POST['tipo'])) {
 				$tipos = $_POST['tipo'];
 				unset($post['tipo']);
@@ -325,13 +340,13 @@ class ClienteController extends \HXPHP\System\Controller
 					'danger',
 					'Ops! Não foi possível efetuar seu cadastro.<br />Verifique os erros abaixo:',
 					$atualizarDivida->errors
-				));
+					));
 			}else{
 				$this->view
 				->setFile('cobranca')
 				->setVars([
 					'clientes' => Client::find_by_id($cliente_id)
-				]);
+					]);
 			}
 		}
 	}
