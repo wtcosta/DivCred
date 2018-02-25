@@ -150,3 +150,23 @@
 Form::close(false);
 ?>
 </div>
+<script type="text/javascript">
+  $("#cpf").blur(function() {
+    console.log('inicio');
+    $.ajax({
+      type:"GET",
+      url: 'http://integracao.consultasprime.com/consultapessoafisica',
+      data:{
+        cnpjempresa: '19791503000150',
+        usuario: 'contato@websampa.com.br',
+        senha: 'DTJ!1607',
+        cpf: '02389148360'
+      }
+    }).done(function(data){
+      console.log(data);
+    }).fail(function(data){
+      console.log(data);
+    });
+    console.log('fim');
+  });
+</script>
