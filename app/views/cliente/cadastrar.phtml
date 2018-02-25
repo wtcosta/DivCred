@@ -58,7 +58,8 @@
     'CPF:',
     'cpf',
     array(
-      'required' => 1
+      'required' => 1,
+      'data-inputmask' => "'mask' : '999.999.999-99'"
     )
   );
   Form::Textbox(
@@ -78,15 +79,24 @@
   );
   Form::Phone(
     'Celular:',
-    'celular'
+    'celular',
+    array(
+      'data-inputmask' => "'mask' : '(99) 99999-9999'"
+    )
   );
   Form::Phone(
     'Telefone:',
-    'telefone'
+    'telefone',
+    array(
+      'data-inputmask' => "'mask' : '(99) 9999-9999'"
+    )
   );
   Form::Phone(
     'Recado:',
-    'recado'
+    'recado',
+    array(
+      'data-inputmask' => "'mask' : '(99) 99999-9999'"
+    )
   );
   ?>
 </div>

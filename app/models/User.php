@@ -28,10 +28,6 @@ class User extends \HXPHP\System\Model
 		array(
 			'username',
 			'message' => 'Já existe um usuário cadastrado!'
-		),
-		array(
-			'email',
-			'message' => 'Já existe um e-mail cadastrado!'
 		)
 	);
 

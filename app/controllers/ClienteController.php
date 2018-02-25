@@ -66,11 +66,7 @@ class ClienteController extends \HXPHP\System\Controller
 			$existeUser = User::find(array('conditions' => array('username = ?', $post['cpf'])));
 
 			if (!is_null($existeUser)) {
-				$this->load('Helpers\Alert', array(
-					'danger',
-					'Usário do cliente já está criado, verifique com o administrador!'
-				));
-				return;
+				$cadUserData = $existeUser;
 			}else{
 				//Cadastra o user
 				$cadUser = array(
@@ -82,12 +78,6 @@ class ClienteController extends \HXPHP\System\Controller
 				);
 
 				$cadUserData = User::cadastrar($cadUser);
-
-				echo "<pre>";
-				var_dump($post);
-				echo "<hr />";
-				var_dump($cadUserData);
-				echo "</pre>";
 
 				if ($cadUserData->status == false) {
 					$this->load('Helpers\Alert', array(

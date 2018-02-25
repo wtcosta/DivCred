@@ -46,7 +46,7 @@ foreach ($dividas as $divida) {
 			<div class="row">
 				<?php if ($this->auth->getUserRole() != 'empresa') { ?>
 				<div class="col-md-2">
-					<a href="/cliente/editar/<?php echo $view_clientes->id ?>" class="btn btn-warning btn-sm">Editar</a>
+					<a href="<?php echo BASE ?>cliente/editar/<?php echo $view_clientes->id ?>" class="btn btn-warning btn-sm">Editar</a>
 				</div>
 				<div class="col-md-4" style="">
 					<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalAtd">
