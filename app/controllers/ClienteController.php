@@ -118,12 +118,6 @@ class ClienteController extends \HXPHP\System\Controller
 					'clientes' => Client::find_by_id($cadCliente->cliente->id)
 				]);
 			}
-		}else{
-			$this->load('Helpers\Alert', array(
-				'danger',
-				'Não foi possível efetuar seu cadastro.<br />Verifique os dados informados:',
-				$cadCliente->errors
-			));
 		}
 	}
 

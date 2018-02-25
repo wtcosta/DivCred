@@ -170,7 +170,9 @@ foreach ($dividas as $divida) {
 												Form::Number(
 													"Valor",
 													"valor[".$i."]",
-													$attributes = null
+													array(
+														'step' => '0.01',
+													)
 												);
 												echo "</div>";
 												echo '<div class="col-md-4">';
@@ -583,7 +585,7 @@ foreach ($dividas as $divida) {
 						<tr>
 							<td>
 								<a href="<?php echo $boleto->boleto ?>" target="_blank">
-									R$ <?php echo number_format($boleto->valor, 2, ",", ";") ?>
+									R$ <?php echo number_format($boleto->valor, 2, ",", ".") ?>
 								</a>
 							</td>
 							<td><?php echo date("d/m/Y", strtotime($boleto->vencimento)) ?></td>
