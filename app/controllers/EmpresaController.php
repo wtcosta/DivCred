@@ -290,7 +290,7 @@ class EmpresaController extends \HXPHP\System\Controller
 		if (!empty($post)) {
 
 			$edit = array(
-				'data_up' => time(),
+				'data_up' => date('Y-m-d h:i:s'),
 				'user_up' => $user_id
 				);
 
