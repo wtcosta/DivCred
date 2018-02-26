@@ -171,7 +171,7 @@ class LogController extends \HXPHP\System\Controller
 		return $new_array;
 	}
 
-	public function acao($idAcao)
+	public static function acao($idAcao)
 	{
 		switch ($idAcao) {
 			case '1':
