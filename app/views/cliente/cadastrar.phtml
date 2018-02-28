@@ -1,3 +1,12 @@
+<style type="text/css">
+.higi .form-group label{
+  width: 100%;
+  text-align: left;
+}
+.higi .form-group > div{
+  width: 100%;
+}
+</style>
 <div class="page-title">
   <div class="title_left">
     <h2>Cadastro de clientes</h2>
@@ -26,7 +35,10 @@
       'recado' => $view_cliente->recado,
       'obs' => $view_cliente->obs,
       'idUserCliente' => $view_idCliente,
-      'companies_id' => $view_cliente->companies_id
+      'companies_id' => $view_cliente->companies_id,
+      'telefones' => $view_cliente->telefones,
+      'enderecos' => $view_cliente->enderecos,
+      'parentescos' => $view_cliente->parentescos
     ];
   }else{
     $btn = 'Cadastrar Cliente';
@@ -40,7 +52,10 @@
       'telefone' => $this->request->post('telefone'),
       'recado' => $this->request->post('recado'),
       'obs' => $this->request->post('obs'),
-      'companies_id' => $this->request->post('companies_id')
+      'companies_id' => $this->request->post('companies_id'),
+      'telefones' => $this->request->post('telefones'),
+      'enderecos' => $this->request->post('enderecos'),
+      'parentescos' => $this->request->post('parentescos')
     ];
   }
   Form::open('cadastrarcliente', $values, [
@@ -52,123 +67,461 @@
   ]
 );
 ?>
-<div class="col-sm-6">
-  <?php
-  Form::Textbox(
-    'CPF:',
-    'cpf',
-    array(
-      'required' => 1,
-      'data-inputmask' => "'mask' : '999.999.999-99'"
-    )
-  );
-  Form::Textbox(
-    'Nome:',
-    'nome',
-    array(
-      'required' => 1
-    )
-  );
-  Form::Email(
-    'Email:',
-    'email'
-  );
-  Form::Textarea(
-    'Endereço:',
-    'endereco'
-  );
-  Form::Phone(
-    'Celular:',
-    'celular',
-    array(
-      'data-inputmask' => "'mask' : '(99) 99999-9999'"
-    )
-  );
-  Form::Phone(
-    'Telefone:',
-    'telefone',
-    array(
-      'data-inputmask' => "'mask' : '(99) 9999-9999'"
-    )
-  );
-  Form::Phone(
-    'Recado:',
-    'recado',
-    array(
-      'data-inputmask' => "'mask' : '(99) 99999-9999'"
-    )
-  );
-  ?>
-</div>
-<div class="col-sm-6">
-  <?php
-  Form::Textarea(
-    'Obs:',
-    'obs'
-  );
-  if (!isset($view_empresa)) {
-    $empresas = Company::all();
-    $options = array();
-    foreach ($empresas as $empresa) {
-      $options[$empresa->id] = $empresa->empresa;
-    }
-    Form::Select(
-      "Empresa",
-      "companies_id",
-      $options,
+<div class="row">
+  <div class="col-sm-6">
+    <?php
+    Form::Textbox(
+      'CPF / CNPJ:',
+      'cpf',
       array(
         'required' => 1,
-        'class' => 'selectpicker',
-        'data-live-search' => 'true'
+        'onkeypress' => 'mascaraMutuario(this,cpfCnpj)',
+        'onblur' => 'clearTimeout()',
+        'maxlength' => 18
       )
     );
-  }else{
-    Form::Hidden(
-      'companies_id',
-      $view_empresa
+    Form::Textbox(
+      'Nome:',
+      'nome',
+      array(
+        'required' => 1
+      )
     );
-  }
-  if (isset($view_cliente)) {
-    $users = User::all();
-    $option2 = array();
-    foreach ($users as $value) {
-      $option2[$value->id] = $value->name;
+    Form::Email(
+      'Email:',
+      'email'
+    );
+    Form::Phone(
+      'Celular:',
+      'celular',
+      array(
+        'data-inputmask' => "'mask' : '(99) 99999-9999'"
+      )
+    );
+    Form::Phone(
+      'Telefone:',
+      'telefone',
+      array(
+        'data-inputmask' => "'mask' : '(99) 9999-9999'"
+      )
+    );
+    Form::Phone(
+      'Recado:',
+      'recado',
+      array(
+        'data-inputmask' => "'mask' : '(99) 99999-9999'"
+      )
+    );
+    ?>
+  </div>
+  <div class="col-sm-6">
+    <?php
+    Form::Textarea(
+      'Endereço:',
+      'endereco'
+    );
+    Form::Textarea(
+      'Obs:',
+      'obs'
+    );
+    if (!isset($view_empresa)) {
+      $empresas = Company::all();
+      $options = array();
+      foreach ($empresas as $empresa) {
+        $options[$empresa->id] = $empresa->empresa;
+      }
+      Form::Select(
+        "Empresa",
+        "companies_id",
+        $options,
+        array(
+          'required' => 1,
+          'class' => 'selectpicker',
+          'data-live-search' => 'true'
+        )
+      );
+    }else{
+      Form::Hidden(
+        'companies_id',
+        $view_empresa
+      );
     }
-    Form::Select(
-      "Usuário",
-      "idUserCliente",
-      $option2
-    );
+    if (isset($view_cliente)) {
+      $users = User::all();
+      $option2 = array();
+      foreach ($users as $value) {
+        $option2[$value->id] = $value->name;
+      }
+      Form::Select(
+        "Usuário",
+        "idUserCliente",
+        $option2
+      );
+    }
+    ?>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12" style="text-align: center;">
+    <?php
+    Form::Button($btn, 'submit', [
+      'style' => 'width: 210px;margin: 20px;font-size: 150%;',
+      'class' => 'btn-success',
+      'id' => 'btnEnvia'
+    ]);
+    ?>
+  </div>
+</div>
+<div class="row">
+  <h4 style="float:  left;margin-right: 20px;">Higienização</h4>
+  <?php
+  if (isset($view_cliente)) {
+    ?>
+    <span class="btn btn-info" onclick="atualizarDados()">Atualizar Dados</span>
+    <?php
   }
-  Form::Button($btn, 'submit', [
-    'style' => 'width: 80%;margin-top: 20px;float: right;',
-    'class' => 'btn-success'
-  ]);
   ?>
+</div>
+<div class="row higi">
+  <div class="col-sm-4">
+    <?php
+    Form::Textarea(
+      'Telefones:',
+      'telefones',
+      array(
+        'readonly' => true,
+        'style' => 'font-size: 90%'
+      )
+    );
+    ?>
+  </div>
+  <div class="col-sm-4">
+    <?php
+    Form::Textarea(
+      'Endereços:',
+      'enderecos',
+      array(
+        'readonly' => true,
+        'style' => 'font-size: 90%'
+      )
+    );
+    ?>
+  </div>
+  <div class="col-sm-4">
+    <?php
+    Form::Textarea(
+      'Parentescos / Socios:',
+      'parentescos',
+      array(
+        'readonly' => true,
+        'style' => 'font-size: 90%'
+      )
+    );
+    ?>
+  </div>
 </div>
 <?php
 Form::close(false);
 ?>
 </div>
 <script type="text/javascript">
-  /*
   $("#cpf").blur(function() {
-    console.log('inicio');
-    $.ajax({
-      type:"GET",
-      url: 'http://integracao.consultasprime.com/consultapessoafisica',
-      data:{
-        cnpjempresa: '19791503000150',
-        usuario: 'contato@websampa.com.br',
-        senha: 'DTJ!1607',
-        cpf: '02389148360'
+    var tamanho = $("#cpf").val().length;
+    if (tamanho >= 14) {
+      endereco = "";
+      telefone = "";
+      relacionamento = "";
+
+      $("#telefones").val('Processando...');
+      $("#enderecos").val('Processando...');
+      $("#parentescos").val('Processando...');
+      $("#btnEnvia").prop("disabled", true);
+
+      if(tamanho == 14){
+        $.ajax({
+          method: "GET",
+          url: "http://integracao.consultasprime.com/consultapessoafisica",
+          data: { cnpjempresa: "19791503000150", usuario: "contato@websampa.com.br", senha: "DTJ!1607", cpf: $("#cpf").val() },
+          crossDomain: true,
+          dataType: 'jsonp'
+        })
+        .done(function( data ) {
+          dados = data;
+          dadosPfisica(data);
+        })
+        .fail(function( data ) {
+          $("#telefones").val('Falha na requisição do ajax...');
+          $("#enderecos").val('Falha na requisição do ajax...');
+          $("#parentescos").val('Falha na requisição do ajax...');
+          $("#btnEnvia").prop("disabled", false);
+        });
+      } else if(tamanho == 18){
+        $.ajax({
+          method: "GET",
+          url: "http://integracao.consultasprime.com/consultapessoajuridica",
+          data: { cnpjempresa: "19791503000150", usuario: "contato@websampa.com.br", senha: "DTJ!1607", cnpj: $("#cpf").val() },
+          crossDomain: true,
+          dataType: 'jsonp'
+        })
+        .done(function( data ) {
+          dados = data;
+          dadosPjuridica(data);
+        })
+        .fail(function( data ) {
+          $("#telefones").val('Falha na requisição do ajax...');
+          $("#enderecos").val('Falha na requisição do ajax...');
+          $("#parentescos").val('Falha na requisição do ajax...');
+          $("#btnEnvia").prop("disabled", false);
+        });
+      }else{
+        $("#telefones").val('Verifique o campo CPF/CNPJ!');
+        $("#enderecos").val('Verifique o campo CPF/CNPJ!');
+        $("#parentescos").val('Verifique o campo CPF/CNPJ!');
+        $("#btnEnvia").prop("disabled", true);
       }
-    }).done(function(data){
-      console.log(data);
-    }).fail(function(data){
-      console.log(data);
-    });
-    console.log('fim');
+    }
   });
-  */
+
+  function atualizarDados() {
+    var tamanho = $("#cpf").val().length;
+    endereco = "";
+    telefone = "";
+    relacionamento = "";
+
+    $("#telefones").val('Processando...');
+    $("#enderecos").val('Processando...');
+    $("#parentescos").val('Processando...');
+    $("#btnEnvia").prop("disabled", true);
+    if (tamanho == 14) {
+      $.ajax({
+        method: "GET",
+        url: "http://integracao.consultasprime.com/consultapessoafisica",
+        data: { cnpjempresa: "19791503000150", usuario: "contato@websampa.com.br", senha: "DTJ!1607", cpf: $("#cpf").val() },
+        crossDomain: true,
+        dataType: 'jsonp'
+      })
+      .done(function( data ) {
+        dadosPfisica(data);
+      })
+      .fail(function( data ) {
+        $("#telefones").val('Falha na requisição do ajax...');
+        $("#enderecos").val('Falha na requisição do ajax...');
+        $("#parentescos").val('Falha na requisição do ajax...');
+        $("#btnEnvia").prop("disabled", false);
+      });
+    } else if (tamanho == 18) {
+      $.ajax({
+        method: "GET",
+        url: "http://integracao.consultasprime.com/consultapessoajuridica",
+        data: { cnpjempresa: "19791503000150", usuario: "contato@websampa.com.br", senha: "DTJ!1607", cnpj: $("#cpf").val() },
+        crossDomain: true,
+        dataType: 'jsonp'
+      })
+      .done(function( data ) {
+        dadosPjuridica(data);
+      })
+      .fail(function( data ) {
+        $("#telefones").val('Falha na requisição do ajax...');
+        $("#enderecos").val('Falha na requisição do ajax...');
+        $("#parentescos").val('Falha na requisição do ajax...');
+        $("#btnEnvia").prop("disabled", false);
+      });
+    } else {
+      $("#telefones").val('Verifique o campo CPF/CNPJ!');
+      $("#enderecos").val('Verifique o campo CPF/CNPJ!');
+      $("#parentescos").val('Verifique o campo CPF/CNPJ!');
+      $("#btnEnvia").prop("disabled", true);
+    }
+  }
+
+  function dadosPfisica(data) {
+    if (data.prime.erro == 'false') {
+    //Trata endereço
+    $("#enderecos").text('');
+    $.each(data.Enderecos.Ends, function (index, value) {
+      $.each(value, function (idx, end) {
+        if (idx == 'Bairro') {
+          bairro = end
+        }
+        if (idx == 'CEP') {
+          cep = end
+        }
+        if (idx == 'Cidade') {
+          cid = end
+        }
+        if (idx == 'Logradouro') {
+          $.each(end, function (idx2, end2) {
+            if (idx2 == 'Nome') {
+              rua = end2
+            }
+            if (idx2 == 'Numero') {
+              numero = end2
+            }
+            if (idx2 == 'Complemento') {
+              comp = end2
+            }
+          });
+        }
+        if (idx == 'UF') {
+          uf = end
+        }
+      });
+      endereco = endereco+rua+', '+numero+', '+comp+' '+bairro+'\n'+cid+' - '+uf+' - '+cep+'\n\n';
+    });
+    $("#enderecos").val(endereco);
+
+    //Trata telefone
+    $("#telefones").text('');
+    $.each(data.Telefones.Fones, function (index, value) {
+      $.each(value, function (idx, tell) {
+        if (idx == 'DDD') {
+          ddd = tell
+        }
+        if (idx == 'Numero') {
+          numero = tell
+        }
+        if (idx == 'Tipo') {
+          tipo = tell
+        }
+      });
+      telefone = telefone+'('+ddd+') '+numero+'\n';
+    });
+    $("#telefones").val(telefone);
+
+    //Trata parentescos
+    $("#parentescos").text('');
+    $.each(data.ListaParentes.Parentes, function (index, value) {
+      $.each(value, function (idx, relac) {
+        if (idx == 'Relacionamento') {
+          relacion = relac
+        }
+        if (idx == 'Cpf') {
+          cpfRelac = relac
+        }
+        if (idx == 'Nome') {
+          nomeRelac = relac
+        }
+      });
+      relacionamento = relacionamento+cpfRelac+' - '+nomeRelac+' ('+relacion+')\n';
+    });
+    $.each(data.ListaSociedades.Sociedades, function (index, value) {
+      $.each(value, function (idx, socied) {
+        if (idx == 'CNPJ') {
+          cnpj = socied
+        }
+        if (idx == 'RazaoSocial') {
+          nome = socied
+        }
+      });
+      relacionamento = relacionamento+cnpj+' - '+nome+' (Socio)\n';
+    });
+    $("#parentescos").val(relacionamento);
+    $("#btnEnvia").prop("disabled", false);
+  }else{
+    $("#enderecos").val('Erro na pesquisa de dados,\nVerifique os erros abaixo!\n'+data.prime.mensagem);
+    $("#telefones").val('Erro na pesquisa de dados,\nVerifique os erros abaixo!\n'+data.prime.mensagem);
+    $("#parentescos").val('Erro na pesquisa de dados,\nVerifique os erros abaixo!\n'+data.prime.mensagem);
+    $("#btnEnvia").prop("disabled", false);
+  }
+}
+
+function dadosPjuridica(data) {
+  if (data.prime.erro == 'false') {
+    //Trata endereço
+    $("#enderecos").text('');
+    $.each(data.Enderecos.Ends, function (index, value) {
+      $.each(value, function (idx, end) {
+        if (idx == 'Bairro') {
+          bairro = end
+        }
+        if (idx == 'CEP') {
+          cep = end
+        }
+        if (idx == 'Cidade') {
+          cid = end
+        }
+        if (idx == 'Logradouro') {
+          $.each(end, function (idx2, end2) {
+            if (idx2 == 'Nome') {
+              rua = end2
+            }
+            if (idx2 == 'Numero') {
+              numero = end2
+            }
+            if (idx2 == 'Complemento') {
+              comp = end2
+            }
+          });
+        }
+        if (idx == 'UF') {
+          uf = end
+        }
+      });
+      endereco = endereco+rua+', '+numero+', '+comp+' '+bairro+'\n'+cid+' - '+uf+' - '+cep+'\n\n';
+    });
+    $("#enderecos").val(endereco);
+
+    //Trata telefone
+    $("#telefones").text('');
+    $.each(data.Telefones.Fones, function (index, value) {
+      $.each(value, function (idx, tell) {
+        if (idx == 'DDD') {
+          ddd = tell
+        }
+        if (idx == 'Numero') {
+          numero = tell
+        }
+        if (idx == 'Tipo') {
+          tipo = tell
+        }
+      });
+      telefone = telefone+'('+ddd+') '+numero+'\n';
+    });
+    $("#telefones").val(telefone);
+
+    //Trata parentescos
+    $("#parentescos").text('');
+    $.each(data.ListaQuadroSocial.QuadroSocial, function (index, value) {
+      $.each(value, function (idx, relac) {
+        if (idx == 'Documento') {
+          cpfRelac = relac
+        }
+        if (idx == 'NomeRazaoSocialSocio') {
+          nomeRelac = relac
+        }
+      });
+      relacionamento = relacionamento+cpfRelac+' - '+nomeRelac+' (Socios)\n';
+    });
+    $("#parentescos").val(relacionamento);
+    $("#btnEnvia").prop("disabled", false);
+  }else{
+    $("#enderecos").val('Erro na pesquisa de dados,\nVerifique os erros abaixo!\n'+data.prime.mensagem);
+    $("#telefones").val('Erro na pesquisa de dados,\nVerifique os erros abaixo!\n'+data.prime.mensagem);
+    $("#parentescos").val('Erro na pesquisa de dados,\nVerifique os erros abaixo!\n'+data.prime.mensagem);
+    $("#btnEnvia").prop("disabled", false);
+  }
+}
+
+function mascaraMutuario(o,f){
+  v_obj=o
+  v_fun=f
+  setTimeout('execmascara()',1)
+}
+function execmascara(){
+  v_obj.value=v_fun(v_obj.value)
+}
+function cpfCnpj(v){
+  v=v.replace(/\D/g,"")
+  if (v.length <= 11) {
+    v=v.replace(/(\d{3})(\d)/,"$1.$2")
+    v=v.replace(/(\d{3})(\d)/,"$1.$2")
+    v=v.replace(/(\d{3})(\d{1,2})$/,"$1-$2")
+  } else {
+    v=v.replace(/^(\d{2})(\d)/,"$1.$2")
+    v=v.replace(/^(\d{2})\.(\d{3})(\d)/,"$1.$2.$3")
+    v=v.replace(/\.(\d{3})(\d)/,".$1/$2")
+    v=v.replace(/(\d{4})(\d)/,"$1-$2")
+  }
+  return v
+}
 </script>

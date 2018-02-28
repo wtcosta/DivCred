@@ -81,7 +81,9 @@ foreach ($dividas as $divida) {
 									$values = [
 										'vlNeg' => $this->request->post('vlNeg'),
 										'obs' => $this->request->post('obs'),
-										'status' => $this->request->post('status')
+										'status' => $this->request->post('status'),
+										'telefones' => $view_clientes->telefones,
+										'enderecos' => $view_clientes->enderecos
 									];
 									Form::open('cadLog'.$view_clientes->id, $values, [
 										'action' => $action,
@@ -94,10 +96,10 @@ foreach ($dividas as $divida) {
 									]);
 									?>
 									<div class="row-fluid">
-										<div class="col-md-6">
+										<div class="col-md-2">
 											<?php
 											Form::Number(
-												'Valor da Negociação:',
+												'Valor:',
 												'vlNeg',
 												array(
 													'min' => 0,
@@ -121,27 +123,48 @@ foreach ($dividas as $divida) {
 													'required' => 1
 												)
 											);
+											Form::Button('CADASTRAR', 'submit', [
+												'class' => 'btn-success'
+											]);
 											?>
-											<div class="row-fluid">
-												<div class="col-md-6" style="text-align: right;">
-													<?php
-													Form::Button('CADASTRAR', 'submit', [
-														'class' => 'btn-success'
-													]);
-													?>
-												</div>
-												<div class="col-md-6">
-													<span class="btn btn-info" onclick="geraBoleto()">Gerar Boleto</span>
-												</div>
-											</div>
+											<span class="btn btn-info" onclick="geraBoleto()">
+												Gerar Boleto
+											</span>
 										</div>
-										<div class="col-md-6">
+										<div class="col-md-4">
 											<?php
 											Form::Textarea(
 												'Registre aqui todos os detalhes do atendimento:',
 												'obs',
 												array(
-													'rows' => 6
+													'rows' => 9,
+													'style' => 'font-size: 90%'
+												)
+											);
+											?>
+										</div>
+										<div class="col-md-2">
+											<?php
+											Form::Textarea(
+												'Telefones:',
+												'telefones',
+												array(
+													'disabled' => true,
+													'rows' => 9,
+													'style' => 'font-size: 90%'
+												)
+											);
+											?>
+										</div>
+										<div class="col-md-4">
+											<?php
+											Form::Textarea(
+												'Endereços:',
+												'enderecos',
+												array(
+													'disabled' => true,
+													'rows' => 9,
+													'style' => 'font-size: 90%'
 												)
 											);
 											?>
