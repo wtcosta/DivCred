@@ -1,0 +1,125 @@
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#form').click(function(){
+			$("#contForm").toggle();
+		});
+		$('#saldo').click(function(){
+			$("#contSaldo").toggle();
+			$.ajax({
+				url: "http://app.locasms.com.br/painel/api.ashx?action=getbalance&lgn=11940074794&pwd=725592",
+				success: function(result){
+					retorno = $.parseJSON(result);
+					$('#saldo').attr('disabled', 'disabled');
+					if (retorno.data != null) {
+						retornoDados = retorno.data
+					}else{
+						retornoDados = "";
+					}
+					if (retorno.msg != null) {
+						retornoMsg = retorno.msg
+					}else{
+						retornoMsg = "";
+					}
+					$('#contSaldo').html('<h4>Saldo total: '+retornoDados+'</h4><p>'+retornoMsg+'</p>');
+				}
+			});
+		});
+		$("#enviaSms").submit(function(e) {
+			e.preventDefault();
+			$.ajax({
+				url: "http://app.locasms.com.br/painel/api.ashx?action=sendsms&lgn=11940074794&pwd=725592&msg="+$('#msn').val()+"&numbers="+$('#fone').val(),
+				success: function(result){
+					retornoSms = $.parseJSON(result);
+					if (retornoSms.msg == 'SUCESSO') {
+						$('#enviaSms-element-2').attr('disabled', 'disabled');
+						$('#retorno').html('Mensagem de envio: '+retornoSms.msg);
+					}
+				}
+			});
+		});
+	});
+</script>
+<div class="page-title">
+	<div class="title_left">
+		<h2>Mensagens</h2>
+	</div>
+</div>
+<div class="clearfix"></div>
+<div class="panel-body">
+	<div class="mensagens">
+		<div style="float: left">
+			<button id="form" class="btn btn-info">Enviar SMS</button>
+			<button id="saldo" class="btn btn-info">Consultar Saldo</button>
+		</div>
+		<div id="contSaldo"></div>
+	</div>
+	<div class="row-fluid retSms">
+		<div class="col-md-12" id="contForm" style="display: none;">
+			<?php
+			$action = BASE . 'mensagem/enviarSms';
+			$values = [
+				'tipo' => $this->request->post('tipo'),
+				'nome' => $this->request->post('nome')
+			];
+			Form::open('enviarsms', $values, [
+				'action' => $action,
+				'enctype' => 'multipart/form-data',
+				'id' => 'enviaSms',
+				'view' => 'Inline',
+				'prevent' => [
+					'focus'
+				]
+			]);
+			Form::Textbox(
+				'Telefone:',
+				'fone',
+				array(
+					'required' => 1,
+					'data-inputmask' => "'mask' : '(99) 99999-9999'"
+				)
+			);
+			Form::Textbox(
+				'Mensagem:',
+				'msn',
+				array(
+					'required' => 1
+				)
+			);
+			Form::Button('Enviar', 'submit', [
+				'style' => 'margin-left: 5px;float:  right;',
+				'class' => 'btn-success'
+			]);
+			Form::close(false);
+			?>
+			<div id="retorno"></div>
+		</div>
+	</div>
+	<table class="table" id="tableFull">
+		<thead>
+			<tr>
+				<th>Destino</th>
+				<th>Mensagem</th>
+				<th>Status</th>
+				<th>Data</th>
+				<th>Enviado por</th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php
+			if ($view_mensagens) :
+				foreach ($view_mensagens as $mensagem) :
+					?>
+					<tr>
+						<td><?php echo $mensagem->destino ?></td>
+						<td><?php echo $mensagem->mensagem ?></td>
+						<td><?php echo $mensagem->status ?></td>
+						<td><?php echo date('d/m/Y', strtotime($mensagem->data)) ?></td>
+						<td><?php echo $mensagem->user_id ?></td>
+					</tr>
+					<?php
+				endforeach;
+			endif;
+			?>
+		</tbody>
+	</table>
+</div>

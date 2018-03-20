@@ -197,3 +197,27 @@ svg {
     line-height: 20px;
     padding-left: 3px;
 }
+
+.mensagens{
+    margin-bottom: 20px;
+    float: left;
+    width: 100%;
+}
+.mensagens #contSaldo{
+    float: left;
+    margin-left: 10px;
+    display: none;
+}
+.mensagens #contSaldo h4,
+.mensagens #contSaldo p{
+    margin: 0;
+}
+.retSms form{
+    float: left;
+    margin-bottom: 25px;
+}
+.retSms #retorno{
+    float: left;
+    padding-top: 10px;
+    margin-left: 15px;
+}

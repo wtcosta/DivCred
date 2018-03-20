@@ -29,7 +29,8 @@ $configs->env->development->menu->setMenus(array(
     'Cadastrar/user-plus' => '%baseURI%/cadastro',
     'Log/history' => '%baseURI%/log',
     'Status/check-circle-o' => '%baseURI%/status',
-    'Triagem/bars' => '%baseURI%/sequencia'
+    'Triagem/bars' => '%baseURI%/sequencia',
+    'Mensagens/comments' => '%baseURI%/mensagem'
   ],
   'Empresas/university' => [
     'Listar/university' => '%baseURI%/empresa',
