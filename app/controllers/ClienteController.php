@@ -168,8 +168,12 @@ class ClienteController extends \HXPHP\System\Controller
 			]);
 	}
 
-	public function empresaAction($empresa)
+	public function empresaAction($empresa="")
 	{
+		$post = $this->request->post();
+		if (!is_null($post['empresa'])) {
+			$empresa = $post['empresa'];
+		}
 		$this->view
 		->setFile('empresa')
 		->setVars([

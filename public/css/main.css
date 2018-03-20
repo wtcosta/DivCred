@@ -221,3 +221,9 @@ svg {
     padding-top: 10px;
     margin-left: 15px;
 }
+.tableBoleto .dataTables_length label{
+    color: #fff;
+}
+.tableBoleto .dataTables_length select{
+    color: #73879C;
+}

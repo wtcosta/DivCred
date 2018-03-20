@@ -1,157 +1,103 @@
+<?php
+$user_id = $this->auth->getUserId();
+$user = User::find($user_id);
+$role = Role::find($user->role_id);
+?>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#optEmpresa').change(function(){
+			$("#filtraEmpresa").submit();
+		});
+	});
+</script>
 <div class="page-title">
-
 	<div class="title_left">
-
 		<small><?php echo $view_empresa->cnpj ?></small>
-
 		<h2 style="margin: 0"><?php echo $view_empresa->empresa ?></h2>
-
 		<p style="margin: 0"><?php echo $view_empresa->contato ?> - <?php echo $view_empresa->email ?></p>
-
 		<p><?php echo $view_empresa->telefone ?> - <?php echo $view_empresa->celular ?></p>
-
 	</div>
-
 	<div style="float:  right;padding-top: 30px;">
-
-		<a href="<?php echo BASE ?>cliente/cadastrar/<?php echo $view_empresa->id ?>" class="btn btn-info">
-
+		<a href="<?php echo BASE ?>cliente/cadastrar/<?php echo $view_empresa->id ?>" class="btn btn-info" style="float: left">
 			ADICIONAR CLIENTE
-
 		</a>
-
-	</div>
-
-</div>
-
-<div class="clearfix"></div>
-
-<div class="panel-body">
-
-	<table class="table" id="tableFull">
-
-		<thead>
-
-			<tr>
-
-				<th>Cliente</th>
-
-				<th>Email</th>
-
-				<th>Telefones</th>
-
-				<th>Qtd Dívidas</th>
-
-				<th>Valor Dívida</th>
-
-				<th>Valor Atualizado</th>
-
-				<th></th>
-
-			</tr>
-
-		</thead>
-
-		<tbody>
-
-			<?php
-
-			if ($view_clientes){
-
-				foreach ($view_clientes as $cliente){
-
-					$dividas = Debt::find('all', array('conditions' => array('cliente_id = ?', $cliente->id)));
-
-
-
-					$valorTotal = 0;
-
-					$vlAtualizado = 0;
-
-					foreach ($dividas as $divida) {
-
-						$valorTotal = $valorTotal+$divida->valor;
-
-						$vlAtualizado = $vlAtualizado+Debt::vlAtualizado($divida->valor, $divida->vencimento, $view_empresa->multa, $view_empresa->juros);
-
-					}
-
-					?>
-
-					<tr>
-
-						<td>
-
-							<small><?php echo $cliente->cpf ?></small>
-
-							<p style="margin: 0;font-size: 130%;"><?php echo $cliente->nome; ?></p>
-
-						</td>
-
-						<td><?php echo $cliente->email ?></td>
-
-						<td>
-
-							<?php
-
-							echo $cliente->celular;
-
-							if ($cliente->telefone != "") {
-
-								echo "<br />".$cliente->telefone;
-
-							}
-
-							if ($cliente->recado != "") {
-
-								echo "<br />".$cliente->recado;
-
-							}
-
-							?>
-
-						</td>
-
-						<td style="text-align: center;"><?php echo count($dividas); ?></td>
-
-						<td>R$ <?php echo number_format($valorTotal, 2, ",", ".") ?></td>
-
-						<td>R$ <?php echo number_format($vlAtualizado, 2, ",", "."); ?></td>
-
-						<td style="text-align: right;">
-
-							<a href="<?php echo BASE.'cliente/filtrar/'.$cliente->id ?>" class="btn btn-info btn-sm">Dívidas</a>
-
-							<?php
-
-							if ($this->auth->getUserRole() == 'administrator') {
-
-								?>
-
-								<a href="<?php echo BASE.'cliente/editar/'.$cliente->id ?>" class="btn btn-warning btn-sm">Editar</a>
-
-								<!--<a href="<?php echo BASE.'cliente/excluir/'.$divida->id ?>" class="btn btn-danger btn-sm">Excluir</a>-->
-
-								<?php
-
-							}
-
-							?>
-
-						</td>
-
-					</tr>
-
+		<?php if ($role->role == 'cobrança' || $role->role == 'administrator') :?>
+			<form action="<?php echo BASE ?>cliente/empresa" id="filtraEmpresa" method="POST" style="float: left">
+				<select name="empresa" id="optEmpresa" class="form-control">
+					<option>Selecione um Empresa</option>
 					<?php
-
+					$empresas = Company::all();
+					foreach ($empresas as $empresa) {
+						echo '<option value="'.$empresa->id.'">'.$empresa->empresa.'</option>';
+					}
+					?>
+				</select>
+			</form>
+		<?php endif ?>
+	</div>
+</div>
+<div class="clearfix"></div>
+<div class="panel-body">
+	<table class="table" id="tableFull">
+		<thead>
+			<tr>
+				<th>Cliente</th>
+				<th>Email</th>
+				<th>Telefones</th>
+				<th>Qtd Dívidas</th>
+				<th>Valor Dívida</th>
+				<th>Valor Atualizado</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php
+			if ($view_clientes){
+				foreach ($view_clientes as $cliente){
+					$dividas = Debt::find('all', array('conditions' => array('cliente_id = ?', $cliente->id)));
+					$valorTotal = 0;
+					$vlAtualizado = 0;
+					foreach ($dividas as $divida) {
+						$valorTotal = $valorTotal+$divida->valor;
+						$vlAtualizado = $vlAtualizado+Debt::vlAtualizado($divida->valor, $divida->vencimento, $view_empresa->multa, $view_empresa->juros);
+					}
+					?>
+					<tr>
+						<td>
+							<small><?php echo $cliente->cpf ?></small>
+							<p style="margin: 0;font-size: 130%;"><?php echo $cliente->nome; ?></p>
+						</td>
+						<td><?php echo $cliente->email ?></td>
+						<td>
+							<?php
+							echo $cliente->celular;
+							if ($cliente->telefone != "") {
+								echo "<br />".$cliente->telefone;
+							}
+							if ($cliente->recado != "") {
+								echo "<br />".$cliente->recado;
+							}
+							?>
+						</td>
+						<td style="text-align: center;"><?php echo count($dividas); ?></td>
+						<td>R$ <?php echo number_format($valorTotal, 2, ",", ".") ?></td>
+						<td>R$ <?php echo number_format($vlAtualizado, 2, ",", "."); ?></td>
+						<td style="text-align: right;">
+							<a href="<?php echo BASE.'cliente/filtrar/'.$cliente->id ?>" class="btn btn-info btn-sm">Dívidas</a>
+							<?php
+							if ($this->auth->getUserRole() == 'administrator') {
+								?>
+								<a href="<?php echo BASE.'cliente/editar/'.$cliente->id ?>" class="btn btn-warning btn-sm">Editar</a>
+								<!--<a href="<?php echo BASE.'cliente/excluir/'.$divida->id ?>" class="btn btn-danger btn-sm">Excluir</a>-->
+								<?php
+							}
+							?>
+						</td>
+					</tr>
+					<?php
 				}
-
 			}
-
 			?>
-
 		</tbody>
-
 	</table>
-
 </div>

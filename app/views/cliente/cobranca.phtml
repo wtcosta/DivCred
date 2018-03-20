@@ -10,14 +10,6 @@ foreach ($dividas as $divida) {
 	$vlAtualizado = $vlAtualizado+Debt::vlAtualizado($divida->valor, $divida->vencimento, $empresa->multa, $empresa->juros);
 }
 ?>
-<style type="text/css">
-.tableBoleto .dataTables_length label{
-	color: #fff;
-}
-.tableBoleto .dataTables_length select{
-	color: #73879C;
-}
-</style>
 <div class="page-title">
 	<div class="title_left">
 		<h2>Dados do cliente:</h2>
