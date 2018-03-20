@@ -11,6 +11,11 @@ class Call extends \HXPHP\System\Model
 		return self::find('all',array('conditions' => array('cpf = ?', $cpf), 'order' => 'data_cad desc'));
 	}
 
+	public static function buscaCliente($cliente)
+	{
+		return self::find(array('conditions' => array('cliente_id = ?', $cliente), 'order' => 'data_cad desc'));
+	}
+
 	public static function cadastrar($post, $user_id, $cliente)
 	{
 		$callbackObj = new \stdClass;

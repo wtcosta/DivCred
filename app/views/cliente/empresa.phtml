@@ -62,7 +62,7 @@ $role = Role::find($user->role_id);
 						$vlAtualizado = $vlAtualizado+Debt::vlAtualizado($divida->valor, $divida->vencimento, $view_empresa->multa, $view_empresa->juros);
 					}
 					?>
-					<tr>
+					<tr class="<?php echo ClienteController::atd($cliente->id, $role) ?>">
 						<td>
 							<small><?php echo $cliente->cpf ?></small>
 							<p style="margin: 0;font-size: 130%;"><?php echo $cliente->nome; ?></p>

@@ -74,6 +74,6 @@ class State extends \HXPHP\System\Model
 
 	public static function busca($tipo='')
 	{
-		return self::find('all',array('conditions' => array('tipo = ?', $tipo)));
+		return self::find('all',array('conditions' => array('relacionamento = ?', 20)));
 	}
 }

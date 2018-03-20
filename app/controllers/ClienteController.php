@@ -354,4 +354,23 @@ class ClienteController extends \HXPHP\System\Controller
 			}
 		}
 	}
+
+	public function atd($cliente='', $role='')
+	{
+		if ($role->role == 'cobrança' || $role->role == 'administrator') {
+			$atd = Call::buscaCliente($cliente);
+			$dias = Debt::diasAtraso($atd->data_cad);
+			if ($dias == 0) {
+				return 'atd1';
+			}elseif ($dias >= 1 && $dias <= 5) {
+				return 'atd2';
+			}elseif ($dias > 5) {
+				return 'atd3';
+			}else{
+				return '';
+			}
+		}else{
+			return '';
+		}
+	}
 }

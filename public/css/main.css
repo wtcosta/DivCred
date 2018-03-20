@@ -227,3 +227,13 @@ svg {
 .tableBoleto .dataTables_length select{
     color: #73879C;
 }
+
+.atd1{
+    background: #1bff002e;
+}
+.atd2{
+    background: #ffeb001c;
+}
+.atd3{
+    background: #fb000014;
+}
